@@ -5,10 +5,10 @@ documentation.txt
 db.sqlite3
 .env
 adminpanel/__pycache__
-adminpanel/migrations
-megadolls/__pycache__
+#adminpanel/migrations
+#megadolls/__pycache__
 sloper/__pycache__
-sloper/migrations
+#sloper/migrations
 web_app/__pycache__
 nginx/default.conf
 web_app/tests.py
