@@ -1,0 +1,192 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}My Account - Subscription{% endblock title %}
+{% block content %}
+{% include 'includes/ring-loader.html' %}
+<script src="https://js.stripe.com/v3/"></script>
+<div class="wraper-inner">
+   <section class="page-head-sec">
+      <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+      <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+      <div class="container">
+         <div class="page-head-content">
+            <h4>My Account</h4>
+         </div>
+      </div>
+   </section>
+   <section class="shops-list-sec pt-5">
+      <div class="container">
+         <div class="my-account account-subscription">
+            
+            {% include 'includes/my-account/left-sidebar.html' %}
+            
+            <div class="my-account-R">
+               <div class="account-subscription-head">
+                  <div class="subscription-head-L">
+                     <h3 class="subscription-title">Your Plan</h3>
+                     {% if user_subscription.shero_subscription_id %}
+                           <h6>{{ user_subscription.shero_subscription.plan_type }}</h6>
+                           <div class="product-price">
+                            {% if user_subscription.shero_subscription.offer_price > 0 %}
+                            <span class="amount">${{ user_subscription.shero_subscription.offer_price }}</span>
+                            {% comment %}<span class="pre-price">${{ user_subscription.shero_subscription.original_price }}</span>{% endcomment %}
+                            {% comment %}<span class="offer">({{ user_subscription.shero_subscription.discount_on_plan_percentage|floatformat:2 }}% OFF)</span>{% endcomment %}
+                            {% else %}
+                            <span class="amount">${{ user_subscription.shero_subscription.original_price }}</span>
+                            {% endif %}
+                           </div>
+                          
+                           {% comment %} <p>next billing on 21st March 2022</p> {% endcomment %}
+                           <p>next billing on {{ user_subscription.expire_at|date:'dS F Y' }}</p>
+                     {% else %}
+                        <p>No Active Subscription</p>
+                     {% endif %}
+                  </div>
+                  <div class="subscription-head-R">
+                     {% if user_subscription.shero_subscription_id %}
+                        <a href="#" data-id="{{ user_subscription }}" class="mx-1 btn-delete btn btn-primary outline">Cancel Plan</a>
+                     {% endif %}                     
+                  </div>
+               </div>
+               
+               <hr class="grey-line">
+               <div class="account-subscription-body">
+                  {% if user_subscription.shero_subscription_id %}
+                  <div class="row subscription-plan-all">
+                     <div class="col-md-12">
+                           <h3 class="subscription-title mb-3">Active Shero Subscription Plan</h3>
+                     </div>
+                     {% if not user_subscription.shero_subscription.is_active %}
+                           <div class="col-12 mb-4">
+                              <p style="color:red;">This plan is no more. After this plan expire please buy new plan. </p>
+                           </div>
+                     {% endif %}
+                     <div class="col-md-4">
+                        <div class="subscription-plan-box box-shadow-box">
+                           <div class="subscription-plan-box-head">
+                              <h6>{{ user_subscription.shero_subscription.plan_type }}</h6>
+
+                              {% if user_subscription.shero_subscription.offer_price > 0 %}
+                              <span class="amount">${{ user_subscription.shero_subscription.offer_price }}</span>
+                              <span class="pre-price">${{ user_subscription.shero_subscription.original_price }}</span>
+                              {% comment %}<span class="offer">({{ user_subscription.shero_subscription.discount_on_plan_percentage|floatformat:2 }}% OFF)</span>{% endcomment %}
+                              {% else %}
+                              <span class="amount">${{ user_subscription.shero_subscription.original_price }}</span>
+                              {% endif %}
+
+                           </div>
+                           <div class="subscription-plan-box-body">
+                              <div class="free-shipping-tag-box">
+                                 <!-- <span class="free-shipping-tag">Free Shipping</span> -->
+                                 {% if user_subscription.shero_subscription.plan_type == "Annual" %}
+                                    <small>Billed every year</small>
+                                 {% elif user_subscription.shero_subscription.plan_type == "Bi-Annual" %}
+                                    <small>Billed every six month</small>
+                                 {% elif user_subscription.shero_subscription.plan_type == "Quarterly" %}
+                                    <small>Billed every three month</small>
+                                 {% elif user_subscription.shero_subscription.plan_type == "Monthly" %}
+                                    <small>Billed every month</small>
+                                 {% endif %}
+                              </div>
+                              <ul>
+                                 {% for sub in subscriptions %}
+                                    {% if user_subscription.shero_subscription.id == sub.plan_id %}
+                                       <li>{{sub.benefit.title}}</li>
+                                    {% endif %}
+                                 {% endfor %}
+                              </ul>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <br />
+                  {% endif %}
+                  <h3 class="subscription-title mb-3">Available Shero Subscription Plans</h3>
+                  <div class="row subscription-plan-all mt-4 pt-3">
+                     {% for plan in subscription_plans %}
+                     <div class="col-md-4">
+                        <div class="subscription-plan-box box-shadow-box">
+                           <div class="subscription-plan-box-head">
+                              <h6>{{ plan.plan_type }}</h6>
+                              <div class="product-price">
+                                {% if plan.offer_price > 0 %}
+                                <span class="amount">${{ plan.offer_price }}</span>
+                                <span class="pre-price">${{ plan.original_price }}</span>
+                                {% comment %}<span class="offer">({{ plan.discount_on_plan_percentage|floatformat:2 }}% OFF)</span>{% endcomment %}
+                                {% else %}
+                                <span class="amount">${{ plan.original_price }}</span>
+                                {% endif %}
+                             </div>
+                           </div>
+                           <div class="subscription-plan-box-body">
+                              <div class="free-shipping-tag-box">
+                                 <!-- <span class="free-shipping-tag purple-bg">Free Shipping</span> -->
+                                 {% if plan.plan_type == "Annual" %}
+                                    <small>Billed every year</small>
+                                 {% elif plan.plan_type == "Bi-Annual" %}
+                                    <small>Billed every six month</small>
+                                 {% elif plan.plan_type == "Quarterly" %}
+                                    <small>Billed every three month</small>
+                                 {% elif plan.plan_type == "Monthly" %}
+                                    <small>Billed every month</small>
+                                 {% endif %}
+                              </div> 
+         
+                              <ul>
+                                 {% for sub in subscriptions %}
+                                    {% if plan.id == sub.plan_id %}
+                                       <li>{{sub.benefit.title}}</li>
+                                    {% endif %}
+                                 {% endfor %}
+                              </ul>
+                     
+                              <div class="d-flex justify-content-center"> 
+                                 {% if user_subscription.shero_subscription.slug == plan.slug and not shero_subscription_active %}
+                                    <span class="active-subscription pink-text">Active</span>
+                                 {% else %}
+                                    <button class="btn btn-primary subscription-btn" data-slug="{{ plan.slug }}">Buy</button>
+                                 {% endif %}
+                              </div>
+                           </div>
+                        </div>
+                        <br />
+                     </div>
+                     {% endfor %}
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <form method="POST" action="{% url 'cancel_shero_subscription' %}" class="mx-1"  id="delete_form">
+         {% csrf_token %}
+         <input type="hidden" name="cancel_subscription" value="" id="delete_shero">
+     </form>
+   </section>
+</div>
+
+{% endblock content %}
+{% block script %}
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.btn-delete').on('click', function (e) {
+            e.preventDefault()
+            let id = $(this).data('id')
+            Swal.fire({
+                title: 'Cancel Subscription',
+                text: 'Are You Sure ?',
+                confirmButtonColor: 'rgb(225, 0, 127)',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#delete_shero').val(id)
+
+                    $('#delete_form').submit()
+                }
+            })
+        })
+    })
+    stripePayment()
+</script>
+{% endblock script %} 

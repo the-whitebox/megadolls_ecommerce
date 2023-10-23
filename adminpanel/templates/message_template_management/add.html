@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content%}
+{% url 'view_email_templates' as view_email_templates %}
+{% include "includes/section.html" with page_title="Add Email Template" btn_url=view_email_templates btn_text="Back" %}
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <form method="POST" class="card-body" id="myForm">
+                    {% csrf_token %}
+                    <div class="col-12">
+                        <div class="form-group has-icon-left">
+                            <label for="email-id-icon">Title</label>
+                            <div class="position-relative">
+                                <input type="text" class="form-control"
+                                    placeholder="Enter Title For Message Template" id="email-id-icon"
+                                    name="title" required>
+                                <div class="form-control-icon">
+                                    <i class="bi bi-envelope"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group has-icon-left">
+                            <label for="email-id-icon">Subject</label>
+                            <div class="position-relative">
+                                <input type="text" class="form-control"
+                                    placeholder="Enter Subject For Message Template" id="email-id-icon"
+                                    name="subject" required>
+                                <div class="form-control-icon">
+                                    <i class="bi bi-envelope"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <textarea value="" name="editor" required></textarea>
+
+                    <div class="col-12 d-flex justify-content-end mt-3">
+                        <button type="submit" class="btn btn-primary me-1 mb-1" id="create-template">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content%}
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.19.1/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('editor');
+</script>
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+<script>
+    $("#myForm").validate({
+        rules: {
+            title: {
+                required: true,
+                maxlength: 55
+            },
+            editor: {
+                required: true,
+                email: true
+            },
+        },
+        submitHandler: function (form) {
+            form.submit();
+        }
+    });
+</script>
+{% endblock script %}

@@ -1,0 +1,408 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'adminpanel/datetime-picker/jquery.datetimepicker.min.css' %}" />
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+{% endblock css %}
+
+{% block content%}
+{% include "includes/section.html" with page_title="Edit Subscription Management"  %}
+
+<section class="section">
+    <div class="row">
+        <div class="col-12 mb-5">
+            <div class="card">
+                <form method="POST" class="card-body" id="myForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>Banner Image</h6>
+                                <p>Recommended Image Size : 1920 x 498</p>
+                                <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg" name="banner_image">
+                            </div>
+                            {% if shero_subscription_data.banner_image %}
+                            <img src="{{ shero_subscription_data.banner_image.url }}" alt="" srcset="" width="10%">
+                            {% endif %}
+                        </div>
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>Banner Image Content</h6>
+                                <textarea value="" name="banner_image_content" required>{{shero_subscription_data.banner_image_content|safe}}</textarea>
+                            </div>
+                        </div>
+                    
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>Intro Paragraph</h6>
+                                <textarea value="" name="intro_paragraph" required>{{shero_subscription_data.intro_paragraph|safe}}</textarea>
+                            </div>
+                        </div>
+                    
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>Shero Benefit Title</h6>
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" name="shero_benefits_title" value="{{ shero_subscription_data.shero_benefits_title }}" required>
+                                </div>
+                            </div>
+                        </div>
+                       
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>Shero Benefit Content 1</h6>
+                                <textarea value="" name="shero_benefits_content_1" required>{{shero_subscription_data.shero_benefits_content_1|safe}}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>Shero Benefit Image 1</h6>
+                                <p>Recommended Image Size : 570 x 392</p>
+                                <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg" name="shero_benefits_image_1">
+                            </div>
+                            {% if shero_subscription_data.shero_benefits_image_1 %}
+                            <img src="{{ shero_subscription_data.shero_benefits_image_1.url }}" alt="" srcset="" width="10%">
+                            {% endif %}
+                        </div>
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>Shero Benefit Content 2</h6>
+                                <textarea value="" name="shero_benefits_content_2" required>{{shero_subscription_data.shero_benefits_content_2|safe}}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>Shero Benefit Image 2</h6>
+                                <p>Recommended Image Size : 570 x 392</p>
+                                <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg" name="shero_benefits_image_2">
+                            </div>
+                            {% if shero_subscription_data.shero_benefits_image_2 %}
+                            <img src="{{ shero_subscription_data.shero_benefits_image_2.url }}" alt="" srcset="" width="10%">
+                            {% endif %}
+                        </div>
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>Shero Benefit Content 3</h6>
+                                <textarea value="" name="shero_benefits_content_3" required>{{shero_subscription_data.shero_benefits_content_3|safe}}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>Shero Benefit Image 3</h6>
+                                <p>Recommended Image Size : 570 x 392</p>
+                                <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg" name="shero_benefits_image_3">
+                            </div>
+                            {% if shero_subscription_data.shero_benefits_image_3 %}
+                            <img src="{{ shero_subscription_data.shero_benefits_image_3.url }}" alt="" srcset="" width="10%">
+                            {% endif %}
+                        </div>
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>Shero Benefit Content 4</h6>
+                                <textarea value="" name="shero_benefits_content_4" required>{{shero_subscription_data.shero_benefits_content_4|safe}}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>Shero Benefit Image 4</h6>
+                                <p>Recommended Image Size : 570 x 392</p>
+                                <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg" name="shero_benefits_image_4">
+                            </div>
+                            {% if shero_subscription_data.shero_benefits_image_4 %}
+                            <img src="{{ shero_subscription_data.shero_benefits_image_4.url }}" alt="" srcset="" width="10%">
+                            {% endif %}
+                        </div>
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>Shero Benefit Content 5</h6>
+                                <textarea value="" name="shero_benefits_content_5" required>{{shero_subscription_data.shero_benefits_content_5|safe}}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>Shero Benefit Image 5</h6>
+                                <p>Recommended Image Size : 570 x 392</p>
+                                <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg" name="shero_benefits_image_5">
+                            </div>
+                            {% if shero_subscription_data.shero_benefits_image_5 %}
+                            <img src="{{ shero_subscription_data.shero_benefits_image_5.url }}" alt="" srcset="" width="10%">
+                            {% endif %}
+                        </div>
+                    
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>Shero Subscription How it Works Title</h6>
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" name="shero_how_it_works_title" value="{{ shero_subscription_data.shero_how_it_works_title }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>How it Works Title 1</h6>
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" name="shero_how_it_works_title_1" value="{{ shero_subscription_data.shero_how_it_works_title_1 }}" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>How it Works Content 1</h6>
+                                <textarea value="" name="shero_how_it_works_content_1" required>{{shero_subscription_data.shero_how_it_works_content_1|safe}}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>How it Works Image 1</h6>
+                                <p>Recommended Image Size : 527 x 299</p>
+                                <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg" name="shero_how_it_works_image_1">
+                            </div>
+                            {% if shero_subscription_data.shero_benefits_image_5 %}
+                            <img src="{{ shero_subscription_data.shero_benefits_image_5.url }}" alt="" srcset="" width="10%">
+                            {% endif %}
+                        </div>
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>How it Works Title 2</h6>
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" name="shero_how_it_works_title_2" value="{{ shero_subscription_data.shero_how_it_works_title_2 }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>How it Works Content 2</h6>
+                                <textarea value="" name="shero_how_it_works_content_2" required>{{shero_subscription_data.shero_how_it_works_content_2|safe}}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>How it Works Image 2</h6>
+                                <p>Recommended Image Size : 527 x 299</p>
+                                <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg" name="shero_how_it_works_image_2">
+                            </div>
+                            {% if shero_subscription_data.shero_how_it_works_image_2 %}
+                            <img src="{{ shero_subscription_data.shero_how_it_works_image_2.url }}" alt="" srcset="" width="10%">
+                            {% endif %}
+                        </div>
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>How it Works Title 3</h6>
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" name="shero_how_it_works_title_3" value="{{ shero_subscription_data.shero_how_it_works_title_3 }}" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>How it Works Content 3</h6>
+                                <textarea value="" name="shero_how_it_works_content_3" required>{{shero_subscription_data.shero_how_it_works_content_3|safe}}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>How it Works Image 3</h6>
+                                <p>Recommended Image Size : 527 x 299</p>
+                                <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg" name="shero_how_it_works_image_3">
+                            </div>
+                            {% if shero_subscription_data.shero_how_it_works_image_3 %}
+                            <img src="{{ shero_subscription_data.shero_how_it_works_image_3.url }}" alt="" srcset="" width="10%">
+                            {% endif %}
+                        </div>
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>How it Works Title 4</h6>
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" name="shero_how_it_works_title_4" value="{{ shero_subscription_data.shero_how_it_works_title_4 }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>How it Works Content 4</h6> 
+                                <textarea value="" name="shero_how_it_works_content_4" required>{{shero_subscription_data.shero_how_it_works_content_4|safe}}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>How it Works Image 4</h6>
+                                <p>Recommended Image Size : 527 x 299</p>
+                                <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg" name="shero_how_it_works_image_4">
+                            </div>
+                            {% if shero_subscription_data.shero_how_it_works_image_4 %}
+                            <img src="{{ shero_subscription_data.shero_how_it_works_image_4.url }}" alt="" srcset="" width="10%">
+                            {% endif %}
+                        </div>
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>Create Play Image</h6>
+                                <p>Recommended Image Size : 527 x 458</p>
+                                <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg" name="create_play_image">
+                            </div>
+                            {% if shero_subscription_data.create_play_image %}
+                            <img src="{{ shero_subscription_data.create_play_image.url }}" alt="" srcset="" width="10%">
+                            {% endif %}
+                        </div>
+
+                        <div class="col-12 mb-5">
+                            <div class="form-group">
+                                <h6>Invite Your Friend Image</h6>
+                                <p>Recommended Image Size : 527 x 458</p>
+                                <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg" name="invite_your_friend_image">
+                            </div>
+                            {% if shero_subscription_data.invite_your_friend_image %}
+                            <img src="{{ shero_subscription_data.invite_your_friend_image.url }}" alt="" srcset="" width="10%">
+                            {% endif %}
+                        </div>
+
+                        <div class="col-12 d-flex justify-content-end mt-3">
+                            <button type="submit" class="btn btn-primary me-1 mb-1" id="formSubmit">Submit</button>
+                        </div>
+
+                       
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content%}
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.19.1/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('banner_image_content');
+</script>
+<script>
+    CKEDITOR.replace('intro_paragraph');
+</script>
+
+<script>
+    CKEDITOR.replace('shero_benefits_content_1');
+</script>
+<script>
+    CKEDITOR.replace('shero_benefits_content_2');
+</script>
+<script>
+    CKEDITOR.replace('shero_benefits_content_3');
+</script>
+<script>
+    CKEDITOR.replace('shero_benefits_content_4');
+</script>
+<script>
+    CKEDITOR.replace('shero_benefits_content_5');
+</script>
+<script>
+    CKEDITOR.replace('shero_how_it_works_content_1');
+</script>
+
+<script>
+    CKEDITOR.replace('shero_how_it_works_content_2');
+</script>
+<script>
+    CKEDITOR.replace('shero_how_it_works_content_3');
+</script>
+<script>
+    CKEDITOR.replace('shero_how_it_works_content_4');
+</script>
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/vendors/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'adminpanel/datetime-picker/jquery.datetimepicker.full.min.js' %}"></script>
+<script>
+    $(function () {
+        $('#datetimepicker').datetimepicker({
+            step: 5
+        });
+
+        $('#js-publish').on('change', function () {
+            let value = $(this).val()
+            if (value == 'True') {
+                $('#js-schedule-time').hide()
+            } else {
+                $('#js-schedule-time').show()
+            }
+        })
+    });
+</script>
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+<script>
+    let category_id = $('#basicSelect').val()
+    $('#basicSelect').on('change', function () {
+        if(category_id != '') {
+            $.ajax({
+                url: "{% url 'get_sub_categories' %}",
+                method: "POST",
+                data: {
+                    category_id: $(this).val()
+                },
+                success: function (response) {
+                    $('#sub-category').html(response)
+                }
+            })
+        }
+        
+    })
+
+    $('#formSubmit').on('click', function (e) {
+            e.preventDefault()
+            let id = $(this).data('id')
+            Swal.fire({
+                title: 'Update Content',
+                text: 'Are You Sure ?',
+                confirmButtonColor: 'rgb(225, 0, 127)',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $("#myForm").submit();
+                }
+            })
+        })
+
+    $("#myForm").validate({
+        rules: {
+            heading: {
+                required: true,
+                maxlength: 55
+            },
+            editor: {
+                required: true,
+            },
+            posted_by: {
+                required: true,
+                maxlength: 55
+            },
+            category: {
+                required: true,
+            },
+            subcategory: {
+                required: true,
+            }
+        }
+    });
+</script>
+{% endblock script %}

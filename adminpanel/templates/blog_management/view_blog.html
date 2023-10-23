@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock title %}
+{% load static %}
+
+{% block content %}
+
+{% url 'view_blogs' as view_blogs %}
+{% include "includes/section.html" with page_title="View Blog" btn_url=view_blogs btn_text="Back" %}
+
+
+<main class="main content-wrapper container">
+    <section class="section profile">
+        <div class="row">
+            {% if blog.image %}
+            <div class="col-xl-4">
+                <div class="card">
+                    <div class="card-body profile-card d-flex flex-column align-items-center">
+                        <img src="{{ blog.image.url }}" alt="Profile" class="mb-2" width="100%"
+                        height="415px">
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            <div class="col-xl-8">
+                <div class="card">
+                    <div class="card-body pt-3">
+                        <ul class="nav nav-tabs nav-tabs-bordered text-center">
+                            <li class="nav-item">
+                                <button class="nav-link active" data-bs-toggle="tab"
+                                    data-bs-target="#profile-overview">Blog Details</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content pt-4">
+
+                            <div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">Heading</div>
+                                    <div class="col-lg-9 col-md-8">: {{ blog.heading }}</div>
+                                </div>
+
+                                <!-- <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Posted By</div>
+                                    <div class="col-lg-9 col-md-8">: {{ blog.posted_by }}</div>
+                                </div> -->
+
+                                <!-- {% if blog.schedule_time  %} -->
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Schedule Time</div>
+                                    <div class="col-lg-9 col-md-8">: {{ blog.schedule_time }}</div>
+                                </div>
+                                <!-- {% endif %} -->
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Other Important Info</div>
+                                    <div class="col-lg-9 col-md-8">: {{ blog.other_important_info }}</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Category</div>
+                                    <div class="col-lg-9 col-md-8">: {{ blog.blog_category.name }}</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Sub Category</div>
+                                    <div class="col-lg-9 col-md-8">: {{ blog.sub_category.name }}</div>
+                                </div>
+
+                                {% if blog.video %}
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Video</div>
+                                    <div class="col-lg-9 col-md-8">
+                                        <!-- <a href="{{ blog.video.url }}" download class="btn btn-info"> download video</a> -->
+                                        <video width="300" height="240" controls>
+                                            <source src="{{ blog.video.url }}" type="video/mp4">
+                                            <source src="{{ blog.video.url }}" type="video/ogg">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body pt-3">
+                        <ul class="nav nav-tabs nav-tabs-bordered text-center">
+                            <li class="nav-item">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Content</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content pt-4">
+            
+                            <div class="tab-pane fade show active profile-overview" id="profile-overview">
+            
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-8">{{ blog.content|safe }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if blog_comments %}
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body pt-3">
+                        <ul class="nav nav-tabs nav-tabs-bordered text-center">
+                            <li class="nav-item">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Comments</button>
+                                <br />
+                                <h6>Total Comments : {{ blog_comments_count }}</h6>
+                            </li>
+                           
+                        </ul>
+                        {% for blog_comment in blog_comments %}
+                        <div class="tab-content pt-4">
+                            <div class="tab-pane fade show active">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-8">
+                                        <strong>Name: </strong>{{ blog_comment.user.name }}
+                                        <br />
+                                        <strong>Email: </strong>{{ blog_comment.user.email }}
+                                        <br />
+                                        <strong>comment: </strong>{{ blog_comment.comment }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+</main>
+{% endblock content %}
+
+{% block script %}
+{% endblock script %}

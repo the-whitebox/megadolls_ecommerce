@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Megadolls Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'adminpanel/images/favicon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'adminpanel/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'adminpanel/vendors/bootstrap-icons/bootstrap-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'adminpanel/css/app.css' %}">
+    <link rel="stylesheet" href="{% static 'adminpanel/css/pages/auth.css' %}">
+    <link rel="stylesheet" href="{% static 'adminpanel/vendors/toastify/toastify.css' %}">
+    <script src="{% static 'adminpanel/vendors/toastify/toastify.js' %}"></script>
+    <script src="{% static 'common/common-function.js' %}"></script>
+</head>
+
+<body>
+    {% for message in messages %}
+    <script>
+        hideMyToast()
+        Toastify({
+            text: "{{ message }}",
+            duration: 3000,
+            backgroundColor: "{{ message.tags }}",
+            close: true,
+        }).showToast();
+    </script>
+    {% endfor %}
+    <div id="auth">
+
+        <div class="row h-100">
+            <div class="col-lg-6 col-12 m-auto">
+                <div id="auth-left">
+                    <div class="auth-logo text-center">
+                        <a href="/"><img src="{% static 'adminpanel/images/logo/logo.svg' %}" alt="Logo"></a>
+                    </div>
+                    <h1 class="auth-title text-center">Log in.</h1>
+                    <p class="auth-subtitle mb-5">Log in with your data that you entered during registration.</p>
+
+                    <form action="{% url 'login' %}" method="post" id="myForm">
+                        {% csrf_token %}
+                        <div class="form-group position-relative mb-4">
+                            <input type="text" class="form-control form-control-xl" placeholder="Email" name="email" required>
+                        </div>
+                        <div class="form-group position-relative mb-4">
+                            <input type="password" class="form-control form-control-xl" placeholder="Password" name="password" required>
+                        </div>
+                        <button class="btn btn-primary btn-block btn-lg shadow-lg">Log in</button>
+                    </form>
+                    <div class="text-center mt-5 text-lg fs-4">
+                        <p>
+                            <a class="font-bold" href="{% url 'forget_password' %}">Forgot password?</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-lg-7 d-none d-lg-block">
+                <div id="auth-right">
+
+                </div>
+            </div> -->
+        </div>
+
+    </div>
+    <script src="{% static 'adminpanel/vendors/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+
+<script src="{% static 'adminpanel/templates/user_management/validation.js' %}"></script>
+    <!-- <script>
+        $("#myForm").validate({
+                rules: {
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    password: {
+                        required: true,
+                    },
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                }
+            });
+    </script> -->
+    
+</body>
+
+</html>

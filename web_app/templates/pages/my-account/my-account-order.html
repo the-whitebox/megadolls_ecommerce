@@ -1,0 +1,117 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}My Account - Orders{% endblock title %}
+{% block content %}
+<div class="wraper-inner">
+   <section class="page-head-sec">
+      <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+      <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+      <div class="container">
+         <div class="page-head-content">
+            <h4>My Account</h4>
+         </div>
+      </div>
+   </section>
+   <section class="shops-list-sec pt-5">
+      <div class="container">
+         <div class="my-account">          
+            {% include 'includes/my-account/left-sidebar.html' %}
+            <div class="my-account-R">
+               {% for order in page_obj %}
+                        <div class="my-account-R-box">                          
+                           <figcaption class="my-account-R-box-right">
+                              <div class="my-account-R-box-content">                       
+                                 <div class="order-detail-info">                                  
+                                    <span><strong>Order ID:</strong> {{ order.order_id }}</span>
+                                    <span><strong>Date:</strong> {{ order.order_at|date:"m/d/Y" }}</span>
+                                    <span><strong>Status:</strong> {{ order.order_status }}</span>
+                                    <span><strong>Total Amount:</strong> ${{ order.total_amount }}</span>
+                                    <span><strong>Approx Delivery Date:</strong> {{ order.delivered_at|date:"m/d/Y" }}</span>          
+                                 </div>
+                              </div>                           
+                              <div class="order-actions-blk">
+                                 <a href="{% url 'my_account_order_detail' order.order_id %}" class="btn btn-primary">Order Details</a>                         
+                                 {% if order.id in cancelable_order_id %}
+                                    {% if not order.order_status == "Canceled" and not order.is_refunded %}
+                                    <a  href="#" data-id="{{order.id}}" class="btn-delete btn btn-primary outline">Cancel Order</a>
+                                    {% else %}
+                                    <h6 style="color: crimson;" >{% if order.canceled_by == 'Customer' %} You {% else %} Seller {% endif %} canceled this order on {{ order.canceled_at }}</h6>
+                                    {% endif %}                  
+                                 {% endif %}
+                              </div>
+                           </figcaption>
+                        </div>
+                        <hr class="grey-line">        
+               {% empty %}
+                  <div class="text-center my-5">
+                     <h4>No Orders</h4>
+                  </div>
+               {% endfor %}
+               {% if product_orders %}
+               <div class="text-center my-2">
+                  <h6 style="color: rgb(223, 50, 84);" >Orders can be canceled within 24 hours only</h6>
+               </div>
+               <div class="pagination-blk mt-5">
+                  <nav aria-label="Page navigation example">
+                      <ul class="pagination">                         
+                          {%if page_obj.has_previous %}
+                          <li class="page-item">
+                              <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                  <span aria-hidden="true">
+                                      <i class="ri-arrow-left-line"></i>
+                                  </span>
+                              </a>
+                          </li>
+                          {% endif %}
+                          {% for page_number in page_obj.paginator.page_range %}
+                          <li class="page-item">
+                              <a class="page-link {% if page_number == page_obj.number %}active {% endif %}" href="?page={{ page_number }}">
+                                  {{ page_number }}
+                              </a>
+                          </li>
+                          {% endfor %}
+                          {%if page_obj.has_next %}
+                          <li class="page-item">
+                              <a class="page-link" href="?page={{ page_obj.next_page_number }}&text={{ text }}" aria-label="Next">
+                                  <span aria-hidden="true">
+                                      <i class="ri-arrow-right-line"></i>
+                                  </span>
+                              </a>
+                          </li>                              
+                          {% endif %}                             
+                      </ul>
+                  </nav>
+              </div>
+               {% endif %}
+            </div>           
+         </div>        
+      </div>
+      <form method="POST" action="{% url 'cancel_user_order' %}" class="mx-1"  id="delete_form">
+         {% csrf_token %}
+         <input type="hidden" name="order_id" value="" id="delete_shero">
+     </form>
+   </section>
+</div>
+{% endblock content %}
+{% block script %}
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $('.btn-delete').on('click', function (e) {
+            e.preventDefault()
+            let id = $(this).data('id')
+            Swal.fire({
+                title: 'Cancel Order',
+                text: 'Are You Sure ?',
+                confirmButtonColor: 'rgb(225, 0, 127)',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#delete_shero').val(id)
+                    $('#delete_form').submit()
+                }
+            })
+        })
+    })
+</script>
+{% endblock script %}

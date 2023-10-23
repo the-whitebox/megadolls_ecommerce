@@ -1,0 +1,306 @@
+{% load static %}
+{% load socialaccount %}
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <title>
+        Megadolls | Sign Up
+    </title>
+    <!--responsive-meta-here-->
+    <meta name="viewport" content="minimum-scale=1.0, maximum-scale=1.0,width=device-width, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--responsive-meta-end-->
+    <link rel="icon" href="{% static  'web_app/images/favicon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static  'web_app/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static  'web_app/css/owl.carousel.min.css' %}" />
+    <link rel="stylesheet" href="{% static  'web_app/css/fontawesome-all.css' %}" />
+    <link rel="stylesheet" href="{% static  'web_app/css/fontawesome.css' %}" />
+    <link rel="stylesheet" href="{% static  'web_app/fonts/remixicon.css' %}" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css">
+    <link rel="stylesheet" href="{% static  'web_app/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static  'web_app/css/responsive.css' %}" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static  'web_app/toastify/toastify.css' %}">
+    <script src="{% static  'web_app/toastify/toastify.js' %}"></script>
+</head>
+<body>
+<div class="login-wraper">
+    <img src="{% static  'web_app/images/bg-pattern.svg' %}">
+    <div class="container">
+        <div class="login-wraper-content">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-content-blk">
+                        <div class="form-content">
+                            <div class="form-content-head">
+                                <h4>Create New Account</h4>
+                                <p>Sign up with your Name and Email Address</p>
+                            </div>
+                            <form class="form-content-inputs to_reset_form" id="sign_up">
+                                {% csrf_token %}
+                                <div class="form-floating">
+                                    <input type="text" name="name" class="form-control" id="floatingInput47" placeholder="xyz" >
+                                    <label for="floatingInput47">Full Name</label>
+                                </div>
+                                <div class="form-floating">
+                                    <input type="email" name="email" class="form-control" id="floatingInput48" placeholder="xyz@gmail.co" >
+                                    <label for="floatingInput48">Email</label>
+                                </div>
+                                <div class="form-floating">
+                                    <i class="fa fa-eye-slash toggle-password"></i>
+                                    <input type="password" name="password" class="form-control password-inp" id="floatingInput49" placeholder="password" >
+                                    <label for="floatingInput49">Password</label>
+                                </div>
+                                <div class="form-floating">
+                                    <i class="fa fa-eye-slash toggle-password"></i>
+                                    <input type="password" name="confirm_password" class="form-control password-inp" id="floatingInput50" placeholder="password" >
+                                    <label for="floatingInput50">Confirm Password</label>
+                                </div>
+                                <div class="form-floating">
+                                    <input type="hidden" name="referral" value="{{slug}}" class="form-control" id="floatingInput51" placeholder="Referral Code">
+                               
+                                </div>
+                                
+                                {% comment %}{% if not slug %}
+                                <h6 style="color: #fa53a0;"> Do you have referral code? </h6>
+                                <br />
+                                <div class="form-floating">
+                                    <input type="text" name="referral" class="form-control" id="floatingInput51" placeholder="Referral Code">
+                                    <label for="floatingInput51">Referral Code</label>
+                                </div>
+                                {% endif %}{% endcomment %}
+
+                                {% comment %} <div class="action-link-blk">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" name="term_condition" required>
+                                        <label class="form-check-label" for="terms">Accept Terms & Conditions</label>
+                                    </div>
+                                </div> {% endcomment %}
+                                <div class="form-action-btns">
+                                    <button type="submit" class="btn btn-primary my-3" id="js_signup_btn">Sign Up</button>
+                                    <p style="font-size: 0.9em">You are accepting the <a href="{% url 'term_condition' %}">terms and conditions</a> by submitting all details.</p>
+                                </div>
+                            </form>
+                            <div class="login-divider">
+                                <span>Or</span>
+                            </div>
+                            <div class="login-accounts">
+                                <a href="{% provider_login_url 'google' %}" class="login-accounts-item mb-4"><img
+                                        src="{% static  'web_app/images/google-icon.svg' %}"> Sign in with Google</a>
+                                <a href="{% provider_login_url 'facebook' method='oauth2' %}" class="login-accounts-item"><img 
+                                     src="{% static  'web_app/images/facebook-icon.svg' %}"> Sign in with Facebook</a>
+                            </div>
+                            <div class="login-form-links">Already have account? <a href="{% url 'web_login' %}">Sign in here</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 offset-md-1">
+                    <div class="form-info-content">
+                        <a href="{% url 'home' %}">
+                            <img src="{% static  'web_app/images/logo.png' %}">
+                        </a>
+                        <p>Welcome to the World of Paper dolls. Megadolls are created to empower boys and girls from all walks of life.
+                            We strive to create beautiful pieces that inspire everyone, encourage kindness, experience creativity, and
+                            promote meaningful play with awareness and compassion for others.</p>
+                        <ul class="footer-social">
+                            <li id="facebook" >
+                                <a href="javascript:void(0);" target="_blank" ><i class="ri-facebook-fill"></i></a>
+                            </li>
+                            <li id="youtube" >
+                                <a href="javascript:void(0);" target="_blank" ><i class="ri-youtube-fill"></i></a>
+                            </li>
+                            <li id="twitter" >
+                                <a href="javascript:void(0);" target="_blank" ><i class="ri-twitter-fill"></i></a>
+                            </li>
+                            <li id="instagram" >
+                                <a href="javascript:void(0);" target="_blank" ><i class="ri-instagram-fill"></i></a>
+                            </li>
+                            <li id="linkedin" >
+                                <a href="javascript:void(0);" target="_blank" ><i class="ri-linkedin-fill"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-status modal fade" id="signup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <img src="{% static  'web_app/images/modal-close-icon.svg' %}">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="status-block">
+                    <img class="logo-icon" src="{% static  'web_app/images/logo.png' %}">
+                    <img class="check-icon" src="{% static  'web_app/images/check-icon.svg' %}">
+                    <p>Verification mail has been sent to your email address</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% include "includes/js.html" %}
+<script>
+    $.validator.addMethod('emailRegex', function(value, element) {
+            let emailExp = new RegExp(/^\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i);
+            return emailExp.test(value);
+        }, 'Email format is not valid');
+
+    $.validator.addMethod('passwordRegex', function(value, element) {
+            let regex =/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,20}$/;
+            return regex.test(value);
+        }, 'Password must contain 8-20 characters including 1 lowercase, 1 uppercase, 1 digit and 1 special character');
+
+    $.validator.addMethod('confirmPassword', function(value, element) {
+        let password = $('input[name=password]').val()
+        return value === password
+    }, 'Confirm Password Should Be Same as Password');
+
+    $.validator.addMethod('referralRegex', function(value, element) {
+            let referralExp = new RegExp(/^\b[A-Z0-9]+\b$/);
+            return referralExp.test(value) || !value;
+        }, 'Enter capital letters and digits only');
+   
+    $.validator.addMethod("noSpace", function(value, element) { 
+        return !value.startsWith(" ") && value != ""; 
+    }, "No space please and don't leave it empty")
+    
+    $(document).ready(function() {
+        $("#sign_up").validate({
+        rules: {
+            name: {
+                required: true,
+                maxlength: 20,
+                minlength: 3,
+                noSpace: true,
+            },
+            email: {
+                required: true,
+                emailRegex: true,
+            },
+            password: {
+                required: true,
+                passwordRegex: true,
+            },
+            confirm_password: {
+                confirmPassword: true
+            },
+            referral: {
+                referralRegex: true,
+            }
+        },
+        submitHandler: function (form) {
+            $('#js_signup_btn').attr('disabled', 'disabled')
+            let name = $("input[name='name']").val()
+            let email = $("input[name='email']").val()
+            let password = $("input[name='password']").val()
+            let referral = $("input[name='referral']").val()
+            $('#js_signup_btn').text('Loading...')
+            $.ajax({
+                url: "{% url 'web_sign_up' %}",
+                method: "POST",
+                headers: { 'X-CSRFToken': $('[name=csrfmiddlewaretoken]').val() },
+                mode: 'same-origin',
+                data: {
+                    name: name,
+                    email: email,
+                    password: password,
+                    referral: referral
+                },
+                success: function (res) {
+                    $('#js_signup_btn').removeAttr('disabled')
+                    $('#js_signup_btn').text('Sign Up')
+                    $('.to_reset_form')[0].reset()
+                    if (res.status == true) {
+                        $('#signup').modal('show');
+                    } else {
+                        if(res.message) {
+                            myToast(res.message, ERROR_BG)
+                            if(res.name && res.email) {
+                                $("[name=email]").val(res.email)
+                                $("[name=name]").val(res.name)
+                            }
+                        }
+                    }
+                },
+                error: function(a, b, c) {
+                    console.log(a, b, c)
+                    $('#js_signup_btn').removeAttr('disabled')
+                    $('#js_signup_btn').text('Sign Up')
+                    myToast("Sorry for inconvience, Please Try again later", ERROR_BG)
+                }
+            })
+            
+        }
+    });
+    })
+    
+</script>
+
+<script>
+    $('.toggle-password').on('click', function() {
+        if($(this).hasClass('fa-eye')) {
+            $(this).addClass('fa-eye-slash')
+            $(this).removeClass('fa-eye')
+            $(this).siblings('.password-inp').attr('type', 'password')
+        } else {
+            $(this).removeClass('fa-eye-slash')
+            $(this).addClass('fa-eye')
+            $(this).siblings('.password-inp').attr('type', 'text')
+        }
+    })
+</script>
+
+<script>
+    $.ajax({
+      url: '{% url "social_media_icons" %}',
+      success: res => {
+            
+            if(res.links[3] && res.links[3].link) {
+                $('#facebook a').attr('href', res.links[3].link)
+            } else {
+
+                $('#facebook').hide()
+            }
+            if(res.links[1] && res.links[1].link) {
+                $('#youtube a').attr('href', res.links[1].link)
+            } else {
+
+                $('#youtube').hide()
+            }
+            if(res.links[0] && res.links[0].link) {
+                $('#twitter a').attr('href', res.links[0].link)
+            } else {
+
+                $('#twitter').hide()
+            }
+            if(res.links[2] && res.links[2].link) {
+                $('#instagram a').attr('href', res.links[2].link)
+            } else {
+
+                $('#instagram').hide()
+            }
+            if(res.links[4] && res.links[4].link) {
+                $('#linkedin a').attr('href', res.links[4].link)
+            } else {
+
+                $('#linkedin').hide()
+            }
+            
+
+        }
+     
+    });
+</script>

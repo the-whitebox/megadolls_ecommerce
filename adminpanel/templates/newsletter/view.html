@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+{% comment %} <link rel="stylesheet" href="{% static 'adminpanel/css/bootstrap.css' %}">
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/bootstrap-icons/bootstrap-icons.css' %}"> {% endcomment %}
+
+<link rel="stylesheet" href="{% static 'adminpanel/data-table/dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+{% endblock css %}
+
+{% block content %}
+
+{% url 'add_newsletter' as add_newsletter %}
+{% include "includes/section.html" with page_title="Newsletter Management" btn_url=add_newsletter btn_text="Add Newsletter" %}
+
+<section class="section">
+    <div class="row w-100" id="table-striped">
+        <div class="col-12">
+            <div class="card py-2 px-2">
+                <div class="card-content">
+                    <form action="" id="myform" method="POST">
+                        {% csrf_token %}
+                    <div class="table-responsive">
+                        {% if newsletterdata%}
+                            <div class="row my-2">
+                                <div class="col-6">
+                                    <h4><input type="checkbox" id="selectall" class="mx-2">Select All</h4>
+                                </div>
+                                <div class="col-6">
+                                    <button onclick="openmodel()" data-toggle="modal" data-target="#exampleModal" type="button" class="btn btn-outline-primary w-30 float-end" id="send_mail" disabled>Send Mail </button>
+                                </div>
+                                <div class="col-6" >
+                                    <button type="button" class="btn btn-outline-primary w-30 float-end" id="delete-slected-all" disabled>Delete Selected</button>
+                                </div>
+
+                            </div>
+                            <table class="table table table-striped text-center" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <th>Sr no.</th>
+                                        <th>Email</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                            
+                                <tbody>
+                                    {% for i in newsletterdata %}
+                                    <tr>
+                                        <td> <input type="checkbox" class="checkbox" name="check" value="{{ i.email }}"/></td>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td class="text-bold-500">{{ i.email }}</td>
+                                        <td>
+                                            {% if request.user.user_type == "SUPERADMIN" %}
+                                                <a href="#" class="mx-1 btn-delete" data-id="{{ i.id }}">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                            {% endif%}
+
+                                            {% if request.user.user_type == "SUBADMIN" %}
+                                                {% for i in m_check %}
+                                                    {% if i.delete == True %}
+                                                        <a href="#" class="mx-1 btn-delete" data-id="{{ i.id }}">
+                                                            <span class="fa-fw select-all fas"></span>
+                                                        </a>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <input type="hidden" name="" id="all_id_list">
+                            <input type="hidden" name="" id="model_name" value="Newsletters">
+                            </table>
+                        {% else %}
+                            <div class="text-center">
+                                <strong style="font-size: 1.5em;">No Records</strong>
+                            </div>
+                        {% endif %}
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form method="POST" action="{% url 'delete_newsletter' %}" class="mx-1" style="display: inline;" id="delete_form">
+        {% csrf_token %}
+        <input type="hidden" name="newsletter" value="" id="newsletter">
+    </form>
+</section>
+
+
+
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Send Email</h5>
+          <button type="button"  class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="" method="POST">
+            {% csrf_token %}
+        <div class="modal-body">
+          Subject <input type="text" id="subject" name="subject" class="form-control">
+          message <textarea name="editor" id="message" class="form-control"  cols="30" rows="10"></textarea>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" onclick="sendmail()" class="btn btn-primary">Send Mail</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/data-table/dataTables.min.js' %}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.19.1/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('editor1', {
+        fillEmptyBlocks: false
+    });
+</script>
+<script>
+    csrf_tocken = document.querySelector('[name=csrfmiddlewaretoken]').value
+</script>
+{% include 'select-all-delete.html' %}
+<script>
+    CKEDITOR.replace('editor');
+</script>
+<script>
+    $(document).ready(function () {
+        $('.btn-delete').on('click', function (e) {
+            e.preventDefault()
+            let id = $(this).data('id')
+           
+            Swal.fire({
+                title: 'Delete newsletters',
+                text: 'Are You Sure ?',
+                confirmButtonColor: 'rgb(225, 0, 127)',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#newsletter').val(id)
+                    $('#delete_form').submit()
+                }
+            })
+        })
+    })
+
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#selectall').on('click',function(){
+            if(this.checked){
+                $('.checkbox').each(function(){
+                    this.checked = true;
+                });
+            }else{
+                 $('.checkbox').each(function(){
+                    this.checked = false;
+                });
+            }
+        });
+        
+        $('.checkbox').on('click',function(){
+            if($('.checkbox:checked').length == $('.checkbox').length){
+                $('#selectall').prop('checked',true);
+            }else{
+                $('#selectall').prop('checked',false);
+            }
+        });
+
+        $('input[type=checkbox]').on('change', function() {
+            if ($('input[type=checkbox]').is(':checked')) {
+                $('#send_mail').removeAttr('disabled')
+            } else {
+                $('#send_mail').attr('disabled', 'disabled')
+            }
+        })
+    });
+    </script>
+<script>
+    function openmodel(){
+        $('#exampleModal').modal('show');
+    }
+   
+</script>
+<script>
+    function sendmail(){
+        let arr = []
+        let email = $('input[name="check"]:checked').each(function(){
+            arr.push($(this).val());
+        })
+
+        let subject = $('#subject').val();
+        let message = CKEDITOR.instances.message.getData()
+    
+        $.ajax({
+            url: "{% url 'view_newsletter' %}",
+            method: "POST",
+            data: {
+                csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+                emailList: arr.toString(),
+                subject:subject,
+                message:message
+            },
+            success: function (response) {
+                if(response.success) {
+                    Toastify({
+                        text: response.message,
+                        duration: 3000,
+                        backgroundColor: "#e1007f",
+                        position: 'center'
+                    }).showToast();
+                }
+                $('#exampleModal').modal('hide');
+            }
+        }) 
+    }
+</script>
+
+{% endblock script %}

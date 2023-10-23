@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+  <g id="luv-point-3" transform="translate(-313 -809)">
+    <circle id="Ellipse_3198" data-name="Ellipse 3198" cx="25" cy="25" r="25" transform="translate(313 809)" fill="#13bdbf"/>
+    <g id="Group_28087" data-name="Group 28087" transform="translate(323 819)">
+      <path id="Path_19891" data-name="Path 19891" d="M0,0H30.278V30.278H0Z" fill="none"/>
+    </g>
+    <path id="Path_19896" data-name="Path 19896" d="M14.376,10.606h5.532l-.615,2.459H14.376V24.129H11.918V13.064H7V10.606h4.918V8.3c0-2.192.229-2.987.656-3.789a4.469,4.469,0,0,1,1.859-1.859c.8-.428,1.6-.656,3.789-.656a6.873,6.873,0,0,1,1.687.184V4.459H18.222a5.135,5.135,0,0,0-2.628.366,2,2,0,0,0-.851.851A5.135,5.135,0,0,0,14.376,8.3v2.3Z" transform="translate(325 821)" fill="#fff"/>
+  </g>
+</svg>

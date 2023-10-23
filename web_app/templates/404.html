@@ -1,0 +1,145 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}Error 404{% endblock title %}
+{% block content %}
+<style>
+    #parent {
+        background-color: #ffdaee;
+        opacity: 0.8;
+        padding-top: 20%;
+    }
+    #content {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        color: #ea047f;
+        width: 100%;
+        height: 50vh;
+        letter-spacing: 4px;
+        line-height: 6;
+        margin-top: 40px;
+    }
+    #content h1 {
+        font-size: 56px;
+        margin: 10px 0px;
+    }
+    #content h2 {
+        font-size: 34px;
+    }
+    #content p, a {
+        font-size: 18px;
+        color: #ea047f;
+    }
+    #mega {
+        text-align:center;
+    }
+    #mega h1 {
+        color: #ea047f;
+        font-size: 8em;
+        opacity: 0.5;
+        letter-spacing: 15px;
+    }
+
+    @media (max-width: 1400px){
+        #mega h1 {
+            font-size: 6em;
+        }
+        #content h1 {
+            font-size: 52px;
+        }
+        #content h2 {
+            font-size: 30px;
+        }
+        #content p, a {
+            font-size: 14px;
+        }
+    }
+
+    @media (min-width: 992px){
+        #mega h1 {
+            font-size: 6em;
+        }
+        #content p, a {
+            font-size: 18px;
+        }
+    }
+
+    @media (max-width: 1199px){
+        #mega h1 {
+            font-size: 4.5em;
+        }
+        #content p, a {
+            font-size: 22px;
+        }
+    }
+    @media (max-width: 575px){
+        #mega h1 {
+            font-size: 3em;
+        }
+        #content h1 {
+            font-size: 40px;
+        }
+        #content h2 {
+            font-size: 20px;
+        }
+        #content p, a {
+            font-size: 18px;
+        }
+    }
+
+    @media (max-width: 479px){
+        #mega h1 {
+            font-size: 2em;
+        }
+        #content h1 {
+            font-size: 32px;
+        }
+        #content h2 {
+            font-size: 16px;
+        }
+        #content p, a {
+            font-size: 16px;
+        }
+        #content p {
+            width: 60%;
+        }
+        #parent {
+            padding-top: 20%;
+        }
+        #content {
+            height: 40vh;
+            line-height: 4;
+            text-align: center;
+        }
+    }
+
+    @media (max-width: 379px){
+        #mega h1 {
+            font-size: 1.8em;
+        }
+        #content h1 {
+            font-size: 30px;
+        }
+        #content h2 {
+            font-size: 14px;
+        }
+        #content p, a {
+            font-size: 14px;
+        }
+    }
+</style>
+<div id="parent">
+    <div id="mega">
+        {% comment %}<h1>MEGADOLLS</h1>{% endcomment %}
+    </div>
+    <div id="content">
+        <h1>404 Error</h1>
+        <br>
+        <h2>Oops! It looks like the page you're trying to access doesn't exist.</h2>
+            <h2>Please check the URL and try again.</h2>
+        <p>
+            To Visit Our Website <a href="{{ site_url }}">Click Here</a>
+        </p>
+    </div>
+</div>
+{% endblock content %}

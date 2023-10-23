@@ -1,0 +1,56 @@
+{% extends 'web_app_base.html' %}
+{% include 'includes/head.html' %}
+{% load static %}
+{% block title %}Profile{% endblock title %}
+{% block content %}
+<div class="wraper-inner">
+    <section class="page-head-sec">
+        <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+        <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+        <div class="container">
+           <div class="page-head-content">
+              <h4>My Account</h4>
+           </div>
+        </div>
+     </section>
+    <section class="shops-list-sec pt-5">
+        <div class="container">
+            <div class="my-account account-subscription">
+                {% include 'includes/my-account/left-sidebar.html' %}
+                <div class="my-account-R">
+                    <div class="row">
+                        <div class="row justify-content-center">
+                            <div class="col-md-6">
+                                <div class="profie-info-box">
+                                    <div class="profie-info-detail">
+                                        <div class="profie-info-image">
+                                            {% if request.user.profile_img %}
+                                            <figure><img src="{{ request.user.profile_img.url }}" alt="Avatar">
+                                            </figure>
+                                            {% else %}
+                                            <figure><img src="{% static 'adminpanel/images/faces/1.jpg' %}" alt="Avatar">
+                                            </figure>
+                                            {% endif %}
+                                        </div>
+                                        {% if user.name %}
+                                        <h4>{{ user.name }}</h4>
+                                        {% endif %}
+                                        <p>Email: {{ user.email }}</p>
+                                        {% if user.number %}
+                                        <p>Mobile: {{ user.mobile }}</p>
+                                        {% endif %}
+                                    </div>
+                                    <p>{{ bio.bio }}</p>
+                                    <a href="{% url 'web_profile_edit'  %}" class="text-decoration-none"><button
+                                            type="button" class="btn btn-primary">Edit Profile</button></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock content %}

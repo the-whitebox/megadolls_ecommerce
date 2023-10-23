@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+{% endblock css %}
+
+{% block page_title %}
+Edit Legal Content
+{% endblock page_title %}
+
+{% block content%}
+
+{% url 'view_legal' as view_legal %}
+{% include "includes/section.html" with page_title="Edit Legal Details " btn_url=view_legal btn_text="Back" %}
+
+<section id="basic-vertical-layouts">
+    <div class="row match-height m-auto">
+        <div class="col-md-12 col-12 p-0">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <form class="form form-vertical" method="POST" id="myForm">
+                            {% csrf_token %}
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="title-icon">Title</label>
+                                            <div class="position-relative">
+                                                <textarea value="" name="title" required>{{editlegal.title|safe}} </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="description-id-icon">Description</label>
+                                            <div class="position-relative">
+                                                <textarea value="" name="description" required>{{editlegal.description|safe}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <button type="button" class="btn btn-primary me-1 mx -3 mb-1" id="submitButton">Update</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content%}
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.19.1/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('title');
+    CKEDITOR.replace('description');
+</script>
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script>
+    $('#submitButton').on('click', function (e) {
+        e.preventDefault()
+        Swal.fire({
+            title: 'Update Legal',
+            text: 'Are You Sure ?',
+            confirmButtonColor: 'rgb(225, 0, 127)',
+            showCancelButton: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('#myForm').submit()
+            }
+        })
+    })
+</script>
+{% endblock script %}

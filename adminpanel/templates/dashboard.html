@@ -1,0 +1,319 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock title %}
+{% load static %}
+
+{% block css %}
+<style>
+    footer {
+        display: none;
+    }
+    h1 {
+        margin-top: 50px;
+        font-size: 9em;
+        text-align: center;
+        text-decoration: underline;
+        color: #435ebe;
+        letter-spacing: 5px;
+    }
+    #Layer_1 {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        fill: #fff;
+    }
+    
+</style>
+{% endblock css %}
+{% block content %}
+<div class="content-wrapper">
+    <div class="page-content">
+        <section class="row">
+            <div class="col-12 col-lg-12 p-0">
+                <div class="row">
+                    <div class="col-6 col-lg-2">
+                        <div class="card">
+                            <div class="card-body px-3 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="stats-icon purple">
+                                            <i class="iconly-boldShow"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        {% comment %}<a href="{% url 'generate_pdf' 'customer' %}">PDF</a>{% endcomment %}
+                                        <a href="{% url 'generate_csv' 'customer' %}">CSV</a>
+                                        <h6 class="text-muted font-semibold">Customers</h6>
+                                        <h6 class="font-extrabold mb-0">{{ total_customer_count }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-2">
+                        <div class="card">
+                            <div class="card-body px-3 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="stats-icon blue">
+                                            <i class="iconly-boldProfile"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        {% comment %}<a href="{% url 'generate_pdf' 'subadmin' %}">PDF</a>{% endcomment %}
+                                        <a href="{% url 'generate_csv' 'subadmin' %}">CSV</a>
+                                        <h6 class="text-muted font-semibold">Sub Admins</h6>
+                                        <h6 class="font-extrabold mb-0">{{ total_sub_admin_count }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-2">
+                        <div class="card">
+                            <div class="card-body px-3 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="stats-icon blue">
+                                            <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><title>child</title><path d="M44,14.31A10.34,10.34,0,0,0,33.69,4H30.31A10.34,10.34,0,0,0,20,14.31V18.6a8.15,8.15,0,0,1-3.2,5.79A2,2,0,0,0,16,26v0a2,2,0,0,0,2,2h4.39a1.58,1.58,0,0,0,1.31-2.46A9.9,9.9,0,0,1,22,20V16a2,2,0,0,1,2-2h7a1,1,0,0,1,0,2H27.18A3.18,3.18,0,0,0,24,19.18v.58a8.26,8.26,0,0,0,5.35,7.79,1,1,0,0,1,.65,1v.17A1.31,1.31,0,0,0,31.31,30h1.37A1.31,1.31,0,0,0,34,28.69v-.19a1,1,0,0,1,.65-1A8,8,0,0,0,40,20V15.58a1,1,0,0,1,2,0V20a9.9,9.9,0,0,1-1.69,5.54A1.58,1.58,0,0,0,41.62,28H46a2,2,0,0,0,2-2v0a2,2,0,0,0-.8-1.59A8.15,8.15,0,0,1,44,18.6V14.31Z"/><path d="M19.15,53.53l.05.07a16,16,0,0,0,25.6,0l.05-.07a1.27,1.27,0,0,0-.71-2A5.47,5.47,0,0,1,40,46.23V35.81A3.82,3.82,0,0,0,36.19,32H27.81A3.82,3.82,0,0,0,24,35.81V46.23a5.47,5.47,0,0,1-4.15,5.31A1.27,1.27,0,0,0,19.15,53.53Zm9.18-12.91A2.5,2.5,0,0,1,31,40.23a2.54,2.54,0,0,0,2.06,0,2.5,2.5,0,0,1,2.65.39A2.6,2.6,0,0,1,36,44l-2,2.86a2.5,2.5,0,0,1-4.12,0l-2-2.85A2.6,2.6,0,0,1,28.32,40.62Z"/><path d="M43,48.65a.6.6,0,0,0,1-.44V39.34A7.31,7.31,0,0,0,41.72,34,5.78,5.78,0,0,1,42,35.81V46.23A3.45,3.45,0,0,0,43,48.65Z"/><path d="M21,48.65a3.45,3.45,0,0,0,1-2.43V35.81A5.78,5.78,0,0,1,22.28,34,7.31,7.31,0,0,0,20,39.34v8.87A.6.6,0,0,0,21,48.65Z"/><path d="M15.51,55.12l-4.71.73a1,1,0,0,0-.8,1A3.17,3.17,0,0,0,13.17,60H22a.46.46,0,0,0,.24-.85,18,18,0,0,1-3.38-2.8A3.86,3.86,0,0,0,15.51,55.12Z"/><path d="M8,58.26V55.5A3.5,3.5,0,0,0,4.5,52a.5.5,0,0,0-.5.5v5.76A1.74,1.74,0,0,0,5.74,60h.52A1.74,1.74,0,0,0,8,58.26Z"/><path d="M54,56.81a1,1,0,0,0-.8-1l-4.71-.73a3.86,3.86,0,0,0-3.39,1.21,18,18,0,0,1-3.38,2.8A.46.46,0,0,0,42,60h8.86A3.17,3.17,0,0,0,54,56.81Z"/><path d="M59.5,52A3.5,3.5,0,0,0,56,55.5v2.76A1.74,1.74,0,0,0,57.74,60h.52A1.74,1.74,0,0,0,60,58.26V52.5A.5.5,0,0,0,59.5,52Z"/></svg>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        {% comment %}<a href="{% url 'generate_pdf' 'shero' %}">PDF</a>{% endcomment %}
+                                        <a href="{% url 'generate_csv' 'shero' %}">CSV</a>
+                                        <h6 class="text-muted font-semibold">Shero Dolls</h6>
+                                        <h6 class="font-extrabold mb-0">{{ shero_dolls }}</h6>
+                                        <!-- <h6>{{customer_count}}</h6> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-2">
+                        <div class="card">
+                            <div class="card-body px-3 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="stats-icon green">
+                                            <i class="iconly-boldAdd-User"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h6 class="text-muted font-semibold">Blogs</h6>
+                                        <h6 class="font-extrabold mb-0">{{ total_blogs }}</h6>
+                                        <!-- <h6>{{customer_count}}</h6> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-6 col-lg-2">
+                        <div class="card">
+                            <div class="card-body px-3 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="stats-icon purple">
+                                            <i class="iconly-boldFilter"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h6 class="text-muted font-semibold">Referred Users</h6>
+                                        <h6 class="font-extrabold mb-0">{{ user_referral }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% comment %} <div class="col-6 col-lg-2">
+                        <div class="card">
+                            <div class="card-body px-3 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="stats-icon purple">
+                                            <i class="iconly-boldFilter"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h6 class="text-muted font-semibold">Referred Users</h6>
+                                        <h6 class="font-extrabold mb-0">{{ user_referral }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Product Details</h4>
+                               {% comment %} <a href="{% url 'generate_pdf' 'product-details' %}">PDF</a>{% endcomment %}
+                                <a href="{% url 'generate_csv' 'product-details' %}">CSV</a>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h6>Shop</h6>
+                                        <hr>
+                                        <p>Dolls : <span class="float-end">{{ total_dolls_count }}</p></span>
+                                        <p>Post Cards : <span class="float-end">{{ total_doll_sets_count }}</p></span>
+                                        <p>Shero Cards : <span class="float-end">{{ total_dress_sets_count }}</p></span>
+                                    </div>
+                                    <div class="col-6">
+                                        <h6>Imagine</h6>
+                                        <hr>
+                                        <p>Create : <span class="float-end">{{ total_create_count }}</p></span>
+                                        <p>Play : <span class="float-end">{{ total_play_count}}</p></span>
+                                    </div>
+                                    <hr>
+                                    <p>Total Shop Products : <span class="float-end">{{ total_shop_products_count }}</p></span>
+                                    <p>Total Imagine Products : <span class="float-end">{{ total_imagine_products_count }}</p></span>
+                                    <p>Total Products : <span class="float-end">{{ total_products_count }}</p></span>
+                                    <hr>
+                                    <h6>Out Of Stock In Shop Products </h6>
+                                    <span> {% comment %}<a href="{% url 'generate_pdf' 'out-of-stock-product' %}">PDF</a> {% endcomment %} <a href="{% url 'generate_csv' 'out-of-stock-product' %}">CSV</a></span>
+                                    <br>
+                                    <br>
+                                    
+
+                                    <hr>
+                                    <p>Dolls : <span class="float-end">{{ dolls_out_of_stock }}</p></span>
+                                    <p>Post Cards : <span class="float-end">{{ doll_sets_out_of_stock }}</p></span>
+                                    <p>Shero Cards : <span class="float-end">{{ dress_sets_out_of_stock }}</p></span>
+                                    <hr>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Order Details </h4>
+                               {% comment %} <a href="{% url 'generate_pdf' 'order-details' %}">PDF</a> {% endcomment %}
+                                <a href="{% url 'generate_csv' 'order-details' %}">CSV</a>
+                                
+                                <hr>
+                                <!-- <p>Customers Order :  <span class="float-end">{{ customers_order }}</span></p> -->
+                                <p>Completed Orders :  <span class="float-end">{{ completed_orders }}</span></p>
+                                <p>Accepted Orders: <span class="float-end">{{ accepted_orders }}</span></p>
+                                <p>Shipped Orders :  <span class="float-end">{{ shipped_orders }}</span></p>
+                                <p>Canceled Orders :  <span class="float-end">{{ canceled_orders }}</span></p>
+                                <hr>
+                                <!-- <span class="float-end">{{ total_orders }}</span> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Revenue Details <span class="float-end">$ {{ total_revenue }}</span></h4>
+                               {% comment %} <a href="{% url 'generate_pdf' 'revenue-details' %}">PDF</a> {% endcomment %}
+                                <a href="{% url 'generate_csv' 'revenue-details' %}">CSV</a>
+                                <hr>
+                                <p>From Orders : <span class="float-end">$ {{ total_order_revenue }}</span></p>
+                                <hr>
+                                <h6>From Shero Subscriptions </h6>
+                                <hr>
+                                <p>Monthly Total: <span class="float-end">$ {{ shero_monthly_total }}</span></p>
+                                <p>Quarterly Total: <span class="float-end">$ {{ shero_quarterly_total }}</span></p>
+                                <p>Bi-Annual Total: <span class="float-end">$ {{ shero_bi_annual_total }}</span></p>
+                                <p>Annual Total: <span class="float-end">$ {{ shero_annual_total }}</span></p>
+                                <hr>
+                                <p>Shero Subscription Total <span class="float-end">$ {{ total_subscription_revenue }}</span></p>
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>All Subscriptions Details</h4>
+                               {% comment %} <a href="{% url 'generate_pdf' 'shero-subscribers' %}">PDF</a> {% endcomment %}
+                                <a href="{% url 'generate_csv' 'shero-subscribers' %}">CSV</a>
+                                <hr>
+                                <h6>Shero Subscription Details </h6>
+                                <hr>
+                                <p>Total Shero Subscribers: <span class="float-end">{{ total_shero_subscribers }}</span></p>
+                                <p>Shero Subscription Plan: <span class="float-end">{{ shero_subscription_plan }}</span></p>
+                                <hr>
+                                <p>Blog Subscribers: <span class="float-end">{{ total_blog_subscribers }}</span></p>
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+    
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Sales (In $)</h4>
+                            </div>
+                            <div class="card-body">
+                                <div id="monthly-sale"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Customers</h4>
+                            </div>
+                            <div class="card-body">
+                                <div id="chart-profile-visit"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</div>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'adminpanel/vendors/apexcharts/apexcharts.js' %}"></script>
+<!-- <script src="{% static 'adminpanel/js/pages/dashboard.js' %}"></script> -->
+<script>
+    const optionsProfileVisit = {
+        annotations: {
+            position: 'back'
+        },
+        dataLabels: {
+            enabled: false
+        },
+        chart: {
+            type: 'bar',
+            height: 300
+        },
+        fill: {
+            opacity: 1
+        },
+        plotOptions: {
+        },
+        series: [{
+            name: 'CUSTOMER',
+            data: [{% for i in customer_count %} {{ i.CUSTOMER }}, {% endfor %}]
+        }],
+        colors: '#435ebe',
+        xaxis: {
+            categories: [{% for i in customer_count %} '{{ i.month }}', {% endfor %}],
+        },
+    }
+    const chartProfileVisit = new ApexCharts(document.querySelector("#chart-profile-visit"), optionsProfileVisit);
+    chartProfileVisit.render();
+
+    {% comment %}  Sales Graph {% endcomment %}
+    optionsProfileVisit.series[0].name = 'SALE'
+    optionsProfileVisit.series[0].data = [{%for i in monthly_sale %} {{ i.SALE }}, {% endfor %}]
+    optionsProfileVisit.xaxis.categories = [{%for i in monthly_sale %} '{{ i.month}}', {% endfor %}]
+
+    const monthlySale = new ApexCharts(document.querySelector("#monthly-sale"), optionsProfileVisit);
+    monthlySale.render()
+    
+                                      
+</script>
+{% endblock script %}

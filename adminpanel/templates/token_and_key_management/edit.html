@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %} 
+{% block content %} 
+{% url 'view_tokens_and_keys' as view_tokens_and_keys %} 
+{% include "includes/section.html" with page_title="Edit Token And Key" btn_url=view_tokens_and_keys btn_text="Back" %}
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <form method="POST" class="row" id="myForm"> 
+                            {% csrf_token %} 
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="basicInput">Name</label>
+                                    <input type="text" class="form-control" id="basicInput" placeholder="Name for key" name="name" value="{{ token_and_key.name }}" required readonly>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Token And Key</label>
+                                    <input type="text" class="form-control" name="value" value="{{ token_and_key.key }}" required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-primary me-1 mb-1 float-end">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> 
+{% endblock content %} 
+{% block script %}
+<script src="{% static 'adminpanel/vendors/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+<script>
+    $("#myForm").validate({
+        rules: {
+            name: {
+                required: true,
+            },
+            value: {
+                required: true
+            }
+        },
+        submitHandler: function (form) {
+            form.submit();
+        }
+    });
+</script> 
+{% endblock script %}

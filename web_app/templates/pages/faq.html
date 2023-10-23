@@ -1,0 +1,189 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}FAQ{% endblock title %}
+{% block content %}
+
+<div class="wraper-inner">
+
+    <section class="cms-head-sec">
+        <img class="cms-head-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+        <img class="cms-head-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+        <div class="container">
+            <h4>Megadolls Frequently Asked Question</h4>
+        </div>
+    </section>
+
+    <section class="faq-info-sec">
+        <div class="container">
+           
+            <div class="faq-info-content">
+                <p>Megadolls is a new brand of paper dolls. We offer free patented dresses that our customers can design and print 
+                    to use with their Megadolls paper dolls. 
+                    Megadolls has two different clothing collections. 
+                    The Create section has blank templates where you can design and decorate your own creations. 
+                    Our Play section is a collection of full-color clothing that you can download and print for your imaginative play.</p>
+                {% comment %} {% for i in data %}     {% endcomment %}
+                <div class="accordion" id="accordionExample">
+                    {% for i in data %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse{{ forloop.counter }}">{{i.Questions|safe}}</button>
+                        </h2>
+                        <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p>{{i.Answers|safe}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% comment %} <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">How do I change my account information?</button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p>You can change or remove any information in your account once you have signed in to your dashboard. This includes your payment method, billing address, shipping address, email address, and password.</p>
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                    {% comment %} <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">How many Megadolls are there?</button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p>We currently have two Megadolls collections.</p>
+                                <p>Dolls From Around the World.</p>
+                                <p>This collection is available for purchase in our online shop. The Dolls From Around the World introduce you to cultures, traditions, and lifestyles worldwide. They encourage children to learn about customs and beliefs that differ from their own. Through imaginative play, you can explore the unique differences we all have while we are connected through our humanness. Sheroes.</p>
+                                <p>The Megadolls Sheroes collection is exclusively available through the purchase of a subscription. Each doll is a limited edition and is a surprise - revealed only once she arrives at your door. Sheroes have physical differences or unique characteristics. They help you gain a deeper understanding of the world around you and the suffering and experiences of others. Playing with a Megadolls Shero can encourage you to express yourself with honesty and authenticity while teaching you to show kindness and sensitivity to others.</p>
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                    {% comment %} <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingFour">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">Do I need to sign up or create an account to place an online order?</button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p>The Megadolls Dolls From Around The World collection, Doll sets, and Dress sets can be ordered without signing in to (or up for) an account. Still, we encourage you to sign up for an account. This will make the checkout process for future purchases more convenient.</p>
+                                <p>You need to sign up for a subscription to access our exclusive Megadolls Sheroes collection.</p>
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                    {% comment %} <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingFive">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">How much does a Shero subscription cost?</button>
+                        </h2>
+                        <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p>The price for our Sheroes subscription depends on the subscription length you choose. Monthly subscriptions are $19.99 per month plus shipping. Annual subscriptions run as low as $17.99 per doll. You also get free shipping.</p>
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                    {% comment %} <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingSix">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">How much does shipping cost?</button>
+                        </h2>
+                        <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <table class="table table table-striped text-center table-bordered">
+                                    <tr>
+                                        <td>SUBSCRIPTION PLAN</td>
+                                        <td>COST</td>
+                                        <td>SHIPPING</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Monthly</td>
+                                        <td>19.99</td>
+                                        <td>+ Shipping</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Quarterly</td>
+                                        <td>56.99</td>
+                                        <td>Free</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bi-Annual</td>
+                                        <td>107.95</td>
+                                        <td>Free</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Annual</td>
+                                        <td>215.89</td>
+                                        <td>Free</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                    {% comment %} <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingSeven">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">Do subscriptions include activities?</button>
+                        </h2>
+                        <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p>Sheroes subscriptions deliver a unique Megadolls Shero paper doll to your door each month. You can download free dresses and blank dress templates to decorate from our website.</p>
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                    {% comment %} <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingEight">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">How soon after I activate my subscription will my Shero doll arrive?</button>
+                        </h2>
+                        <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p>Megadolls Sheroes subscription dolls are shipped on the 5th of each month. Your first subscription paper doll will be shipped within 3-5 business days of placing your order. If you sign up for a new subscription on or after the 25th of the month, your Megadolls Sheroes paper doll will be shipped as part of the following month’s subscription.</p>
+                                <p>You can check the status of your subscription or account by logging into My Account.</p>
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                    {% comment %} <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingNine">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">What is your subscription cancellation policy?</button>
+                        </h2>
+                        <div id="collapseNine" class="accordion-collapse collapse" aria-labelledby="headingNine" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p>Your Megadolls sheroes paper doll subscription will renew automatically on a monthly, quarterly, bi-annual, or annual basis depending on the option you chose when you signed up. You can cancel your subscription at any time.</p>
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                    {% comment %} <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTen">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">What payment methods do you accept?</button>
+                        </h2>
+                        <div id="collapseTen" class="accordion-collapse collapse" aria-labelledby="headingTen" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p>We accept all major credit cards, including American Express, Discover, Master Card, and Visa.</p>
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                    {% comment %} <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingEleven">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEleven" aria-expanded="false" aria-controls="collapseEleven">Can I purchase a subscription as a gift?</button>
+                        </h2>
+                        <div id="collapseEleven" class="accordion-collapse collapse" aria-labelledby="headingEleven" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p>Yes! Our Megadolls Sheroe paper dolls subscriptions can be purchased as a gift. Simply enter the recipient’s address as the shipping address, and you are all set!</p>
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                    {% comment %} <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwelve">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwelve" aria-expanded="false" aria-controls="collapseTwelve">Do you charge sales tax?</button>
+                        </h2>
+                        <div id="collapseTwelve" class="accordion-collapse collapse" aria-labelledby="headingTwelve" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p>Sales tax is calculated at check out and differs slightly depending on where the order is placed or where your paper doll will be shipped.</p>
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                </div>
+                {% comment %} {% endfor %} {% endcomment %}
+            </div>
+           
+        </div>
+    </section>
+
+</div>
+
+{% endblock content %}

@@ -1,0 +1,13 @@
+<script>
+    // active heart icon
+    $.ajax({
+        url: "{% url 'active_wishlist_product' %}",
+        success: function (response) {
+            if(response.payload) {
+                response.payload.forEach(function(data) {
+                    $('.shop_category[data-product-id="'+ data.shop +'"]').find('i').removeClass('ri-heart-line').addClass('ri-heart-fill')
+                })
+            }
+        }
+    })
+</script>

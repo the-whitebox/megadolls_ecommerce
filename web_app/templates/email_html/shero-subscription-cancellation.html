@@ -1,0 +1,68 @@
+{% spaceless %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500;700;800;900&display=swap"
+    rel="stylesheet">
+  <meta name="viewport" content="minimum-scale=1.0, maximum-scale=1.0,width=device-width, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  {% include 'email_html/includes/font.html' %}
+</head>
+
+<body style="font-family: 'Arial', sans-serif;background:#f1f1f1;margin:0px;">
+  <table style="table-layout: fixed;border-spacing: 0;border-collapse: collapse;background-color: #fdfdfd;width:600px;margin:auto;background-image: url({% static 'email_template/images/shero-subscription-cancellation-bg.jpg' %});
+   background-repeat: no-repeat;background-size:cover;border-collapse: separate;border-spacing:0px 0px;padding: 45px 55px 10px;background-position:top center;">
+   {% comment %} https://megadolls.com/static/email_template/images/shero-subscription-cancellation-bg.jpg  {% endcomment %}
+   <!-- ---1st line---- -->
+    <tr>
+      <td style="width:100%;">
+        <table style="width:100%; background: #fdfdfd;border-radius: 5px;box-shadow: 0px 1px 12px rgba(0, 0, 0, 0.16);min-height: 580px;">
+          <tr>
+            <td style="width:100%;text-align:center;vertical-align: top;padding-bottom: 10px;margin:0; overflow-wrap: anywhere">
+              {% comment %} <p style="font-size: 45px;color: #15b3a7;text-align: center;margin: auto;width: 90%;padding: 15px 0 0 0;line-height:44px; font-family: 'Arial';">We're sorry <br />to see you go!</p> {% endcomment %}
+              <div style="text-align:center;margin: 50px 0px;">
+                <img src="{% static 'email_template/images/title_image/individual-subscription-cancellation.png' %}" style="width: 70%;">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="width:100%;text-align:right;">
+              <p
+                style="font-size: 18px;color: black;text-align: left;margin: auto;width: 90%;padding: 15px 0 0 0;line-height: 36px; font-family: 'Arial';">
+                Hi, {{ name }},<br />
+                We appreciate you being part of the Megadolls community.<br />
+                As requested, your shero subscription has been canceled.<br /><br />
+                The good news is that your Megadolls account will remain active,
+                and you can still access and enjoy dressing your Megadolls
+                at the Create and Play sections of Megadolls.com.<br /><br />
+                All the best,
+                <br />
+                The Megadolls Team
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <!-- ---End line---- -->
+    <!-- ---2nd line---- -->
+    <tr>
+      <td style="width:100%; padding-bottom: 40px;">
+        <table style="width:100%; background: #fdfdfd;border-radius: 5px;box-shadow: 0px 1px 12px rgba(0, 0, 0, 0.11);min-height:80px;margin-top: 15px;">
+          <tr>
+            {% include 'email_html/includes/email-footer-links.html' %}
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <!-- ---End line---- -->
+    <!-- ---3trd line---- -->
+    {% include 'email_html/includes/social_link.html' %}
+    <!-- ---End line---- -->
+  </table>
+</body>
+</html>
+{% endspaceless %}

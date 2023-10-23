@@ -1,0 +1,292 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+
+{% block title %}Guest Billing{% endblock title %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'adminpanel/intl-tel-input-master/build/css/intlTelInput.css' %}">
+{% include 'includes/ring-loader.html' %}
+<div class="wraper-inner">
+    <section class="page-head-sec">
+        <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+        <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+        <div class="container">
+            <div class="page-head-content">
+                <h4>Shipping & Billing Info</h4>
+            </div>
+        </div>
+    </section>
+    <section class="cart-inner-block">
+        <div class="container">
+            <div class="shipping-banner mb-4">
+                <img src="{% static 'web_app/images/shipping-bn.png' %}">
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="cart-detail-blk">
+                        {% if guest_user_address.shipping_address %}
+                            <div class="saved-address-blk mb-4">
+                                <div class="form-check custom-radio">
+                                    <input class="form-check-input" type="radio" name="saved-address" id="saved-address{{ forloop.counter }}" value="{{ guest_user_address.id }}" checked>
+                                    <label class="form-check-label" for="saved-address{{ forloop.counter }}">
+                                        <h4>{{ guest_user_address.shipping_address.name }}, {{ guest_user_address.shipping_address.area_name }}</h4>
+                                        <p>
+                                            {% comment %}{{ guest_user_address.shipping_address.house_number }} {{ guest_user_address.shipping_address.area_name }}{% endcomment %} 
+                                            {{ guest_user_address.shipping_address.city }}, {{ guest_user_address.shipping_address.state }}, {{ guest_user_address.shipping_address.country }}, {{ guest_user_address.shipping_address.zipcode }}</p>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- <div class="row">
+                                <div class="col-12 form-group">
+                                    <label for="carrier_service">Shipping Method</label>
+                                    <select name="carrier_service" class="form-control" id="carrier_service">
+                                        <option value="" disabled selected>Please Select Carrier First</option>
+                                    </select>
+                                </div>
+                            </div> -->
+                        {% else %}
+                            <div class="address-add-blk show bill-address ">
+                                <div class="address-add-head">
+                                    <h4>Add Address</h4>
+                                </div>
+                                <form class="row add_address" method="POST" action="{% url 'add_guest_user_address' %}" id="billing">
+                                    {% csrf_token %}
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input class="form-control house-name" placeholder="Enter name associate with address" name="name" required>
+                                        </div>
+                                    </div>  
+                                    {% comment %} <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input class="form-control house-name" placeholder="House/ Apartment/ Flat Number" name="house_number">
+                                        </div>
+                                    </div> {% endcomment %}
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input class="form-control area-name" placeholder=" Area/ Road Name" name="area_name">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <select class="form-control country" name="country">
+                                                <option value="" disabled selected>Select Country</option>
+                                                {% for country in countries %}
+                                                <option value="{{ country.id }}">{{ country.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <select class="form-control state" name="state">
+                                                <option value="" disabled selected>Select State</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="City / Town" name="city">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input class="form-control zipcode number-only" placeholder="Enter Zipcode" name="zipcode">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="hidden" name="country_code" id="country-code" readonly>
+                                            <input class="form-control number-only" id="mob-code" placeholder="Phone Number" name="phone" required>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save Address</button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% include 'includes/checkout/billing/shipping-price-range.html' %}
+                    {% comment %} {% if shipping_prices %}
+                        <div class="d-flex justify-content-between mb-2">
+                            <div class="w-50">
+                                <h4>Merchandize Order Total</h4>
+                            </div>
+                            <div class="w-50">
+                                <h4 class="float-end">Shipping Cost</h4>
+                            </div>
+                        </div>
+                        
+                        {% for shipping_price in shipping_prices %}
+                        <div class="d-flex justify-content-between">
+                            {% if shipping_price.shipping_cost == 0.00 %}
+                                <div class="w-50">
+                                    <h5 class="heading-sub-title">
+                                        ${{ shipping_price.order_value_from }}+*
+                                    </h5>
+                                </div>
+                                <div class="w-50 text-center">
+                                    <h5 class="heading-sub-title float-end" style="margin: 0px 45px">
+                                        FREE
+                                    </h5>
+                                </div>
+                            {% else %}
+                                <div class="w-50">
+                                    <h5 class="heading-sub-title">
+                                        ${{ shipping_price.order_value_from }} - ${{ shipping_price.order_value_upto }}
+                                    </h5>
+                                </div>
+                                <div class="w-50">
+                                    <h5 class="heading-sub-title float-end" style="margin: 0px 45px">
+                                        ${{ shipping_price.shipping_cost }}
+                                    </h5>
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    {% endif %} {% endcomment %}
+                </div>
+                {% include 'includes/checkout/billing/order-summary.html' %}
+                {% comment %} <div class="col-md-4">
+                    <div class="cart-summary-blk">
+                        <h4>Order Summary</h4>
+                        <ul class="cart-billing-details">
+                            <li>Subtotal <span id="sub_total">${{ sub_total }}</span></li>
+                            {% for charge_name, amount in order_charges.items %}
+                            <li>
+                                {{ charge_name }}
+                                <span>${{ amount|floatformat:2 }}</span>
+                            </li>
+                            {% endfor %}
+                            <li>
+                                Shipping charges 
+                                <span class="shipping_charges">
+                                    {% if shipping_price_range.shipping_cost > 0 %}
+                                        $ {{ shipping_price_range.shipping_cost }}
+                                    {% else %}
+                                        FREE
+                                    {% endif %}
+                                </span>
+                            </li>
+                            <div class="divider"></div>
+                            <li class="total">Grand Total <span id="cart_total">$ {{ grand_total }}</span></li>
+                        </ul>
+                        <button type="button" class='btn btn-primary' id='payment-btn' style="display: none;">Continue to Payment</button>
+                    </div>
+                </div> {% endcomment %}
+                
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock content %}
+{% block script %}
+<script src="{% static 'adminpanel/intl-tel-input-master/build/js/intlTelInput.min.js' %}"></script>
+<script>
+    const input = document.querySelector("#mob-code");
+    const inst = window.intlTelInput(input, ({}));
+    function addCountryCodeToFrom() {
+        let information = inst.getSelectedCountryData()['dialCode'];
+        $('#country-code').val(information);
+    }
+</script>
+
+<script>
+    $('#payment-btn').hide()
+    $.validator.addMethod("noSpace", function(value, element) { 
+        return !value.startsWith(" ") && value != ""; 
+    }, "No space please and don't leave it empty")
+
+    $('.number-only').on('keypress', function() {
+        if ( isNaN( String.fromCharCode(event.keyCode) )) return false;
+    })
+
+    $(".add_address").each(function(key, form) {
+        $(this).validate({
+            rules: {
+                name: {
+                    required: true,
+                    maxlength: 55,
+                },
+                house_number: {
+                    required: true,
+                    noSpace: true,
+                    maxlength: 80,
+                },
+                area_name: {
+                    required: true,
+                    noSpace: true,
+                    maxlength: 200,
+                },
+                country: {
+                    required: true,
+                },
+                state: {
+                    required: true,
+                },
+                city: {
+                    required: true,
+                    noSpace: true,
+                    maxlength: 50,
+                },
+                zipcode: {
+                    required: true,
+                    digits: true,
+                    minlength: 5,
+                    maxlength: 12,
+                },
+                phone: {
+                    required: true,
+                    noSpace: true,
+                    digits: true,
+                    minlength: 7,
+                    maxlength: 15,
+                },
+            },
+            submitHandler: function (form) {
+                addCountryCodeToFrom();
+                form.submit()
+                setTimeout(() => {
+                    form.reset()
+                }, 500)
+                // getCarrierService()
+            }
+        });
+    })
+
+
+    $('#loader').hide()
+
+    function userHaveAnyAddress(showMyToast=true) {
+        let selectedAddress = $('input[name=saved-address]:checked').val()
+        if(!selectedAddress) {
+            if(showMyToast) {
+                myToast('Please Add Address First', ERROR_BG)
+            }
+            return false
+        }
+        console.log("0099999")
+        $('#payment-btn').show()
+        return true
+    }
+
+    userHaveAnyAddress()
+
+    $(document).on('click', '#payment-btn', function() {
+        if(!userHaveAnyAddress()){
+            return false
+        }
+        $('#loader').show()
+        $.ajax({
+            method: "GET",
+            url: '{% url "guest_user_save_order_data_to_session" %}',
+            success: function(response) {
+                $('#loader').hide()
+                const url = (response.success ? "{% url 'guest_user_payment' %}" : "{% url 'view_cart' %}")
+                window.location.replace(url)
+            },
+            error: function(a, b, c) {
+                myToast('Something Went Wrong', ERROR_BG)
+                window.location.replace("{% url 'view_cart' %}")
+            }
+        })
+    })
+</script>
+{% endblock script %}

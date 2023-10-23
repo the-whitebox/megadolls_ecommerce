@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+
+{% endblock css %}
+
+{% block content%}
+
+{% url 'add_newsletter' as addnewsletter %}
+{% include "includes/section.html" with page_title="Add Newsletter " btn_url=add_newsletter btn_text="Back" %}
+
+<section class="section">
+    <div class="row w-100">
+        <div class="col-12">
+            <div class="card">
+                <form method="POST" class="card-body" id="myForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Upload CSV File</label>
+                                <input type="file" class="form-control" placeholder="Enter the Email " name="email_csv">            
+                            </div>
+                        </div>
+                        <p>OR Enter Email</p>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" class="form-control" placeholder="Enter the Email " name="email" value="">            
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex justify-content-end mt-3">
+                            <button type="submit" class="btn btn-primary me-1 mb-1" id="formSubmit">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content%}
+
+{% comment %}
+{% block script %}
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#myForm").validate({
+            rules: {
+                email: {
+                    required: true,
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    })
+</script>
+{% endblock script %}
+{% endcomment %}

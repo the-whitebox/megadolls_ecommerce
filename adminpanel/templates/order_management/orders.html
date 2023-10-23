@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css%}
+<link rel="stylesheet" href="{% static 'adminpanel/data-table/dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+{% endblock css %}
+{% block content %}
+{% include "includes/section.html" with page_title="Order Management" btn_url=add_link btn_text="Add Links" %}
+
+<section class="section">
+    <div class="row w-100" id="table-striped">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="table-responsive p-2">
+                        {% if orders %}
+                        <table class="table table-striped text-center mb-0" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th>Sr. No.</th>
+                                    <th>Customer Name</th>
+                                    <th>Email</th>
+                                    <th>Mailing Address</th>
+                                    <th>Order ID</th>
+                                    <th>Order Value</th>
+                                    <th>Order Date</th>
+                                    <th>Canceled Date</th>
+                                    <th>Delivery date</th>
+                                    <th>Payment</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}                          
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ order.user.name }}</td>
+                                    <td>{{ order.user.email }}</td>
+                                    <th>{{order.shipping_address.web_city}} , {{order.shipping_address.area_name}} <br> HouseNo: {{order.shipping_address.house_num}}</th>
+                                    <td>{{ order.order_id }}</td>
+                                    <td>$ {{ order.total_amount }}</td>
+                                    <td>{{ order.order_at|date:'dS M Y'}}</td>
+                                    {% if order.canceled_at %}
+                                    <td>{{ order.canceled_at|date:'dS M Y'}}</td>
+                                    {% else %}
+                                    <td>-</td>
+                                    {% endif %}
+                                    {% if order.delivered_at %}
+                                    <td>{{ order.delivered_at|date:'dS M Y'}}</td>
+                                    {% else %}
+                                    <td>-</td>
+                                    {% endif %}
+                                    {% if order.paid_by_wallet == 0.00 %}
+                                    <td>Stripe</td>
+                                    {% else %}
+                                    <td>Wallet</td>
+                                    {% endif %}
+                                    <td class="is-active">
+                                        {% if order.order_status == "Canceled" %}
+                                        <span class="badge bg-danger">Canceled</span>
+                                        {%else%}
+                                        <span class="badge bg-success">Completed</span>
+                                        {% endif %}
+                                    </td>  
+                                    
+                                    {% if  request.user.user_type == "SUPERADMIN" %}
+                                    <td>
+                                        <a href="{% url 'view_order' order.id %}" class="mx-1">
+                                            <span class="fa-fw select-all fas"></span>
+                                        </a>
+                                        {% if order.order_status == "Canceled" and order.paid_by_wallet > 0 and order.is_refunded == False %}
+                                        <a href="{% url 'refund_to_wallet' order.id %}" class="mx-1">
+                                            <span class="fa-fw select-all fas"></span>
+                                        </a>
+                                        {% endif %}
+                                        <a href="#" class="mx-1 btn-delete" data-id="{{ order.id }}">
+                                            <span class="fa-fw select-all fas"></span>
+                                        </a>
+                                    </td>  
+                                    {% endif %}
+                                    
+                                    {% if request.user.user_type == "SUBADMIN" %}
+                                    <td>
+                                        {% for i in m_check %}
+                                            {% if i.view == True %}
+                                                <a href="{% url 'view_order' order.id %}" class="mx-1">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                            {% endif %}
+                                            {% if i.edit == True and order.order_status == "Canceled" and order.paid_by_wallet > 0 and order.is_refunded == False %}
+                                                <a href="{% url 'refund_to_wallet' order.id %}" class="mx-1">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                            {% endif %}
+                                            {% if i.delete == True %}
+                                                <a href="#" class="mx-1 btn-delete" data-id="{{ order.id }}">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center">
+                                <strong style="font-size: 1.5em;">No Records</strong>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form method="POST" action="{% url 'delete_order_listing' %}" class="mx-1" style="display: inline;" id="delete_form">
+        {% csrf_token %}
+        <input type="hidden" name="order_id" value="" id="delete_order">
+    </form>
+   
+</section>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/data-table/dataTables.min.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.btn-delete').on('click', function (e) {
+            e.preventDefault()
+            let id = $(this).data('id')
+            Swal.fire({
+                title: 'Delete Order Record',
+                text: 'Are You Sure ?',
+                confirmButtonColor: 'rgb(225, 0, 127)',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#delete_order').val(id)
+                    $('#delete_form').submit()
+                }
+            })
+        })
+    })
+</script>
+{% endblock script %} 
+

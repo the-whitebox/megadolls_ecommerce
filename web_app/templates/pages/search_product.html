@@ -1,0 +1,211 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}Search Results{% endblock title %}
+{% block content %}
+<div class="wraper-inner">
+    
+    <section class="page-head-sec">
+        <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+        <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+        <div class="container">
+            <div class="page-head-content">
+                <h4>Search Results</h4>
+            </div>
+        </div>
+    </section>
+    
+    <section class="shops-list-sec pt-5">
+        <div class="container">
+            {% if data %}
+            {% if shop_products %}
+            <div class="shops-list-head">
+                <h4>Shop</h4>
+            </div>
+            
+            <div class="row">
+                {% for shop_product in shop_products %}
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="product-item">
+                        <div class="share_posi_bx">
+                            <div class="social-share">
+                                <div class="social-share-icon-1 facebook"><a href="https://www.facebook.com/sharer/sharer.php?u={{ site_url }}shop_doll_detail/{{ shop_product.slug }}" target="_blank"><i class="ri-facebook-fill"></i></a></div>
+                                <div class="social-share-icon-2 twitter"><a href="https://twitter.com/intent/tweet?url={{ site_url }}shop_doll_detail/{{ shop_product.slug }}" target="_blank"><i class="ri-twitter-fill"></i></a></div>
+                                <div class="social-share-icon-3 linkedin"><a href="https://www.linkedin.com/sharing/share-offsite/?url={{ site_url }}shop_doll_detail/{{ shop_product.slug }}" target="_blank"><i class="ri-linkedin-fill"></i></a></div>
+                                <!-- <div class="social-share-icon-3 linkedin"><a href=""><i class="ri-instagram-line"></i></a></div> -->
+                                <div class="mask2"></div>
+                            </div>
+                            <a href="javascript:void(0);" class="btn btn-primary-light btn-square product-share-btn"><i
+                                class="ri-share-line"></i></a>
+                        </div>
+                        <div class="product-slider owl-carousel owl-theme">
+                            {% for image in shop_product_images %}
+                            {% if image.shop_product_id == shop_product.id %}
+                                    <div class="item">
+                                        <div class="product-slider-item">
+                                            {% if image.primary_img %}
+                                            <img src="{{ image.primary_img.url }}">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    {% for image_sub_table in image_sub_tables %}
+                                    {% if image.shop_product_id == shop_product.id and image_sub_table.shop_product_image_id == image.id %}
+                                    <div class="item">
+                                        <div class="product-slider-item">
+                                            {% if image_sub_table.images %}
+                                            <img src="{{ image_sub_table.images.url }}">
+                                            {% endif %}
+                                        </div>
+                                            </div>
+                                            {% endif %}
+                                            {% endfor %}
+                                            {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        <div class="product-item-content">
+                                            <h5 class="product-name"><a href="javascript:void(0);">{{shop_product.name}}</a></h5>
+                            <div class="rating" style="color: orange;" >
+                                {% for key, value in rating_avg.items %}
+                                {% if shop_product.id == key %}
+                                    <i class="ri-star-{% if value >= 1 %}fill{% else %}line{% endif %} "></i>
+                                    <i class="ri-star-{% if value >= 2 %}fill{% else %}line{% endif %}"></i>
+                                    <i class="ri-star-{% if value >= 3 %}fill{% else %}line{% endif %}"></i>
+                                    <i class="ri-star-{% if value >= 4 %}fill{% else %}line{% endif %}"></i>
+                                    <i class="ri-star-{% if value >= 5  %}fill{% else %}line{% endif %}"></i>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <h4 class="product-price">
+                                {% if shop_product.offer_price %} 
+                                ${{ shop_product.offer_price }} 
+                                {% else %} 
+                                ${{ shop_product.original_price }} 
+                                {% endif %}
+                            </h4>
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                <div class="product-actions">
+                                    <input type="hidden" id="userid" name="user_id" value="{{request.user.id}}">
+                                <a  href="javascript:void(0);"  data-product-id="{{ shop_product.id }}" class="btn btn-primary-light btn-square shop_category"><i class="ri-heart-line"></i></a>
+                                
+                                <a href="{% url 'shop_doll_detail' shop_product.slug %}" class="btn btn-primary view-doll">{% if shop_product.quantity > 0 %} View and Buy {% else %} Out of Stock {% endif %} </a>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% if imagine_products %}
+            <div class="shops-list-head">
+                <h4>Imagine</h4>
+            </div>
+            <div class="row">
+                {% for imagine_product in imagine_products %}
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="product-item">
+                        <div class="share_posi_bx">
+                            <div class="social-share">
+                                <div class="social-share-icon-1 facebook"><a href="https://www.facebook.com/sharer/sharer.php?u={{ site_url }}imagine_detail/{{ imagine_product.slug }}" target="_blank"><i class="ri-facebook-fill"></i></a></div>
+                                <div class="social-share-icon-2 twitter"><a href="https://twitter.com/intent/tweet?url={{ site_url }}imagine_detail/{{ imagine_product.slug }}" target="_blank"><i class="ri-twitter-fill"></i></a></div>
+                                <div class="social-share-icon-3 linkedin"><a href="https://www.linkedin.com/sharing/share-offsite/?url={{ site_url }}imagine_detail/{{ imagine_product.slug }}" target="_blank"><i class="ri-linkedin-fill"></i></a></div>
+                                <!-- <div class="social-share-icon-3 linkedin"><a href=""><i class="ri-instagram-line"></i></a></div> -->
+                                <div class="mask2"></div>
+                            </div>
+                            <a href="javascript:void(0);" class="btn btn-primary-light btn-square product-share-btn"><i
+                                class="ri-share-line"></i></a>
+                            </div>
+                            <div class="product-slider owl-carousel owl-theme">
+                                {% for image in imagine_product_images %}
+                                {% if image.imagine_product_id == imagine_product.id %}
+                                <div class="item">
+                                        <div class="product-slider-item">
+                                            {% if image.primary_img %}
+                                            <img src="{{ image.primary_img.url }}">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    {% for image_sub_table in image_sub_tables %}
+                                        {% if image.imagine_product_id == imagine_product.id and image_sub_table.imagine_product_image_id == image.id %}
+                                            <div class="item">
+                                                <div class="product-slider-item">
+                                                    {% if image_sub_table.images %}
+                                                    <img src="{{ image_sub_table.images.url }}">
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="product-item-content">
+                            <h5 class="product-name"><a href="javascript:void(0);">{{imagine_product.name}}</a></h5>
+                            <div class="rating" style="color: orange;" >
+                                {% for key, value in rating_avg.items %}
+                                {% if imagine_product.id == key %}
+                                    <i class="ri-star-{% if value >= 1 %}fill{% else %}line{% endif %} "></i>
+                                    <i class="ri-star-{% if value >= 2 %}fill{% else %}line{% endif %}"></i>
+                                    <i class="ri-star-{% if value >= 3 %}fill{% else %}line{% endif %}"></i>
+                                    <i class="ri-star-{% if value >= 4 %}fill{% else %}line{% endif %}"></i>
+                                    <i class="ri-star-{% if value >= 5  %}fill{% else %}line{% endif %}"></i>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                            <div class="product-actions">
+                                <input type="hidden" id="userid" name="user_id" value="{{request.user.id}}">
+                                <a  href="javascript:void(0);"  data-product-id="{{ imagine_product.id }}" class="btn btn-primary-light btn-square imagine_category"><i class="ri-heart-line"></i></a>
+                                <a href="{% url 'imagine_detail' imagine_product.slug %}" class="btn btn-primary view-doll">View and Buy</a>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% else %}
+            <h2 style="text-align: center;" >No Records Found</h2>
+            {% endif %}
+        </div>
+    </section>
+
+    {% comment %} {% include 'includes/featured_and_download.html' %} {% endcomment %}
+
+</div>
+
+{% endblock content %}
+
+{% block script %}
+<!-- active heart icon -->
+{% include 'includes/shop-product/shop_product.html' %}
+<script>
+    $(document).ready(function() {
+
+var active1 = false;
+var active2 = false;
+var active3 = false;
+var active4 = false;
+
+  $('.product-share-btn').on('mousedown touchstart', function() {
+  
+  if (!active1) $(this).siblings('.social-share').find('.social-share-icon-1').css({'background-color': 'gray', 'transform': 'translate(5px, 73px)'});
+  else $(this).siblings('.social-share').find('.social-share-icon-1').css({'background-color': 'dimGray', 'transform': 'none'}); 
+   if (!active2) $(this).siblings('.social-share').find('.social-share-icon-2').css({'background-color': 'gray', 'transform': 'translate(-45px,50px)'});
+  else $(this).siblings('.social-share').find('.social-share-icon-2').css({'background-color': 'darkGray', 'transform': 'none'});
+    if (!active3) $(this).siblings('.social-share').find('.social-share-icon-3').css({'background-color': 'gray', 'transform': 'translate(-65px,0px)'});
+  else $(this).siblings('.social-share').find('.social-share-icon-3').css({'background-color': 'silver', 'transform': 'none'});
+    if (!active4) $(this).siblings('.social-share').find('.social-share-icon-4').css({'background-color': 'gray', 'transform': 'translate(-105px,0px)'});
+  else $(this).siblings('.social-share').find('.social-share-icon-4').css({'background-color': 'silver', 'transform': 'none'});
+  active1 = !active1;
+  active2 = !active2;
+  active3 = !active3;
+  active4 = !active4;
+    
+  });
+});
+
+</script>
+{% endblock script %}

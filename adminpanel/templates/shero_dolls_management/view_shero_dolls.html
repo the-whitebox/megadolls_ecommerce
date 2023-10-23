@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock title %}
+{% load static %}
+{% block content %}
+{% url 'shero_dolls' as view_shop_products %}
+{% include "includes/section.html" with page_title="Shero Dolls Details" btn_url=view_shop_products btn_text="Back" %}
+<main class="main content-wrapper container">
+    <section class="section profile">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body pt-3">
+                        <ul class="nav nav-tabs nav-tabs-bordered text-center">
+                        </ul>
+                        <div class="tab-content pt-4">
+                            <style>
+                                #profile-overview .row:nth-child(odd) {
+                                    background-color: rgba(201, 197, 197, 0.371);
+                                }
+
+                                .row-padding .row {
+                                    padding: 10px 0px;
+                                }
+                            </style>
+                            <div class="tab-pane fade show active profile-overview row-padding" id="profile-overview">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4"><strong>Name :</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ shero_dolls.shero_dolls.name }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4"><strong>Month :</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ shero_dolls.shero_dolls.month }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4"><strong>Year :</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ shero_dolls.shero_dolls.year }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4"><strong>Country :</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ shero_dolls.shero_dolls.country.name }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4"><strong>Original Price :</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ shero_dolls.shero_dolls.original_price }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4"><strong>Offer Price :</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ shero_dolls.shero_dolls.offer_price }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4"><strong>Status :</strong></div>
+                                    {% if shero_dolls.shero_dolls.is_active %}
+                                    <div class="col-lg-9 col-md-8"> Active </div>
+                                    {% else %}
+                                    <div class="col-lg-9 col-md-8">Deactive</div>
+                                    {% endif %}    
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4"><strong>Og Title :</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ shero_dolls.shero_dolls.og_title }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4"><strong>Og Description :</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ shero_dolls.shero_dolls.og_description }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4"><strong>Stock Quantity :</strong></div>
+                                    {% if shero_dolls.shero_dolls.quantity > 0 %}
+                                    <div class="col-lg-9 col-md-8">{{ shero_dolls.shero_dolls.quantity }}</div>
+                                    {% else %}
+                                    <div class="col-lg-9 col-md-8"><h6 style="color: red;" >Out of Stock</h6></div>
+                                    {% endif %}    
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4"><strong>Claim to Fame :</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ shero_dolls.shero_dolls.claim_to_fame|safe }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4"><strong>Features :</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ shero_dolls.shero_dolls.features|safe }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4"><strong>Description :</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ shero_dolls.shero_dolls.description|safe }}</div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if shero_dolls.primary_img %}
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body profile-card d-flex flex-column ">
+                    <h4>Primary And Og Image</h4>
+                    <div class="tab-content pt-4">
+                        <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                            <div class="row">
+                                <div class="col-6">
+                                    <img src="{{ shero_dolls.primary_img.url }}" class="click-img" alt="primary image"
+                                        width="170" height="170">
+                                </div>
+                                <div class="col-6">
+                                    <img src="{{ shero_dolls.og_img.url }}" class="click-img" alt="og image" width="170"
+                                        height="170">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body pt-3">
+                    <h4>Images</h4>
+                    <div class="tab-content pt-4">
+                        <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                            <div class="row">
+                                {% for product_img in shero_dolls_image %}
+                                <div class="col-2">
+                                    <img src="{{ product_img.images.url }}" class="click-img" alt="img1" width="150px"
+                                        height="150">
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+</main>
+{% endblock content %}
+{% block script %}
+{% endblock script %}

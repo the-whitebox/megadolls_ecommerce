@@ -1,0 +1,17 @@
+__pycache__
+.vscode
+test.py
+documentation.txt
+db.sqlite3
+.env
+adminpanel/__pycache__
+adminpanel/migrations
+megadolls/__pycache__
+sloper/__pycache__
+sloper/migrations
+web_app/__pycache__
+nginx/default.conf
+web_app/tests.py
+nginx/fullchain.pem
+nginx/privkey.pem
+data

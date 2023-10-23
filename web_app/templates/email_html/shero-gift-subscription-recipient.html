@@ -1,0 +1,71 @@
+{% spaceless %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500;700;800;900&display=swap"
+    rel="stylesheet">
+  <meta name="viewport" content="minimum-scale=1.0, maximum-scale=1.0,width=device-width, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+{% include 'email_html/includes/font.html' %}
+</head>
+<body style="font-family: sans-serif;background:#f1f1f1;margin:0px;">
+  <table
+    style="table-layout:fixed;border-spacing:0;border-collapse:collapse;background-color:#fdfdfd;width: 700px;margin:auto;background-image: url({% static 'email_template/images/gift-card-sender-bg.jpg' %});background-repeat: no-repeat;background-size:cover;border-collapse: separate;border-spacing:0px 0px;padding: 45px 90px 10px;background-position:top center;">
+    {% comment %} https://megadolls.com/static/email_template/images/gift-card-sender-bg.jpg) {% endcomment %}
+    <!-- ---1st line---- -->
+    <tr>
+      <td style="width:100%;">
+        <table style="width:100%; background: #fdfdfd;border-radius: 5px;box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.14);min-height: auto;">
+          <tr>
+            <td style="width:100%;text-align:center;vertical-align: top;padding-bottom: 10px;margin:0; overflow-wrap: anywhere">
+              {% comment %} <p style="font-size: 32px;color: #ffd739;text-shadow: 1px 2px #1A1A1A99;text-align: center;margin: auto;width: 70%;padding: 15px 0 0 0;line-height:44px; font-family: 'Golden-Ranger';">Megadolls Gift Subscription</p> {% endcomment %}
+              <div style="text-align:center; margin: 50px 0px;">
+                <img src="{% static 'email_template/images/title_image/school-or-hospital-gift-subscription.png' %}" style="width: 70%;margin-bottom:50px;">
+                <img src="{% static 'email_template/images/title_image/gift-subscription-recipient.png' %}" style="width: 70%;">
+              </div>
+              {% comment %} <p
+                style="font-size: 42px;color: #ffd739;text-shadow: 1px 2px #1A1A1A99;text-align: center;margin: auto;width: 100%;padding: 15px 0 0 0;line-height:44px; font-family: Golden-Ranger;margin-bottom:70px;">
+                A unique gift for you <br /> is coming your way!
+              </p> {% endcomment %}
+              <p style="font-size: 18px;color: black ;text-align: left;margin: auto;width: 80%;line-height: 32px; font-family: 'ariel';margin-bottom:200px;">
+                Hi {{receiver_email}},
+                <br /><br />
+                {{sender_name}} has gifted you a Megadolls Shero Subscription!<br />
+                Please create an account, so that we can process your gift
+                subscription.
+                <span style="display: block;margin-top:10px;margin-bottom:25px;">You can click the button below to get started.</span>
+                All the best, <br /> The Megadolls Team
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <br /><br />
+            <td style="width:100%;text-align:right;padding-bottom: 15px;vertical-align: bottom;">
+              
+              <a style="background: -moz-linear-gradient(top,  rgba(244,35,143,1) 0%, rgba(169,4,89,0.8) 100%); background: -webkit-linear-gradient(top,  rgba(244,35,143,1) 0%,rgba(169,4,89,0.8) 100%);background: linear-gradient(to bottom,  rgba(244,35,143,1) 0%,rgba(169,4,89,0.8) 100%);background-color: rgb(244,35,143);display: block;border-radius: 5px;font-size: 15px;text-align: center;color: #fff;padding: 1px 5px;width: 200px;margin: auto;font-family: 'ariel';text-decoration: none;line-height: 45px;" href="{{ login_signup_link }}">Create an account</a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <!-- ---End line---- -->
+    <!-- ---2nd line---- -->
+    <tr>
+      <td style="width:100%; padding-bottom: 40px;">
+        <table style="width:100%; background: #fdfdfd;border-radius: 5px;box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.11);min-height:80px;margin-top: 15px;">
+          <tr>
+            {% include 'email_html/includes/email-footer-links.html' %}
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <!-- ---End line---- -->
+    <!-- ---3trd line---- -->
+    {% include 'email_html/includes/social_link.html' %}
+    <!-- ---End line---- -->
+  </table>
+</body>
+</html>
+{% endspaceless %}

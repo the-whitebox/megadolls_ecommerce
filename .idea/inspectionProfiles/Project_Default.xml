@@ -1,0 +1,15 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="floppyforms" />
+          <option value="django_filters" />
+          <option value="Hotel_project.hotel_app.django_filters.HotelFilter" />
+          <option value="temp.app_technicien.urls.app_technicien" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

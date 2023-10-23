@@ -1,0 +1,867 @@
+{% load static %}
+<!-- Start of megadolls Zendesk Widget script -->
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=767a3e2d-aa7b-46de-ba2a-13600d3b9d34"> </script>
+<!-- End of megadolls Zendesk Widget script -->
+<script src="{% static  'common/common-function.js' %}"></script>
+<script type="text/javascript" src="{% static  'web_app/js/jquery-3.3.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static  'web_app/js/jquery.validate.min.js' %}"></script>
+<script type="text/javascript" src="{% static  'web_app/js/popper.min.js' %}"></script>
+<script type="text/javascript" src="{% static  'web_app/js/bootstrap.bundle.min.js' %}"></script>
+<!-- <script src="https://kit.fontawesome.com/f977370226.js"></script> -->
+<!-- <script type="text/javascript" src="js/bootstrap.min.js"></script>  -->
+<script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="{% static  'web_app/js/owl.carousel.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js"></script>
+<script>
+    const ERROR_BG = "#ff0000"
+    const SUCCESS_BG = "#00c1b2"
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $('.slider-thumb').slick({
+            autoplay: false,
+            vertical: true,
+            verticalSwiping: true,
+            infinite: false,
+            asNavFor: '.slider-preview',
+            focusOnSelect: true,
+            arrows: true,
+            prevArrow: '<button type="button" class="slick-prev"><i class="fa fa-angle-up"></i></button>',
+            nextArrow: '<button type="button" class="slick-next"><i class="fa fa-angle-down"></i></button>',
+            responsive: [
+                {
+                    breakpoint: 768,
+                    settings: {
+                        vertical: false,
+                        slidesToShow: 4,
+                    }
+                },
+                // {
+                //     breakpoint: 479,
+                //     settings: {
+                //         vertical: true,
+                //         slidesPerRow: 5,
+                //         slidesToShow: 5,
+                //     }
+                // },
+            ]
+        });
+        $('.slider-preview').slick({
+            vertical: true,
+            infinite: false,
+            slidesPerRow: 1,
+            slidesToShow: 1,
+            asNavFor: '.slider-thumb',
+            arrows: false,
+            draggable: true,
+            responsive: [
+                {
+                    breakpoint: 768,
+                    settings: {
+                        vertical: false,
+                        fade: true,
+                    }
+                },
+            ]
+        });
+    });
+</script>
+
+<script>
+    function searchToggle(obj, evt){
+    var container = $(obj).closest('.search-wrapper');
+        if(!container.hasClass('active')){
+            container.addClass('active');
+            evt.preventDefault();
+        }
+        else if(container.hasClass('active') && $(obj).closest('.input-holder').length == 0){
+            container.removeClass('active');
+            // clear input
+            container.find('.search-input').val('');
+        }
+    }
+</script>
+
+<script>
+    $(document).ready(function() {
+
+        let active1 = false;
+        let active2 = false;
+        let active3 = false;
+        let active4 = false;
+
+        $('.product-share-btn').on('mousedown touchstart', function() {
+            if (!active1) $(this).siblings('.social-share').find('.social-share-icon-1').css({'background-color': 'gray', 'transform': 'translate(5px, 73px)'});
+            else $(this).siblings('.social-share').find('.social-share-icon-1').css({'background-color': 'dimGray', 'transform': 'none'}); 
+            if (!active2) $(this).siblings('.social-share').find('.social-share-icon-2').css({'background-color': 'gray', 'transform': 'translate(-45px,50px)'});
+            else $(this).siblings('.social-share').find('.social-share-icon-2').css({'background-color': 'darkGray', 'transform': 'none'});
+            if (!active3) $(this).siblings('.social-share').find('.social-share-icon-3').css({'background-color': 'gray', 'transform': 'translate(-65px,0px)'});
+            else $(this).siblings('.social-share').find('.social-share-icon-3').css({'background-color': 'silver', 'transform': 'none'});
+            if (!active4) $(this).siblings('.social-share').find('.social-share-icon-4').css({'background-color': 'gray', 'transform': 'translate(-105px,0px)'});
+            else $(this).siblings('.social-share').find('.social-share-icon-4').css({'background-color': 'silver', 'transform': 'none'});
+                active1 = !active1;
+                active2 = !active2;
+                active3 = !active3;
+                active4 = !active4;
+        });
+});
+
+</script>
+
+
+<script>
+    $('input[name=dress_type]').on('change', function(){
+       $('input[name=color]').prop('checked', false);
+    });
+     
+     $('input[name=color]').on('change', function(){         
+       $('input[name=dress_type]').prop('checked', false);
+    });
+
+    
+    $('#applyFilter').on('mousedown',function(){
+        let selectedElement = $('#filter-form input[type=radio]:checked')
+        let name = selectedElement.attr('name')
+        let slug = selectedElement.val()
+        let subcategory = (name == 'dress_type' ? 'create': 'play')
+        let url = `/imagine/${subcategory}/${slug}/`
+        
+        $('#filter-form').attr('action', url)
+        $('#filter-form').submit()
+    })
+</script>
+
+    <script>
+       $('#menu-button').click(function(e) {
+           e.stopPropagation();
+           $('#hide-menu').toggleClass('show-menu');
+       });
+       $('#hide-menu').click(function(e) {
+           e.stopPropagation();
+       });
+       $('body,html,.closebtn').click(function(e) {
+           $('#hide-menu').removeClass('show-menu');
+       });
+    </script>
+
+<!-- <script type="text/javascript">
+    $(document).ready( function() {
+      //when the button is clicked
+      $("#showMenu").click( function() {
+        //apply toggleable classes
+        $("#navbtm").toggleClass("show");
+        $("#showMenu").toggleClass("moveButton");   
+      });
+      
+      $("#wrapper").click( function() {
+        $("#navbtm").removeClass("show");
+        $("#showMenu").removeClass("moveButton");
+      });
+      
+    });
+
+</script> -->
+
+<!-- <script>
+window.onscroll = function() {
+    myFunction()
+};
+var header = document.getElementById("fixed-header");
+var sticky = header.offsetTop;
+
+function myFunction() {
+    if(window.pageYOffset > sticky) {
+        header.classList.add("sticky");
+    } else {
+        header.classList.remove("sticky");
+    }
+}
+
+</script> -->
+
+{% comment %} <script type="text/javascript">
+    $(function () {
+        var lastScrollTop = 0, delta = 15;
+        $(window).scroll(function (event) {
+            var st = $(this).scrollTop();
+
+            if (Math.abs(lastScrollTop - st) <= delta)
+                return;
+            if ((st > lastScrollTop) && (lastScrollTop > 0)) {
+                // downscroll code
+                $("header").css("top", "-220px");
+
+            } else {
+                // upscroll code
+                $("header").css("top", "0px");
+            }
+            lastScrollTop = st;
+        });
+    });	
+</script> {% endcomment %}
+
+<script type="text/javascript">
+    $('.banner-slider').owlCarousel({
+         loop:true,
+         stagePadding: 340,
+         margin:30,
+         nav:true,
+         dots:false,
+         autoplay:true,
+         autoplayTimeout:4000,
+          //animateOut: 'fadeOut',
+          //animateOut: 'slideOutleft',
+         //animateIn: 'flipInX',
+         responsive:{
+ 
+             0:{
+                  stagePadding: 50,
+                  margin:5,
+                  items:1
+             },
+             768:{
+                  stagePadding: 110,
+                  margin:15,
+                  items:1
+             },
+             991:{
+                  stagePadding: 200,
+                  margin:15,
+                  items:1
+             },
+             1400:{
+                  items:1
+             }
+          }
+      });
+
+      $('.banner-subscription').owlCarousel({
+         loop:true,
+        //  stagePadding: 340,
+         margin:20,
+         nav:true,
+         dots:false,
+          //animateOut: 'fadeOut',
+          //animateOut: 'slideOutleft',
+         //animateIn: 'flipInX',
+         responsive:{
+ 
+             0:{
+                  stagePadding: 0,
+                  margin:5,
+                  items:1
+             },
+             768:{
+                  stagePadding: 0,
+                  margin:15,
+                  items:1
+             },
+             991:{
+                  stagePadding: 00,
+                  margin:15,
+                  items:1
+             },
+             1400:{
+                  items:1
+             }
+          }
+      });
+
+      $('.banner-subscription2').owlCarousel({
+         loop:true,
+        //  stagePadding: 340,
+         margin:20,
+         nav:true,
+         dots:false,
+          //animateOut: 'fadeOut',
+          //animateOut: 'slideOutleft',
+         //animateIn: 'flipInX',
+         responsive:{
+ 
+             0:{
+                  stagePadding: 0,
+                  margin:5,
+                  items:1
+             },
+             768:{
+                  stagePadding: 0,
+                  margin:15,
+                  items:1
+             },
+             991:{
+                  stagePadding: 00,
+                  margin:15,
+                  items:1
+             },
+             1400:{
+                  items:1
+             }
+          }
+      });
+ </script>
+
+<script type="text/javascript">
+    $('.product-slider').owlCarousel({
+        loop: true,
+        margin: 0,
+        nav: true,
+        dots: false,
+        //animateOut: 'fadeOut',
+        //animateOut: 'slideOutleft',
+        //animateIn: 'flipInX',
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 1
+            },
+            1000: {
+                items: 1
+            }
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    $('.product-out-slider').owlCarousel({
+        items:4,
+        loop: false,
+        margin: 30,
+        nav: false,
+        dots: true,
+        //animateOut: 'fadeOut',
+        //animateOut: 'slideOutleft',
+        //animateIn: 'flipInX',
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 3
+            },
+            1000: {
+                items: 4
+            }
+        }
+    });
+
+    $('.goals-slides').owlCarousel({
+        loop:false,
+        margin:10,
+        nav:false,
+        dots:true,
+        responsive:{
+            0:{
+                items:1
+            },
+            600:{
+                items:2
+            },
+            1000:{
+                items:3
+            }
+        }
+    })
+
+    $('.owl-carousel').owlCarousel({
+        loop: false,
+        margin: 0,
+        nav: false,
+        dots: true,
+        //animateOut: 'fadeOut',
+        //animateOut: 'slideOutleft',
+        //animateIn: 'flipInX',
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 1
+            },
+            1000: {
+                items: 1
+            }
+        }
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Add scrollspy to <body>
+        if($(".navbar-nav").length > 0) {
+            $('body').scrollspy({ target: ".navbar-nav", offset: 80 });
+        }
+
+        // Add smooth scrolling on all links inside the navbar
+        $(".navbar-nav a").on('click', function (event) {
+            // Make sure this.hash has a value before overriding default behavior
+            if (this.hash !== "") {
+                // Prevent default anchor click behavior
+                event.preventDefault();
+
+                // Store hash
+                var hash = this.hash;
+
+                // Using jQuery's animate() method to add smooth page scroll
+                // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+                $('html, body').animate({
+                    scrollTop: $(hash).offset().top
+                }, 800, function () {
+
+                    // Add hash (#) to URL when done scrolling (default click behavior)
+                    window.location.hash = hash;
+                });
+            }  // End if
+        });
+    });
+</script>
+
+<script>
+    $('.dropdown-menu.megamenu').on('click', function (event) {
+        event.stopPropagation();
+    });
+</script>
+<script>
+    function getCartProductData() {
+        $.ajax({
+            url: "{% url 'get_cart_product_data' %}",
+            success: function(response) {
+                if(response && response.cart_data) {
+                    let li = ''
+                    let price = 0
+                    let productsTotalPrice = 0
+                    $.each(response.cart_data, function(key, value) {
+                        price = value.offer_price > 0 ? value.offer_price : value.original_price
+                        productsTotalPrice += price * value.cart_quantity
+                        
+                        li += `<li>${value.name}`
+                        li += value.cart_quantity > 1 ? `<span>(x${value.cart_quantity})</span>` : ``
+                        li +=`<span>$${(price * value.cart_quantity).toFixed(2)}</span></li>`
+                    })
+
+                    if (response.applied_offer > 0) {
+                        discountAmount = productsTotalPrice * (response.applied_offer / 100)
+                        TotalPriceAfterDiscount = productsTotalPrice - discountAmount
+                        li += `<li>Discount <span class="float-end">-$${discountAmount.toFixed(2)}<span></li>`
+                        li += `<div class="divider"></div>
+                        <li class="total">Sub Total <span>$${TotalPriceAfterDiscount.toFixed(2)}</span></li>`
+                    } else {
+                        li += `<div class="divider"></div>
+                        <li class="total">Sub Total <span>$${productsTotalPrice.toFixed(2)}</span></li>`
+                    }
+                    
+                    $('#js-your-order-section').html(li)
+                }
+            }
+        })
+    }
+   
+    {% url 'view_cart' as view_cart %}
+    {% if request.path == view_cart %}
+        getCartProductData()
+    {% endif %}
+</script>
+<script>
+    function getCartCount() {
+        $.ajax({
+            url: {% if request.user.is_anonymous %}'{% url "anonymous_cart_item_count" %}'{% else %}'{% url "user_cart_item_count" %}'{% endif %},
+            success: res => {
+                if(res.count >= 1) {
+                    $('.counts').show()
+                    $('.ri-shopping-cart-2-line > .counts').text(res.count)
+                }
+            }
+        })
+    }
+    (function () {
+        "use strict";
+        var jQueryPlugin = (window.jQueryPlugin = function (ident, func) {
+            return function (arg) {
+                if (this.length > 1) {
+                    this.each(function () {
+                        var $this = $(this);
+
+                        if (!$this.data(ident)) {
+                            $this.data(ident, func($this, arg));
+                        }
+                    });
+
+                    return this;
+                } else if (this.length === 1) {
+                    if (!this.data(ident)) {
+                        this.data(ident, func(this, arg));
+                    }
+
+                    return this.data(ident);
+                }
+            };
+        });
+    })();
+
+    (function () {
+        "use strict";
+        function Guantity($root) {
+            const element = $root;
+            const quantity = $root.first("data-quantity");
+            const quantity_target = $root.find("[data-quantity-target]");
+            const quantity_minus = $root.find("[data-quantity-minus]");
+            const quantity_plus = $root.find("[data-quantity-plus]");
+            var quantity_ = quantity_target.val();
+            let product_id = quantity_target.attr('data-product-id');
+            let isShero = quantity_target.attr('data-type');
+            
+            function changeOrderCount(url) {
+                $.ajax({
+                    url: url,
+                    method: "POST",
+                    data: {
+                        product_id: product_id,
+                        is_shero: isShero
+                    },
+                    success: function(res) {
+                        if (res.available_quantity && res.product_count && res.product_count > res.available_quantity) {
+                            quantity_plus.attr('disabled', 'disabled')
+                            myToast("Required Quantity Not Available", ERROR_BG)
+                        } else {
+                            quantity_plus.removeAttr('disabled')
+                        }
+                        
+                        if(res.success == false) {
+                            myToast(res.message, ERROR_BG)
+                        } else {
+                            $('#sub_total').text(`$${res.sub_total}`)
+                            $('#cart_total').html(`$${res.total}`)
+                            getCartProductData()
+                        }
+                        getCartCount()
+                    }
+                })
+            }
+            $(quantity_minus).click(function () {
+                if(parseInt(quantity_target.val()) >= 0) {
+                    quantity_target.val(--quantity_);
+                    changeOrderCount("{% url 'decrease_item_count' %}");
+                    location.reload()
+                }
+                if(quantity_target.val() == 0) {
+                    if($(this).closest('.cart-list-item-blk').find('.cart-list-item').length == 1){
+                        $(this).closest('.cart-list-item-blk').find('.cart-product-title').hide()
+                    }
+                    $(this).parents('.cart-list-item').remove()
+                    if($('.cart-list-item').length == 0) {
+                        $('.js-if-cart-empty').remove()
+                        $('.cart-list-item-blk').first().html('<div class="text-center"><h4>No Order</h4></div>')
+                    }
+                    
+                }
+            });
+            $(quantity_plus).click(function () {
+                if(parseInt(quantity_target.val()) < parseInt(quantity_target.attr('max'))) {
+                    quantity_target.val(++quantity_);
+                    changeOrderCount("{% url 'increase_item_count' %}")
+                    {% comment %} location.reload() {% endcomment %}
+                } else {
+                    myToast(`We're sorry! we have only ${quantity_target.attr('max')} units available`, ERROR_BG)
+                }
+            });
+        }
+        $.fn.Guantity = jQueryPlugin("Guantity", Guantity);
+        $("[data-quantity]").Guantity();
+    })();
+</script>
+
+
+<script>
+    $(".add-ship-address").click(function () {
+        $(".add-ship-address").hide()
+        $(".ship-address").addClass("show");
+    });
+    $(".close-bill").click(function () {
+        $(".add-bill-address").show()
+        $(".bill-address").removeClass("show");
+    });
+
+    $(".add-bill-address").click(function () {
+        $(".add-bill-address").hide()
+        $(".bill-address").addClass("show");
+    });
+
+    $(".close-ship").click(function () {
+        $(".add-ship-address").show()
+        $(".ship-address").removeClass("show");
+    });
+</script>
+
+<script>
+    $("#edit-address [name='country']").on("change", function() {
+        let countryId = $(this).val()
+        $.ajax({
+            url: "{% url 'get_states' %}",
+            method: "GET",
+            data: {
+                country_id: countryId
+            },
+            success: function(response) {
+                let li = ''
+                $.each(response.payload, function(key, value) {
+                    li += "<option value='" + value.id + "'>" + value.name + "</option>"
+                })
+                $("#edit-address [name='state']").html(li)
+            }
+        })
+    })
+
+    $("#edit-address [name='state']").on("change", function() {
+        let stateId = $(this).val()
+        $.ajax({
+            url: "{% url 'get_cities' %}",
+            method: "GET",
+            data: {
+                state_id: stateId
+            },
+            success: function (response) {
+                let li = ''
+                $.each(response.payload, function (key, value) {
+                    li += "<option value='" + value.id + "'>" + value.name + "</option>"
+                })
+                $("#edit-address [name='city']").html(li)
+            }
+        })
+    })
+
+    $('.js-edit-address').on('click', function() {
+        let csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        let id = $(this).data('address-id')
+        $.ajax({
+            url: '{% url "edit_address_data" %}',
+            method: "GET",
+            headers: { 'X-CSRFToken': csrftoken },
+            data: {
+                address_id: id,
+                user_id: "{{ request.user.id }}"
+            },
+            success: function(res) {
+                $('#edit_form')[0].reset()
+                $("#edit-address [name='name']").val(res.address.name)
+                $("#edit-address [name='house_num']").val(res.address.house_num)
+                $("#edit-address [name='area_name']").val(res.address.area_name)
+                $("#edit-address [name='zipcode']").val(res.address.zip_code)
+                $("#edit-address [name='address']").val(res.address.id)
+                $("#edit-address [name='city']").val(res.address.web_city)
+
+                let selectedCountry = $("#edit-address [name='country'] option").filter(function() {
+                    return $(this).val()==res.address.web_country
+                })
+                selectedCountry.attr("selected", "selected")
+                
+
+                let states = ''
+                $.each(res.states, function(key, value) {
+                    states += "<option value='" + value.id + "' "+ (value.id == res.address.web_state ? 'selected':"" ) +">" + value.name + "</option>"
+                })
+                $("#edit-address [name='state']").html(states)
+            }
+        })
+    })
+
+</script>
+<script>
+    $("#add-new-address [name='country'], .add_address [name='country']").on("change", function() {
+        let countryId = $(this).val()
+        $.ajax({
+            url: "{% url 'get_states' %}",
+            method: "GET",
+            data: {
+                country_id: countryId
+            },
+            success: function(response) {
+                let li = ''
+                $.each(response.payload, function(key, value) {
+                    li += "<option value='" + value.id + "'>" + value.name + "</option>"
+                })
+                $("#add-new-address [name='state'], .add_address [name='state']").html(li)
+            }
+        })
+    })
+
+    $("#add-new-address [name=state], .add_address [name=state]").on("change", function() {
+        let stateId = $(this).val()
+        $.ajax({
+            url: "{% url 'get_cities' %}",
+            method: "GET",
+            data: {
+                state_id: stateId
+            },
+            success: function (response) {
+                let li = ''
+                $.each(response.payload, function (key, value) {
+                    li += "<option value='" + value.id + "'>" + value.name + "</option>"
+                })
+                $("#add-new-address [name='city'], .add_address [name=city]").html(li)
+            }
+        })
+    })
+</script>
+<script>
+    $('.shop_category, .imagine_category').on('click', function() {
+        const ele = $(this)
+        let productId = ele.data('product-id')
+        // shop - wishlist,
+        // imagine - favorite
+        let url = (ele.hasClass('shop_category') ? "{% url 'my_account_wishlist' %}" : "{% url 'my_account_favorite' %}") 
+        let csrf = $('[name="csrfmiddlewaretoken"]').val();
+
+        $.ajax({
+            url: url,
+            headers: {
+                "X-CSRFToken": csrf
+            },
+            method: "POST",
+            data: {
+                id:productId,
+            },
+            success: function(response) {
+                if(response.status){
+                    const i = ele.find('i')
+                    // for success
+                    if(response.message) {
+                        myToast(response.message, SUCCESS_BG)
+                    }
+                    
+                    if(i.hasClass('ri-heart-line')) {
+                        i.removeClass('ri-heart-line')
+                        i.addClass('ri-heart-fill')
+                    } else {
+                        i.removeClass('ri-heart-fill')
+                        i.addClass('ri-heart-line')
+                    }
+                    ele.data('refresh') ? location.reload() : ''
+                } else {
+                    // For error
+                    if(response.message) {
+                        myToast(response.message, ERROR_BG, "{% url 'web_login' %}")
+                    }
+                }
+            }
+        })
+    });
+</script>
+
+<script>
+    {% comment %} 
+        SUCCESS_BG
+        ERROR_BG
+    {% endcomment %}
+    function myToast(msg, bgColor, destination='') {
+        hideMyToast()
+        const activeToast = document.querySelectorAll('.toastify.on')
+        activeToast.forEach(function(item) {
+            item.className = item.className.replace(" on", "")
+        })
+        const toastObj = {
+            text: msg,
+            duration: 5000,
+            backgroundColor: bgColor,
+            position: "center",
+            offset: {x: 0, y: 450},
+            className: "border-radius-5px",
+            close: true,
+        }
+        if(destination) {
+            toastObj['destination'] = destination
+        }
+        Toastify(toastObj).showToast()
+    }
+
+    function stripePayment() {
+        $('#loader').hide()
+        fetch("{% url 'stripe_config' %}")
+        .then((result) => result.json())
+        .then((data) => {
+            // Initialize Stripe.js
+            const stripe = Stripe(data.publicKey);
+            
+            $('.subscription-btn').on('click', function() {
+                $('#loader').show()
+                fetch("{% url 'shero_subscribe' %}", {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        'slug': $(this).data('slug')
+                    })
+                })
+                .then((result) => {
+                    return result.json();
+                })
+                .then((data) => {
+                    // Redirect to Stripe Checkout
+                    $('#loader').hide()
+                    if(data.success == false) {
+                        {% if request.user.is_anonymous %}
+                            myToast(data.message, ERROR_BG, "{% url 'web_sign_up' %}")
+                        {% else %}
+                            myToast(data.message, ERROR_BG)
+                        {% endif %}
+                    } else {
+                        return stripe.redirectToCheckout({ sessionId: data.sessionId });
+                    }
+                })
+                .then((res) => {
+                });
+            })
+        })
+    }
+</script>
+<script>
+    $(document).ready(function() {
+        $("#newsletterForm").validate({
+            email: {
+                required: true,
+            },
+            submitHandler: function (form) {
+                $.ajax({
+                    url: "{% url 'newsletter' %}",
+                    method: "POST",
+                    data: {
+                        csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+                        email: $('#newsletter-email-input').val()
+                    },
+                    success: function(response) {
+                        $('#newsletter-email-input').val("")
+                        bgColor = response && response.success ? SUCCESS_BG : ERROR_BG
+                        myToast(response.message, bgColor)
+                    }
+                })
+            }
+        })
+    })
+</script>
+<!-- header nav drop down -->
+<script>
+    $('header li.dropdown').hover(function() {
+        $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(200);
+    }, function() {
+        $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(200);
+    });
+</script>
+{% comment %}
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "{% url 'category_subcategory_dropdown' %}",
+            success: function (response) {
+                $('#js-drop-down-imagine').html(response[0])
+                $('#js-drop-down-shop').html(response[1])
+            }
+        })
+    })
+</script>
+{% endcomment %}
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+<svg id="bronze-crown" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50" height="50" viewBox="0 0 50 50">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#a7410f"/>
+      <stop offset="1" stop-color="#923706"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" y1="0.5" x2="1" y2="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#f69859"/>
+      <stop offset="0.286" stop-color="#a03a09"/>
+      <stop offset="0.522" stop-color="#913605"/>
+      <stop offset="0.744" stop-color="#b75f2d"/>
+      <stop offset="0.892" stop-color="#de7d4c"/>
+      <stop offset="1" stop-color="#fb9564"/>
+    </linearGradient>
+  </defs>
+  <circle id="Ellipse_3208" data-name="Ellipse 3208" cx="25" cy="25" r="25" fill="url(#linear-gradient)"/>
+  <circle id="Ellipse_3202" data-name="Ellipse 3202" cx="23" cy="23" r="23" transform="translate(2 2)" fill="#fcfcfc"/>
+  <g id="crown_2_" data-name="crown(2)" transform="translate(8 11)">
+    <g id="Layer_1_17_" transform="translate(0 0)">
+      <g id="Group_28250" data-name="Group 28250">
+        <g id="Group_28239" data-name="Group 28239" transform="translate(2.499 5.258)">
+          <g id="Group_28238" data-name="Group 28238">
+            <path id="Path_19955" data-name="Path 19955" d="M35.643,30.921c-1.822,1.307-4.38,3.045-5.534,3.045a.388.388,0,0,1-.355-.134c-.471-.581-.344-2.617.38-6.05a.724.724,0,0,0-1.309-.553c-2.489,3.712-3.629,4.49-4.146,4.49-.733,0-1.478-2.108-2.217-6.267a.722.722,0,0,0-.671-.593v0h-.042v0a.723.723,0,0,0-.671.593c-.74,4.159-1.486,6.267-2.218,6.267-.517,0-1.656-.779-4.145-4.49a.724.724,0,0,0-1.31.553c.723,3.433.851,5.469.379,6.05-.052.065-.127.134-.355.134-1.154,0-3.712-1.738-5.535-3.045a.724.724,0,0,0-1.01,1.011A16.753,16.753,0,0,1,10.267,43.38a1.48,1.48,0,0,0-.023.263c0,1.5,2.1,2.1,3.937,2.448a42.435,42.435,0,0,0,7.506.61h.163a42.492,42.492,0,0,0,7.5-.61c1.833-.35,3.938-.946,3.938-2.448a1.483,1.483,0,0,0-.023-.263,16.756,16.756,0,0,1,3.383-11.448.724.724,0,0,0-1.011-1.011ZM21.85,44.627h-.163a30.837,30.837,0,0,1-8.771-.984,30.789,30.789,0,0,1,8.771-.984h.163a30.79,30.79,0,0,1,8.771.984A30.826,30.826,0,0,1,21.85,44.627Z" transform="translate(-6.748 -24.855)" fill="url(#linear-gradient-2)"/>
+          </g>
+        </g>
+        <g id="Group_28241" data-name="Group 28241" transform="translate(15.329)">
+          <g id="Group_28240" data-name="Group 28240">
+            <circle id="Ellipse_3203" data-name="Ellipse 3203" cx="2.19" cy="2.19" r="2.19" fill="url(#linear-gradient-2)"/>
+          </g>
+        </g>
+        <g id="Group_28243" data-name="Group 28243" transform="translate(6.449 3.012)">
+          <g id="Group_28242" data-name="Group 28242">
+            <circle id="Ellipse_3204" data-name="Ellipse 3204" cx="1.825" cy="1.825" r="1.825" fill="url(#linear-gradient-2)"/>
+          </g>
+        </g>
+        <g id="Group_28245" data-name="Group 28245" transform="translate(24.788 3.012)">
+          <g id="Group_28244" data-name="Group 28244">
+            <circle id="Ellipse_3205" data-name="Ellipse 3205" cx="1.825" cy="1.825" r="1.825" fill="url(#linear-gradient-2)"/>
+          </g>
+        </g>
+        <g id="Group_28247" data-name="Group 28247" transform="translate(0 8.807)">
+          <g id="Group_28246" data-name="Group 28246">
+            <circle id="Ellipse_3206" data-name="Ellipse 3206" cx="1.23" cy="1.23" r="1.23" fill="url(#linear-gradient-2)"/>
+          </g>
+        </g>
+        <g id="Group_28249" data-name="Group 28249" transform="translate(32.54 8.807)">
+          <g id="Group_28248" data-name="Group 28248">
+            <circle id="Ellipse_3207" data-name="Ellipse 3207" cx="1.23" cy="1.23" r="1.23" fill="url(#linear-gradient-2)"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

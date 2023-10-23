@@ -1,0 +1,134 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}Payment{% endblock title %}
+{% block content %}
+<script src="https://js.stripe.com/v3/"></script>
+{% include 'includes/ring-loader.html' %}
+<div class="wraper-inner">
+
+    <section class="page-head-sec">
+        <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+        <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+        <div class="container">
+            <div class="page-head-content">
+                <h4>Payment</h4>
+            </div>
+        </div>
+    </section>
+
+    <section class="cart-inner-block">
+        <div class="container">
+            <div class="row payment_pay">
+                <div class="col-md-8">
+                    <div class="cart-detail-blk">
+                        <div class="payments-select-blk">
+                            <button type="button" id="buy-btn" class="btn btn-primary mt-4">Pay $<span>{{ sub_total_with_shipping|floatformat:2 }}</span></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cart-summary-blk">
+                        {% if wallet_amount > 0 %}
+                        <div id="use-wallet-section" class="mb-3 pink-text">
+                            <input type="checkbox" id="wallet-amount" />
+                            <label for="wallet-amount">( ${{ wallet_amount }} ) Wallet Balance</label>
+                        </div>
+                        {% endif %}
+                        <h4>Your Order</h4>
+                        <ul class="cart-billing-details">
+                            <li>Sub Total <span>${{ sub_total }}</span></li>
+                            <li>
+                                Shipment Cost 
+                                <span>
+                                    {% if shipment_cost > 0 %}
+                                        ${{ shipment_cost }}
+                                    {% else %}
+                                        FREE
+                                    {% endif %}
+                                </span>
+                            </li>
+                            <div class="divider"></div>
+                            <li class="total">Total <span>${{ sub_total_with_shipping|floatformat:2 }}</span></li>
+                            <li class="js-if-wallet-checked" id="less-from-wallet">Amount Paid From Wallet <span>- $0</span></li>
+                            <li class="total js-if-wallet-checked" id="grand-total">Grand Total <span>$0</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock content %}
+
+{% block script %}
+    <script>
+        $(document).ready(function() {
+            $('.js-if-wallet-checked').hide()
+            $('#wallet-amount').on('change', function() {
+                $('#buy-btn span').text({{ sub_total_with_shipping }})
+                if(this.checked) {
+                    let walletAmount = parseFloat('{{ wallet_amount }}')
+                    let amountToPaid = parseFloat('{{ sub_total_with_shipping }}')
+
+                    if(walletAmount >= amountToPaid) {
+                        $('#less-from-wallet span').text(`-$${amountToPaid.toFixed(2)}`)
+                        $('#grand-total span').text(`$${0.00}`)
+                        $('#buy-btn span').text(0.00)
+                    } else {
+                        remainingAmount = amountToPaid - walletAmount
+                        $('#less-from-wallet span').text(`-$${walletAmount.toFixed(2)}`)
+                        $('#grand-total span').text(`$${remainingAmount.toFixed(2)}`)
+                        $('#buy-btn span').text(remainingAmount.toFixed(2))
+                    }
+                    $('.js-if-wallet-checked').show()
+                } else {
+                    $('.js-if-wallet-checked').hide()
+                }
+                
+            })
+        })
+    </script>
+    <script>
+        $('#loader').hide()
+        var DOMAIN = window.location.origin;
+        var stripe = Stripe("{{ STRIPE_PUB_KEY }}");
+    
+        // Handle any errors from Checkout
+        var handleResult = function (result) {
+          if (result.error) {
+            var displayError = document.getElementById("error-message");
+            displayError.textContent = result.error.message;
+          } 
+        };
+    
+        // Create a Checkout Session with the selected plan ID
+        var createCheckoutSession = function() {
+            $('#loader').show()
+          return fetch("{% url 'stripe_create_checkout_session' %}", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken":  '{{csrf_token}}',
+            },
+            body: JSON.stringify({
+                is_walled_selected: $('#wallet-amount').is(':checked')
+            })
+          }).then(function(result) {
+            $('#loader').hide()
+            return result.json();
+          });
+        };
+    
+        // Setup event handler to create a Checkout Session when button is clicked
+        document.getElementById("buy-btn").addEventListener("click", function (evt) {
+            createCheckoutSession().then(function(data) {
+                // Call Stripe.js method to redirect to the new Checkout page
+                if(data.is_wallet) {
+                    window.location.replace("{% url 'stripe_success' %}")
+                } else {
+                    stripe.redirectToCheckout({sessionId: data.sessionId}).then(handleResult);
+                }
+            });
+        });
+    </script>
+{% endblock script %}

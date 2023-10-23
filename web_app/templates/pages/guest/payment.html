@@ -1,0 +1,91 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}Guest Payment{% endblock title %}
+{% block content %}
+<script src="https://js.stripe.com/v3/"></script>
+{% include 'includes/ring-loader.html' %}
+<div class="wraper-inner">
+    <section class="page-head-sec">
+        <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+        <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+        <div class="container">
+            <div class="page-head-content">
+                <h4>Payment</h4>
+            </div>
+        </div>
+    </section>
+    <section class="cart-inner-block">
+        <div class="container">
+            <div class="row payment_pay">
+                <div class="col-md-8">
+                    <div class="cart-detail-blk">
+                        <div class="payments-select-blk">
+                            <button type="button" id="buy-btn" class="btn btn-primary mt-4">Pay $<span>{{ total_amount|floatformat:2 }}</span></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cart-summary-blk">
+                        <h4>Your Order</h4>
+                        <ul class="cart-billing-details">
+                            <li>Sub Total <span>${{ sub_total }}</span></li>
+                            <li>
+                                Shipment Cost 
+                                <span>
+                                    {% if shipment_cost > 0 %}
+                                        ${{ shipment_cost }}
+                                    {% else %}
+                                        FREE
+                                    {% endif %}
+                                </span>
+                            </li>
+                            {% comment %} <li>Tax Applied <span>${{ tax }}</span></li> {% endcomment %}
+                            <div class="divider"></div>
+                            <li class="total">Total <span>${{ total_amount|floatformat:2 }}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock content %}
+
+{% block script %}
+    <script>
+        $('#loader').hide()
+        var DOMAIN = window.location.origin;
+        var stripe = Stripe("{{ STRIPE_PUB_KEY }}");
+    
+        // Handle any errors from Checkout
+        var handleResult = function (result) {
+            if (result.error) {
+                var displayError = document.getElementById("error-message");
+                displayError.textContent = result.error.message;
+            }
+        };
+    
+        // Create a Checkout Session with the selected plan ID
+        var createCheckoutSession = function() {
+            $('#loader').show()
+            return fetch("{% url 'guest_user_create_checkout_session' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken":  '{{csrf_token}}',
+                },
+            }).then(function(result) {
+                $('#loader').hide()
+                return result.json();
+            });
+        };
+
+        // Setup event handler to create a Checkout Session when button is clicked
+        document.getElementById("buy-btn").addEventListener("click", function (evt) {
+            createCheckoutSession().then(function(data) {
+                // Call Stripe.js method to redirect to the new Checkout page
+                stripe.redirectToCheckout({sessionId: data.sessionId}).then(handleResult);
+            });
+        });
+    </script>
+{% endblock script %}

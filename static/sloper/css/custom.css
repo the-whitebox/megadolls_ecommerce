@@ -1,0 +1,120 @@
+#brush_id
+{
+	cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3Cpath d='M13.289 6.216l4.939-3.841a1 1 0 0 1 1.32.082l2.995 2.994a1 1 0 0 1 .082 1.321l-3.84 4.938a7.505 7.505 0 0 1-7.283 9.292C8 21.002 3.5 19.5 1 18c3.98-3 3.047-4.81 3.5-6.5 1.058-3.95 4.842-6.257 8.789-5.284zm3.413 1.879c.065.063.13.128.193.194l1.135 1.134 2.475-3.182-1.746-1.746-3.182 2.475 1.125 1.125z'/%3E%3C/svg%3E") 6 16, pointer !important;
+}
+#pencil_id
+{
+	cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3Cpath d='M9.243 19H21v2H3v-4.243l9.9-9.9 4.242 4.244L9.242 19zm5.07-13.556l2.122-2.122a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414l-2.122 2.121-4.242-4.242z'/%3E%3C/svg%3E") 4 20, pointer !important;
+}
+#eraser_id
+{
+	cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3Cpath d='M14 19h7v2h-9l-3.998.002-6.487-6.487a1 1 0 0 1 0-1.414L12.12 2.494a1 1 0 0 1 1.415 0l7.778 7.778a1 1 0 0 1 0 1.414L14 19zm1.657-4.485l3.535-3.536-6.364-6.364-3.535 3.536 6.364 6.364z'/%3E%3C/svg%3E") 4 20, pointer !important;
+}
+#hide_id
+{
+	cursor: default ;
+}
+.vertical-btn
+{
+	position: fixed;
+    top: 90px;
+    right: 200px;
+    margin-bottom: 0 auto;
+    display: grid;
+}
+.vertical-btn button
+{
+	padding:0 0 3 3;
+}
+.canvasOverBox1
+{
+	width: 521px;
+    height: 680px;
+    background-size: cover;
+    /*background-color: red;*/
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.color_pallet
+{
+	padding: 20px;
+	cursor: pointer;
+}
+#color_pallet1
+{
+	background-color: #fea3aa;
+	margin-right: 5px;
+}
+#color_pallet2
+{
+	background-color: #f8b88b;
+	margin-right: 5px;
+}
+#color_pallet3
+{
+	background-color: #faf884;
+	margin-right: 5px;
+
+}
+#color_pallet4
+{
+	background-color: #baed91;
+	margin-right: 5px;
+
+}
+#color_pallet5
+{
+	background-color: #b2cefe;
+	margin-right: 5px;
+
+}
+#color_pallet6
+{
+	background-color: #f2a2e8;
+	margin-right: 5px;
+
+}
+.water_color
+{
+	padding: 20px;
+	cursor: pointer;
+}
+#water_color1
+{
+	background-color: #0f5e9c;
+	margin-right: 5px;
+}
+#water_color2
+{
+	background-color: #2389da;
+	margin-right: 5px;
+}
+#water_color3
+{
+	background-color: #1ca3ec;
+	margin-right: 5px;
+
+}
+#water_color4
+{
+	background-color: #5abcd8;
+	margin-right: 5px;
+
+}
+#water_color5
+{
+	background-color: #74ccf4;
+	margin-right: 5px;
+
+}
+/* .custom-dashnav
+{
+	min-height: calc(40vh - 76px);
+    height: 27% !important;
+    z-index: -3;
+} */
+.custom-container
+{
+	/*margin-right: 0px !important;*/
+}

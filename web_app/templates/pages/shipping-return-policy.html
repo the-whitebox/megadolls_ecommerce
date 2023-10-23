@@ -1,0 +1,77 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}Shipping Return Policy{% endblock title %}
+{% block content %}
+<div class="wraper-inner">
+
+    <section class="cms-head-sec">
+        <img class="cms-head-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+        <img class="cms-head-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+        <div class="container">
+            <h4>Shipping and Return Policy</h4>
+        </div>
+    </section>
+
+    <section class="infos-sec">
+        <div class="container">
+            <div class="infos-content-box">
+                <p>At Megadolls, we strive to ship all orders in the fastest possible time. Shop from our online store for your favorite dolls, add to cart, and place your order. We will have them delivered to your desired destination as quickly as possible.</p>
+                <p>Standard delivery for orders of [Insert dollar] or more is Free. This means that the purchase total shall equal to or exceed the minimum order requirement. Moreover, delivery estimates can be viewed at checkout and commence on the next business day once the order is placed. Please note, business days include the weekdays (Monday to Friday). Standard delivery is made within three to seven days.</p>
+                <p>Furthermore, if you want the paper dolls to arrive faster, use our rush shipping delivery service. This is to ensure arrival by a specific date.</p>
+                <p></p>
+                <h5>SHIPPING</h5>
+                <p>Standard delivery is free for orders of $75 or more. Delivery estimates appear at checkout.</p>
+                <h5>Shipping Fees</h5>
+                <table class="table table table-striped text-center table-bordered">
+                    <tr>
+                        <td>Location</td>
+                        <td>Standard </td>
+                        <td>2 Day</td>
+                        <td>Overnight</td>
+                    </tr>
+                    <tr>
+                        <td>Continental US up to $75</td>
+                        <td>$7.95</td>
+                        <td>$12.95</td>
+                        <td>$22.95</td>
+                    </tr>
+                    <tr>
+                        <td>Continental US over $75</td>
+                        <td>FREE</td>
+                        <td>$14.95 </td>
+                        <td>$24.95</td>
+                    </tr>
+                    <tr>
+                        <td>Alaska / Hawaii up to $75</td>
+                        <td>$7.95</td>
+                        <td>$17.95</td>
+                        <td>$27.95</td>
+                    </tr>
+                    <tr>
+                        <td>Alaska / Hawaii over $75</td>
+                        <td>FREE</td>
+                        <td>$19.95</td>
+                        <td>$29.95</td>
+                    </tr>
+                </table>
+                <p>*Shipping rates subject to change without notice.</p>
+                <p>At Megadolls, we aim to offer fast shipping to all clients. However, the shipping time may vary subject to factors like:</p>
+                <ul>
+                    <li>Availability</li>
+                    <li>Payment receipt</li>
+                    <li>Credit authorization</li>
+                </ul>
+                <h4>Payment</h4>
+                <p>For your convenience we accept all major credit cards including VISA, MasterCard, American Express and Discover.</p>
+                <h4>Delivery Tracking</h4>
+                <p>Once your order is confirmed and shipped, we will send you a confirmation email. This email contains the order tracking number and the information of the parcel carrier handling your order shipment. Hence, all you have to do I click on their link and insert your order number to track where it is and when it will be delivered.</p>
+                <p>However, if you need more information, feel free to reach out to us. We are here to assist you with all your needs.</p>
+                <h4>Refund Policy</h4>
+                <p>At Megadolls, we don’t offer a refund on products shipped to customers. This is because of the nature of our product.  However, you can always send an email to us if you have any trouble with the item shipped. </p>
+            </div>
+        </div>
+    </section>
+    
+</div>
+
+{% endblock content %}

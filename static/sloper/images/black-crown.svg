@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50" height="50" viewBox="0 0 50 50">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#030303"/>
+      <stop offset="1"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" y1="0.5" x2="1" y2="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#6f6f6f"/>
+      <stop offset="0.362"/>
+      <stop offset="0.695"/>
+      <stop offset="1" stop-color="#888"/>
+    </linearGradient>
+  </defs>
+  <g id="black-crown" transform="translate(-74.779 19.999)">
+    <g id="Group_28251" data-name="Group 28251" transform="translate(74.779 -19.999)">
+      <circle id="Ellipse_3208" data-name="Ellipse 3208" cx="25" cy="25" r="25" fill="url(#linear-gradient)"/>
+      <circle id="Ellipse_3202" data-name="Ellipse 3202" cx="23" cy="23" r="23" transform="translate(2 2)" fill="#fcfcfc"/>
+      <g id="crown_2_" data-name="crown(2)" transform="translate(7 11)">
+        <g id="Layer_1_17_" transform="translate(0 0)">
+          <g id="Group_28250" data-name="Group 28250">
+            <g id="Group_28239" data-name="Group 28239" transform="translate(2.556 5.377)">
+              <g id="Group_28238" data-name="Group 28238">
+                <path id="Path_19955" data-name="Path 19955" d="M36.3,31.058c-1.864,1.337-4.479,3.114-5.659,3.114a.4.4,0,0,1-.363-.137c-.482-.594-.351-2.676.388-6.187a.74.74,0,0,0-1.339-.566c-2.546,3.8-3.712,4.592-4.24,4.592-.75,0-1.511-2.156-2.267-6.409a.738.738,0,0,0-.687-.606v0l-.021,0-.022,0v0a.739.739,0,0,0-.686.606c-.757,4.253-1.519,6.409-2.268,6.409-.529,0-1.694-.8-4.239-4.592a.741.741,0,0,0-1.339.566c.739,3.511.871,5.593.388,6.187-.053.067-.13.137-.363.137-1.18,0-3.8-1.777-5.66-3.114a.741.741,0,0,0-1.033,1.034A17.133,17.133,0,0,1,10.347,43.8a1.514,1.514,0,0,0-.024.269c0,1.537,2.152,2.145,4.027,2.5a43.4,43.4,0,0,0,7.676.624h.167a43.454,43.454,0,0,0,7.675-.624c1.875-.358,4.027-.968,4.027-2.5a1.517,1.517,0,0,0-.024-.269,17.135,17.135,0,0,1,3.46-11.708A.741.741,0,0,0,36.3,31.058ZM22.192,45.075h-.167a31.535,31.535,0,0,1-8.97-1.006,31.487,31.487,0,0,1,8.97-1.007h.166a31.488,31.488,0,0,1,8.97,1.007A31.525,31.525,0,0,1,22.192,45.075Z" transform="translate(-6.748 -24.855)" fill="url(#linear-gradient-2)"/>
+              </g>
+            </g>
+            <g id="Group_28241" data-name="Group 28241" transform="translate(15.676)">
+              <g id="Group_28240" data-name="Group 28240">
+                <circle id="Ellipse_3203" data-name="Ellipse 3203" cx="2.24" cy="2.24" r="2.24" fill="url(#linear-gradient-2)"/>
+              </g>
+            </g>
+            <g id="Group_28243" data-name="Group 28243" transform="translate(6.595 3.08)">
+              <g id="Group_28242" data-name="Group 28242">
+                <circle id="Ellipse_3204" data-name="Ellipse 3204" cx="1.867" cy="1.867" r="1.867" fill="url(#linear-gradient-2)"/>
+              </g>
+            </g>
+            <g id="Group_28245" data-name="Group 28245" transform="translate(25.35 3.08)">
+              <g id="Group_28244" data-name="Group 28244">
+                <circle id="Ellipse_3205" data-name="Ellipse 3205" cx="1.867" cy="1.867" r="1.867" fill="url(#linear-gradient-2)"/>
+              </g>
+            </g>
+            <g id="Group_28247" data-name="Group 28247" transform="translate(0 9.006)">
+              <g id="Group_28246" data-name="Group 28246">
+                <circle id="Ellipse_3206" data-name="Ellipse 3206" cx="1.258" cy="1.258" r="1.258" fill="url(#linear-gradient-2)"/>
+              </g>
+            </g>
+            <g id="Group_28249" data-name="Group 28249" transform="translate(33.277 9.006)">
+              <g id="Group_28248" data-name="Group 28248">
+                <circle id="Ellipse_3207" data-name="Ellipse 3207" cx="1.258" cy="1.258" r="1.258" fill="url(#linear-gradient-2)"/>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

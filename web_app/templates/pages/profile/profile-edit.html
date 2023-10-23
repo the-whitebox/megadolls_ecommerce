@@ -1,0 +1,140 @@
+{% extends 'web_app_base.html' %}
+{% include 'includes/head.html' %}
+{% load static %}
+{% block title %}Edit Profile{% endblock title %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'adminpanel/intl-tel-input-master/build/css/intlTelInput.css' %}">
+<div class="wraper-inner">
+    <section class="page-head-sec">
+        <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+        <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+        <div class="container">
+            <div class="page-head-content">
+                <h4>My Account</h4>
+            </div>
+        </div>
+    </section>
+    <section class="shops-list-sec pt-5">
+        <div class="container">
+            <div class="my-account account-subscription">
+                {% include 'includes/my-account/left-sidebar.html' %}
+                <div class="my-account-R">
+                    <div class="row">
+                        <div class="row justify-content-center">
+                            <div class="col-md-6">
+                                <form role="form" method="POST" class="mt-5 mb-5 login-input"
+                                    enctype="multipart/form-data" id="myForm">
+                                    {% csrf_token %}
+                                    <div class="profie-info-detail">
+                                        <div class="profie-info-image profile-upload">
+                                            {% if request.user.profile_img %}
+                                            <figure><img src="{{ request.user.profile_img.url }}" alt="Avatar"></figure>
+                                            {% else %}
+                                            <figure><img src="{% static 'web_app/images/faces/1.jpg' %}" alt="Avatar"></figure>
+                                            {% endif %}
+                                            <button type="button" class="btn edit-btn">
+                                                <input name="user_img" type="file"
+                                                    accept="image/png, image/jpeg, image/jpg" id="file">
+                                                <label for="file"><i class="ri-pencil-line"></i></label>
+                                            </button>
+                                        </div>
+                                    </div>
+                                   {% comment %} <p style="text-align: center;" >Recommended Image Size: 183 x 183</p> {% endcomment %}
+                                    <div class="form-group">
+                                        <label for="name">Name</label>
+                                        <input class="form-control" id="name" name="user_name" value="{{ user.name }}" placeholder="Name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="dob">Date of Birthday</label>
+                                        <input class="form-control" id="dob" type="date" name="birthday"
+                                            value="{{ bio_data.birthday|date:'Y-m-d' }}">
+                                    </div>
+                                        <div class="form-group">
+                                            <label for="mob-code">Mobile Number</label>
+                                            <div class="position-relative">
+                                                <input type="hidden" name="country_code" id="country-code" value="{{ user.country_code }}" readonly>
+                                                <input type="tel" id="mob-code" {% if user.mobile %} value="{{ user.mobile }}" {% else %} value="" {% endif %} class="form-control"
+                                                    placeholder="Enter Mobile Number" name="mobile" required>
+                                            </div>
+                                        </div>
+                                    <div class="form-group">
+                                        <label for="user_bio">Bio</label>
+                                        <textarea class="form-control" id="user_bio" name="user_bio"
+                                            placeholder="Bio" required>{{ bio }}</textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock content %}
+{% block script %}
+<script src="{% static 'adminpanel/intl-tel-input-master/build/js/intlTelInput.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+
+        $.validator.addMethod("noSpace", function(value, element) { 
+        return !value.startsWith(" ") && value != ""; 
+        }, "No space please and don't leave it empty")
+
+        $.validator.addMethod("extension",function(a,b,c){
+        return c="string"==typeof c?c.replace(/,/g,"|"):"png|jpe?g",this.optional(b)||a.match(new RegExp("\\.("+c+")$","i"))},
+        $.validator.format("Only Accept image type png, jpg, jpeg")),
+
+        $("#myForm").validate({
+            rules: {
+                mobile: {
+                    maxlength: 15,
+                    digits: true,
+                    noSpace: true
+                },
+                user_name: {
+                    noSpace: true
+                },
+                user_img: {
+                    extension: true
+                },
+                user_bio: {
+                    noSpace: true
+                }
+            },
+        submitHandler: function (form) {
+            addCountryCodeToFrom();
+            form.submit()
+        }
+        });
+        $(document).on("change", "#file", function (e) {
+            const files = e.target.files
+            const filesLength = files.length
+            const f = files[0]
+            const fileReader = new FileReader();
+            fileReader.onload = (function (event) {
+                const file = event.target;
+                $('.profile-upload figure img').attr('src', file.result)
+            });
+            fileReader.readAsDataURL(f);
+        });
+    })
+</script>
+<script>
+    $(document).ready(function() {
+        mobile_number = $('#mob-code').val() 
+        dial_code = $('#country-code').val() 
+        let flag = $(`[data-dial-code='${dial_code}']`) 
+        country_code = flag.data('country-code') 
+        $('.iti__selected-flag').children('div').addClass(`iti__${country_code}`)
+    })
+
+    const input = document.querySelector("#mob-code");
+    const inst = window.intlTelInput(input, ({}));
+    function addCountryCodeToFrom() {
+        let information = inst.getSelectedCountryData()['dialCode'];
+        $('#country-code').val(information);
+    }
+</script>
+{% endblock script %}

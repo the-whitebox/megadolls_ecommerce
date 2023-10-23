@@ -1,0 +1,301 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+
+{% block meta %}
+<meta property="og:title" content="{{ image.imagine_product.og_title }}" />
+{% if image.og_img %}
+<meta property="og:image" content="{{ image.og_img.url }}" />
+{% endif %}
+<meta property="og:description" content="{{ image.imagine_product.og_description|striptags }}">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ image.imagine_product.og_title }}">
+<meta name="twitter:description" content="{{ image.imagine_product.og_description|striptags }}">
+{% endblock meta %}
+
+{% block title %} Imagine {% endblock title %}
+{% block content %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" rel="stylesheet" />
+{% include 'includes/ring-loader.html' %}
+
+<div class="wraper-inner">
+
+    <section class="product-detail-sec">
+        <div class="container">
+            <div class="breadcrumb-blk">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                        {% if product.dress_type %}
+                            <li class="breadcrumb-item"><a href="{% url 'create' %}">Create</a></li>
+                        {% else %}
+                            <li class="breadcrumb-item"><a href="{% url 'play' %}">Play</a></li>
+                        {% endif %}
+                        <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+
+                    </ol>
+                </nav>
+            </div>
+            <div class="product-detail-infos mb-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="product-sliders module-gallery module-12345">
+                            <div class="maxWidth900 padLR15">
+                                <div class="padTB20">
+                                    <div class="slider-wrapper">
+                                        <ul class="slider-preview noPad noMar">
+                                            <li class="type-image"><img src="{{ image.primary_img.url }}"></li>
+                                            {% for i in image_list %}
+                                            <li class="type-image"><img src="{{i.images.url}}"></li>
+                                            {% endfor %}
+                                        </ul>
+                                       {% comment %}<ul class="slider-thumb noPad noMar">
+                                            <li class="type-image"><img src="{{ image.primary_img.url }}"></li>
+                                            {% for i in image_list %}
+                                            <li class="type-image"><img src="{{ i.images.url }}"></li>
+                                            {% endfor %}
+                                        </ul>{% endcomment %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="product-detail-content">
+                            <div class="product-title">{{ product.name }}</div>
+                            <div class="product-detail-category">{{ product.subcategory.name }}</div>
+                            <div class="product-detail-actions">
+                                {% if request.user.is_authenticated %}
+                                    <button class="btn btn-primary" id="download-pdf">
+                                        <i class="ri-download-line"></i>
+                                        Download PDF
+                                    </button>
+                                {% else %}
+                                    <button class="btn btn-primary login-required">
+                                        <i class="ri-download-line"></i>
+                                        Download PDF
+                                    </button>
+                                {% endif %}
+                                {% if request.user.is_authenticated %}
+                                    {% if favorite_product %}
+                                        <button type="button" id="remove-to-favorite-create-detail" class="btn btn-primary no-bg"><i class="ri-heart-fill"></i> <span id="toggle-favorite-text">Remove from Favorite</span></button>
+                                    {% else %}
+                                        <button type="button" id="add-to-favorite-create-detail" class="btn btn-primary no-bg"><i class="ri-heart-line"></i> <span id="toggle-favorite-text">Add to Favorite</span></button>
+                                    {% endif %}
+                                {% else %}
+                                    <button type="button" class="btn btn-primary no-bg login-required"><i class="ri-heart-line"></i> <span>Add to Favorite</span></button>
+                                {% endif %}
+                            </div>
+                            <div class="product-detail-text">
+                                {% comment %} <h4>Design, Personalize, and Play</h4>
+                                <p>Cultivate your fashion skills, sketch, and embellish to create an outfit for your
+                                    doll. Use ribbons, decorative papers, stickers, or dry flowers to complete this
+                                    piece.</p> {% endcomment %}
+                                {{ product.description|safe }}
+                            </div>
+                            {% if request.user.is_authenticated %}
+                                <button type="button" class="btn btn-primary outline mb-4" data-bs-toggle="modal" data-bs-target="#forgot-password">
+                                    <i class="ri-printer-line"></i>
+                                    Instructions for Download and Print
+                                </button>
+                            {% else %}
+                                <button type="button" class="btn btn-primary outline mb-4 login-required">
+                                    <i class="ri-printer-line"></i>
+                                    Instructions for Download and Print
+                                </button>
+                            {% endif %}
+                            <div class="product-note"><i class="ri-information-line"></i> Colors You See In The Monitor
+                                May Differ Slightly From The Actual Product.</div>
+                            <div class="product-share">
+                                <p>Share</p>
+                                <ul class="social-share" style="position: unset;">
+                                    <li class="facebook">
+                                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ site_url }}imagine_detail/{{product.slug }}/" target="_blank"><i class="ri-facebook-fill"></i></a>
+                                    </li>
+                                    <li class="twitter">
+                                        <a href="https://twitter.com/intent/tweet?url={{ site_url }}imagine_detail/{{ product.slug }}/" target="_blank"><i class="ri-twitter-fill"></i></a>
+                                    </li>
+                                    <li class="linkedin">
+                                        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ site_url }}imagine_detail/{{product.slug }}/" target="_blank"><i class="ri-linkedin-fill"></i></a>
+                                    </li>
+                                   
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% comment %} <div class="product-detail-description">
+                <h4>Description</h4>
+                <p>{{ product.description|safe }}</p>
+            </div> {% endcomment %}
+        </div>
+    </section>
+
+    {% if related_products %}
+    <section class="products-sec bg-primary-light-2 mb-5">
+        <div class="container">
+            <div class="sec-head">
+                <h4>Related Items</h4>
+                <!-- <a href="javascript:void(0);" class="btn btn-primary">View All <i class="ri-arrow-right-s-line"></i></a> -->
+            </div>
+            <div class="row">
+                {% for related_product in related_products %}
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="product-item">
+                        <a href="javascript:void(0);" class="btn btn-primary-light btn-square product-share-btn"><i
+                                class="ri-share-line"></i></a>
+                        <div class="product-slider owl-carousel owl-theme">
+                            {% for related_product_img in related_product_imgs %}
+                            {% for related_img in related_product_img_list  %}
+                            {% if related_img.shop_product_image_id == related_product_img.id and related_product.id == related_product_img.shop_product_id %}
+                            <div class="item">
+                                <div class="product-slider-item">
+                                    <img src="{{ related_img.images.url }}">
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                            {% endfor %}
+                        </div>
+                        <div class="product-item-content">
+                            <h6 class="product-category">{{ related_product.subcategory.name }}</h6>
+                            <h5 class="product-name"><a href="javascript:void(0);">{{ related_product.name }}</a></h5>
+                            <span class="product-rating">
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-line"></i>
+                            </span>
+                            <h4 class="product-price">
+                                {{ related_product.original_price }}
+                            </h4>
+                            <div class="product-actions">
+                                <a href="javascript:void(0);" class="btn btn-primary-light btn-square"><i
+                                        class="ri-heart-line"></i></a>
+                                <a href="javascript:void(0);" class="btn btn-primary"><i
+                                        class="ri-shopping-cart-2-line"></i> Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% comment %} {% include 'includes/featured_and_download.html' %} {% endcomment %}
+</div>
+
+<div class="modal-status download-inst-md modal fade" id="forgot-password" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><img
+                        src="{% static 'web_app/images/modal-close-icon.svg' %}"></button>
+            </div>
+            <div class="modal-body">
+                <div class="download-instructions-block">
+                    <img class="logo-icon" src="{% static 'web_app/images/logo.png' %}">
+                    <h4>Instructions For Download & Print</h4>
+                    <h5><i class="ri-download-line"></i> Free Dress Download</h5>
+                    <p>After purchasing a doll or our Crate Subscription, create a profile account. Once your
+                        registration is confirmed, you can monitor your child’s account activity, including orders,
+                        downloads, and files.</p>
+                    <p>While we have limits on when and how many times you can download daily, you can access dresses
+                        already on your “Download” page at any time. Previously downloaded dresses remained in your
+                        account.</p>
+                    <hr>
+                    <h5><i class="ri-printer-line"></i> For Print</h5>
+                    <p>Make sure you follow the settings mentioned below for best results:</p>
+                    <ul class="mb-4">
+                        <li><span>Size :</span> Letter</li>
+                        <li><span>Paper type :</span> Plain Paper</li>
+                        <li><span>Photo Size :</span> Full Page (be sure to select this option, instead of “Fit to
+                            Page”)</li>
+                        <li><span>Page Margins:</span> Normal</li>
+                    </ul>
+                    <p>For the best printing results, we recommend 32 lb. 100 Bright Paper.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+{% block script %}
+<script>
+    $('#loader').hide()
+    $('.login-required').on('click', function() {
+        myToast("Sign In or Create an Account", ERROR_BG, "{% url 'web_login' %}")
+    })
+
+    $(document).on('click', '#add-to-favorite-create-detail', function() {
+        const thisEle = $(this)
+        $.ajax({
+            url: "{% url 'add_to_favorite_create_detail' product.id %}",
+            success: function(response) {
+                bg_color = response.status ? SUCCESS_BG : ERROR_BG;
+                myToast(response.message, bg_color)
+                thisEle.attr('id', 'remove-to-favorite-create-detail')
+                thisEle.find('i').removeClass('ri-heart-line')
+                thisEle.find('i').addClass('ri-heart-fill')
+                thisEle.find('#toggle-favorite-text').text('Remove from Favorite')
+            }
+        })
+    })
+
+    $(document).on('click', '#remove-to-favorite-create-detail', function() {
+        const thisEle = $(this)
+        $.ajax({
+            url: "{% url 'remove_to_favorite_create_detail' product.id %}",
+            success: function(response) {
+                bg_color = response.status ? SUCCESS_BG : ERROR_BG;
+                myToast(response.message, bg_color)
+                thisEle.attr('id', 'add-to-favorite-create-detail')
+                thisEle.find('i').removeClass('ri-heart-fill')
+                thisEle.find('i').addClass('ri-heart-line')
+                thisEle.find('#toggle-favorite-text').text('Add to Favorite')
+            }
+        })
+    })
+    $('#download-pdf').on('click', function () {
+        {% if request.user.is_authenticated %}
+        $('#loader').show()
+        $.ajax({
+            url: "{% url 'download_count_increment' %}",
+            success: (response) => {
+                if(response.success) {
+                    $.ajax({
+                        url: "{{ image.pdf_img.url }}",
+                        xhrFields: {
+                            responseType: 'blob'
+                        },
+                        success: function (data) {
+                            const a = document.createElement('a');
+                            const url = window.URL.createObjectURL(data);
+                            a.href = url;
+                            a.download = 'instruction.pdf';
+                            document.body.append(a);
+                            a.click();
+                            a.remove();
+                            window.URL.revokeObjectURL(url);
+                            myToast(response.message, SUCCESS_BG,)
+                            $('#loader').hide()
+                        }
+                    });
+                } else {
+                    myToast(response.message, ERROR_BG,)
+                    $('#loader').hide()
+                }
+            }
+        })
+        {% else %}
+        myToast("You Can Only Download 1 Doll Daily", ERROR_BG,)
+        {% endif %}
+    });
+</script>
+{% endblock script %}

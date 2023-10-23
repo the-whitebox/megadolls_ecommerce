@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+<link rel="stylesheet" href="{% static 'adminpanel/intl-tel-input-master/build/css/intlTelInput.css' %}">
+{% endblock css %}
+
+{% block content%}
+
+{% url 'view_users' as view_users %}
+{% include "includes/section.html" with page_title="Add Customer" btn_url=view_users btn_text="Back" %}
+
+<section id="basic-vertical-layouts">
+    <div class="row match-height m-auto">
+        <div class="col-md-12 col-12 p-0">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <form class="form form-vertical" method="POST" id="myForm">
+                            {% csrf_token %}
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="name">Customer Name</label>
+                                            <div class="position-relative">
+                                                <input type="text" class="form-control" id="name" placeholder="Enter Customer Name" name="name"
+                                                    required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <div class="position-relative">
+                                                <input type="text" class="form-control" id="email" placeholder="Email" name="email" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="mob-code">Mobile Number</label>
+                                            <div class="position-relative">
+                                                <input type="hidden" name="country_code" id="country-code" readonly>
+                                                <input type="text" id="mob-code" class="form-control"
+                                                    placeholder="Mobile" name="mobile_number" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <button type="submit" id="formSubmit"
+                                            class="btn btn-primary me-1 mx -3 mb-1 show-loader">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content%}
+{% block script %}
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+<script src="{% static 'adminpanel/intl-tel-input-master/build/js/intlTelInput.min.js' %}"></script>
+<script>
+    const input = document.querySelector("#mob-code");
+    const inst = window.intlTelInput(input, ({}));
+    function addCountryCodeToFrom() {
+        let information = inst.getSelectedCountryData()['dialCode'];
+        $('#country-code').val(information);
+
+    };
+    // $('#formSubmit').on('click', function (e) {
+    //     e.preventDefault()
+    //     let id = $(this).data('id')
+    //     Swal.fire({
+    //         title: 'Add User',
+    //         text: 'Are You Sure ?',
+    //         confirmButtonColor: 'rgb(225, 0, 127)',
+    //         showCancelButton: true,
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
+    //             addCountryCodeToFrom()
+    //         }
+    //     })
+    // })
+</script>
+<script>
+     $.validator.addMethod("noSpace", function(value, element) { 
+        return !value.startsWith(" ") && value != ""; 
+    }, "No space please and don't leave it empty")
+    $(document).ready(function () {
+        $("#myForm").validate({
+            rules: {
+                mobile_number: {
+                    number: true,
+                    maxlength: 12
+                },
+                name: {
+                    required: true,
+                    noSpace: true
+                },
+                email: {
+                    required: true,
+                    noSpace: true
+                }
+            },
+            submitHandler: function (form) {
+                let id = $(this).data('id')
+                Swal.fire({
+                    title: 'Add User',
+                    text: 'Are You Sure ?',
+                    confirmButtonColor: 'rgb(225, 0, 127)',
+                    showCancelButton: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        addCountryCodeToFrom()
+                        form.submit();
+
+                    }
+                })
+            }
+        });
+    })
+</script>
+{% endblock script %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock title %}
+{% load static %}
+
+{% block css %}
+<style>
+    .error {
+        color: red
+    }
+</style>
+{% endblock css %}
+
+{% block content %}
+
+{% url 'view_reviews' as view_reviews %}
+{% include "includes/section.html" with page_title="View Reviews Details" btn_url=view_reviews btn_text="Back" %}
+
+
+<main class="main content-wrapper container">
+    <section class="section profile">
+            <div class="col-xl-8">
+                <div class="card">
+                    <div class="card-body pt-3">
+                        <ul class="nav nav-tabs nav-tabs-bordered text-center">
+                            <li class="nav-item">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Reviews & Rating Details</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content pt-4">
+                            <div class="tab-pane fade show active profile-overview" id="review-overview">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">User Name</div>
+                                    <div class="col-lg-9 col-md-8">: {{reviewdetaildata.user.name }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Shop Product</div>
+                                    <div class="col-lg-9 col-md-8">: {{ reviewdetaildata.shopproduct.name }}</div>
+                                </div> 
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Review</div>
+                                    <div class="col-lg-9 col-md-8">: {{ reviewdetaildata.user_review|safe }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Rating</div>
+                                    <div class="col-lg-9 col-md-8">: {{ reviewdetaildata.rating }}</div>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock content %}
+
+{% block script %}
+{% endblock script %}

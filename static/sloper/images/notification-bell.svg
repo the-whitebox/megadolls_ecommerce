@@ -1,0 +1,4 @@
+<svg id="notification-bell" xmlns="http://www.w3.org/2000/svg" width="50.298" height="50.298" viewBox="0 0 50.298 50.298">
+  <path id="Path_17794" data-name="Path 17794" d="M25.149,0A25.149,25.149,0,1,1,0,25.149,25.149,25.149,0,0,1,25.149,0Z" fill="#85dee2"/>
+  <path id="Icon_material-notifications-active" data-name="Icon material-notifications-active" d="M23.363,15.213c0-4.14-2.212-7.606-6.069-8.523V5.773a2.023,2.023,0,1,0-4.046,0V6.69c-3.871.917-6.069,4.37-6.069,8.523v6.743l-2.7,2.7V26H26.061V24.654l-2.7-2.7ZM15.271,30.048a2.363,2.363,0,0,0,.539-.054A2.736,2.736,0,0,0,17.753,28.4a2.708,2.708,0,0,0,.2-1.052H12.561A2.717,2.717,0,0,0,15.271,30.048Z" transform="translate(10.078 8.163)" fill="#fff"/>
+</svg>

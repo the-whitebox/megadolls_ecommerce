@@ -1,0 +1,92 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}Guest User Order Confirmation{% endblock title %}
+{% block content %}
+
+<div class="wraper-inner">
+    <section class="page-head-sec">
+        <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+        <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+        <div class="container">
+            <div class="page-head-content">
+                <h4>Order Confirmation</h4>
+            </div>
+        </div>
+    </section>
+    <section class="cart-inner-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="cart-detail-blk">
+                        <h4 class="heading-title">Thank you for your Order</h4>
+                        <p>The Megadolls team would like to thank you for shopping with us. Our brand was created to empower boys and girls around the world.</p>
+                        <hr>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="order-detail">
+                                    <h4>Ship To</h4>
+                                    <h5>{{ shipping_address.area_name }}</h5>
+                                    <p>{{ shipping_address.city }}, {{ shipping_address.state }} {{ shipping_address.zipcode }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="order-detail">
+                                    <h4>Bill to</h4>
+                                    <h5>{{ shipping_address.area_name }}</h5>
+                                    <p>{{ shipping_address.city }}, {{ shipping_address.state }} {{ shipping_address.zipcode }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="order-detail">
+                                    <h4>Order number</h4>
+                                    <h5>#{{ order_id }}</h5>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="order-detail">
+                                    <h4>Order date</h4>
+                                    <h5>{{ order_at|date:"m/d/Y" }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{% url 'home' %}" class="btn btn-primary">Continue Shopping</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cart-summary-blk">
+                        <h4>Order Summary</h4>
+                        <ul class="cart-billing-details">
+                            <li>
+                                <div class="order-summery-item">
+                                    <div class="order-summery-item-info">
+                                        <h4>Sub Total</h4>
+                                    </div>
+                                    <p>${{ sub_total }}</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="order-summery-item">
+                                    <div class="order-summery-item-info">
+                                        <h4>Tax Applied</h4>
+                                    </div>
+                                    <p>${{ tax }}</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="order-summery-item">
+                                    <div class="order-summery-item-info">
+                                        <h4>Shipping Cost</h4>
+                                    </div>
+                                    <p>${{ shipment_cost }}</p>
+                                </div>
+                            </li>
+                            <div class="divider"></div>
+                            <li class="total">Grand Total <span>${{ total_amount|floatformat:2 }}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock content %}

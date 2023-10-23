@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+{% endblock css %}
+
+{% block content%}
+
+{% url 'view_terms' as view_terms %}
+{% include "includes/section.html" with page_title="Add Terms & Conditions " btn_url=view_terms btn_text="Back" %}
+
+<section class="section">
+    <div class="row w-100">
+        <div class="col-12">
+            <div class="card">
+                <form method="POST" class="card-body" id="myForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Title</label>
+                            <textarea value="" name="title" required></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea value="" name="description" required></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12 d-flex justify-content-end mt-3">
+                        <button type="submit" class="btn btn-primary me-1 mb-1" id="formSubmit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content%}
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.19.1/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('title');
+    CKEDITOR.replace('description');
+</script>
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script>
+    $('#formSubmit').on('click', function (e) {
+        e.preventDefault()
+        let id = $(this).data('id')
+        Swal.fire({
+            title: 'Add Terms & Condition',
+            text: 'Are You Sure ?',
+            confirmButtonColor: 'rgb(225, 0, 127)',
+            showCancelButton: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $("#myForm").submit();
+            }
+        })
+    })
+</script>
+{% endblock script %}

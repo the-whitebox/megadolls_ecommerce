@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'adminpanel/image-preview/image-preview.css' %}">
+{% endblock css %}
+{% block content %}
+
+{% url 'shero_dolls' as view_shop_products %}
+{% include "includes/section.html" with page_title="Edit Shero Dolls" btn_url=view_shop_products btn_text="Back" %}
+
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <form method="POST" class="row" id="myForm" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Name</label>
+                                        <input type="text"  value="{{ shero_dolls.shero_dolls.name }}" class="form-control" placeholder="Name" name="name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="monthSelect">Month</label>
+                                        <select class="form-select" id="monthSelect" name="month" required>
+                                            {% for month in months_list %}
+                                            <option value="{{ month }}" {% if month == shero_dolls.shero_dolls.month %} selected {% endif %}>{{ month }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="yearSelect">Year</label>
+                                        <select class="form-select" id="yearSelect" name="year" required>
+                                            {% for year in years_list %}
+                                            <option value="{{ year }}" {% if year == shero_dolls.shero_dolls.year %} selected {% endif %}>{{ year }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        {% comment %} <input type="text"  value="{{ shero_dolls.shero_dolls.year }}" class="form-control" placeholder="Year" name="year" required> {% endcomment %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Claim to Fame</label>
+                                        <input type="text"  value="{{ shero_dolls.shero_dolls.claim_to_fame }}" class="form-control" placeholder="Claim to Fame" name="claim_to_fame" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Original Price</label>
+                                        <input type="text" value="{{ shero_dolls.shero_dolls.original_price }}" class="form-control" placeholder="Original Price"
+                                            name="original_price" id="original_price" required>
+                                    </div>
+                                </div>
+                                {% comment %}<div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Offer Price</label>
+                                        <input type="text" value="{{ shero_dolls.shero_dolls.offer_price }}" class="form-control" placeholder="Offer Price"
+                                            name="offer_price" id="offer_price">
+                                    </div>{% endcomment %}
+                                {% comment %} </div> {% endcomment %}
+                                <div class="col-md-6 form-group">
+                                    <label>Quantity</label>
+                                    <input type="text" value="{{ shero_dolls.shero_dolls.quantity }}" class="form-control" placeholder="Quantity" name="quantity"
+                                        required>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Country</label>
+                                    <select class="form-select" name="country" required>
+                                        {% for country in countries %}
+                                        <option value="{{ country.id }}" {% if country.id == shero_dolls.shero_dolls.country.id  %} selected {% endif %}>{{ country.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>                             
+                                <div class="col-md-6 form-group">
+                                    <label>Status</label>
+                                    <select class="form-select" name="status" required>
+                                        <option value="">Please Select</option>
+                                        <option value="True" {% if shero_dolls.shero_dolls.is_active %} selected {% endif %}>
+                                            Active
+                                        </option>
+                                        <option value="False" {% if not shero_dolls.shero_dolls.is_active %} selected {% endif %}>Deactive</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Og Title</label>
+                                        <input type="text" class="form-control" value="{{shero_dolls.shero_dolls.og_title}}" name="og_title" required>
+                                    </div>
+                                </div>  
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Og Discription</label>
+                                        <input type="text" class="form-control" value="{{shero_dolls.shero_dolls.og_description}}" name="og_description" required>
+                                    </div>
+                                </div>  
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Primary Image</label>
+                                        <input type="file" class="form-control" name="primary_image" data-allow-reorder="true" accept="image/png, image/gif, image/jpeg"
+                                        id="primary_image_file" onchange="image_preview('primary_image_file', 'primary_image', event)">
+                                        <span class="primary_image">
+                                            {% if shero_dolls.primary_img %}
+                                            <img class="imageThumb" src="{{ shero_dolls.primary_img.url }}" />
+                                            <br />
+                                            {% else %}
+                                            <p>No Image</p>
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Og Image</label>
+                                        <input type="file" class="form-control" name="og_image" data-allow-reorder="true" accept="image/png, image/gif, image/jpeg" id="og_image_file" onchange="image_preview('og_image_file', 'og_image', event)">
+                                        <span class="og_image">
+                                            {% if shero_dolls.og_img %}
+                                            <img class="imageThumb" src="{{ shero_dolls.og_img.url }}" />
+                                            <br />
+                                            {% else %}
+                                            <p>No Image</p>
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Images <small>(max: 5)</small></label>
+                                        <input type="file" id="files" class="form-control" name="giftcard_type_images" accept="image/png, image/gif, image/jpeg"  multiple />
+                                        {% for dolls_image in shero_dolls_image %}
+                                            <span class="pip">
+                                                {% if dolls_image.images %}
+                                                <img class="imageThumb" src="{{ dolls_image.images.url }}" />
+                                                <br />
+                                                <span class="remove" data-id="{{ dolls_image.id }}">x</span>
+                                                {% else %}
+                                                <p>No Image</p>
+                                                {% endif %}
+                                            </span>
+                                        {% endfor %}
+                                    </div> 
+                                </div>
+                            </div>
+                            <div class="col-md-12" id="notes">
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <textarea name="editor">{{ shero_dolls.shero_dolls.description }}</textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12" id="notes">
+                                <div class="form-group">
+                                    <label>Features</label>
+                                    <textarea name="features">{{ shero_dolls.shero_dolls.features }}</textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <button id="formSubmit" class="btn btn-primary me-1 mb-1 float-end">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.19.1/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('editor');
+    CKEDITOR.replace('features');
+</script>
+<script src="{% static 'adminpanel/vendors/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+<script>
+    $.validator.addMethod("noSpace", function(value, element) { 
+        return !value.startsWith(" ") && value != ""; 
+    }, "No space please and don't leave it empty")
+
+    $.validator.addMethod("extension",function(a,b,c){
+        return c="string"==typeof c?c.replace(/,/g,"|"):"png|jpe?g",this.optional(b)||a.match(new RegExp("\\.("+c+")$","i"))
+    }, "Only Accept image type png, jpg, jpeg")
+
+    $(document).ready(function () {
+        $("#myForm").validate({
+            rules: {
+                name: {
+                    required: true,
+                    text: true,
+                    maxlength: 55,
+                    noSpace: true
+                },
+                original_price: {
+                    required: true,
+                    noSpace: true
+                },
+                year: {
+                    required: true,
+                },
+                month: {
+                    required: true,
+                }, 
+                quantity: {
+                    required: true,
+                    digits: true,
+                    noSpace: true,
+                    min: 1,
+                },
+                primary_image: {
+                    extension: true,
+                },
+                shero_dolls_images: {
+                    extension: true,
+                },
+                og_image: {
+                    extension: true,
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    })
+</script>
+<script src="{% static 'adminpanel/image-preview/image-preview.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        if (window.File && window.FileList && window.FileReader) {
+            $(".remove").click(function () {
+                let id = $(this).data('id')
+                $.ajax({
+                    url: "{% url 'delete_shero_dolls_images' %}",
+                    data: {
+                        shero_dolls_image: id
+                    },
+                    method: "POST",
+                    success: function (response) {
+
+                    }
+                })
+                $(this).parent(".pip").remove();
+            });
+        } else {
+            alert("Your browser doesn't support to File API")
+        }
+    });
+</script>
+
+{% endblock script %}

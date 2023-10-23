@@ -1,0 +1,126 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}My Gift Card{% endblock title %}
+{% block content %}
+
+{% include 'includes/ring-loader.html' %}
+
+<div class="wraper-inner">
+   <section class="page-head-sec">
+      <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+      <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+      <div class="container">
+         <div class="page-head-content">
+            <h4>My Account</h4>
+         </div>
+      </div>
+   </section>
+   <section class="shops-list-sec">
+      <div class="container">
+         <div class="my-account account-subscription">
+
+            {% include 'includes/my-account/left-sidebar.html' %}
+               
+            <div class="my-account-R">
+               <div class="my-gift-card-blk">
+                  <form method='POST' class="row">
+                     {% csrf_token %}
+                     {% for i in data %}
+                     <div class="col-md-6 mb-4">
+                        <div class="gift-card-item">
+                           <div class="gift-card-head">
+                              <i class="ri-gift-line"></i>
+                              <span>
+                                 {% if i.gift_card_type == "GIFT_CARD" %}
+                                    {% if i.gift_card %}
+                                       ${{ i.gift_card.gift_price }}
+                                    {% else %}
+                                       ${{ i.amount }}
+                                    {% endif %}
+                                 {% else %}
+                                    {{ i.subscription_plan.plan_type }}
+                                 {% endif %}
+                              </span>
+                           </div>
+                           <div class="gift-card-body">
+                                 {% comment %} <h4>{{ i.receiver_name }}</h4> {% endcomment %}
+                                 {% comment %} <h3>{{i.gift_code}}</h3> {% endcomment %}
+                                 {% comment %} <p>denialsmith@gmail.com</p> {% endcomment %}
+                                 {% comment %} <h3>{{i.user_message}}</h3> {% endcomment %}
+                                 <h3>{{i.giftcard_image.giftcard_type.giftcard_type}}</h3>
+                           </div>
+                           <div class="gift-card-footer">
+                              <p>Expires On <span>{{i.expire_at|date:'d-m-Y'}}</span></p>
+                              {% comment %} <a style="text-decoration: none; color: #5D5E75; " href="{{i.reciept_url}}">View Receipt</a> {% endcomment %}
+                              {% now "Y-m-d" as todays_date %}
+                              {% if i.receiver_email == request.user.email and i.is_used == False and todays_date < i.expire_at|date:"Y-m-d" %}
+                                 <button data-toggle="modal" data-target="#exampleModal" type="button" class="btn btn-primary w-30 float-end js-redeem-btn" data-giftcard="{{ i.gift_code }}" data-gift-type="{{ i.gift_card_type }}">Redeem</button>
+                              {% elif i.is_used %}
+                                 <em>Redeemed</em>
+                              {% elif todays_date >= i.expire_at|date:"Y-m-d" and i.is_used == False %}
+                                 <em>Expired</em>
+                              {% endif %}
+                           </div>
+                        </div>
+                     </div>
+                     {% empty %}
+                        <div class="text-center">
+                           <h4>No Record</h4>
+                        </div>
+                     {% endfor %}
+                  </form>
+               </div>
+            </div>
+            
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+               <div class="modal-dialog" role="document">
+                 <div class="modal-content">
+                     <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Gift Card Redeem </h5>
+                        <button type="button"  class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                     </div>
+
+                     <form action="" method="POST" id="submit-otp">
+                        {% csrf_token %}
+                        <input type="hidden" value="" id="js-gift-code" name="gift_code">
+                        <div class="modal-body">
+                           Enter Your Otp<input type="text" id="redeem_otp" name="redeem_otp" class="form-control" minlength="6" maxlength="6"
+                           onkeypress="return event.charCode >= 48 && event.charCode <= 57" >
+                           {% comment %} message <textarea name="editor" id="message" class="form-control"  cols="30" rows="10"></textarea> {% endcomment %}
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                           <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                     </form>
+
+                 </div>
+               </div>
+            </div>
+
+         </div>
+      </div>
+   </section>
+</div>
+{% endblock content %}
+{% block script %}
+<script>
+   $('#loader').hide();
+   $('.js-redeem-btn').on('click', function (){
+      const self = $(this);
+      $('#loader').show();
+      $.ajax({
+         url: "{% url 'redeem_otp' %}",
+         success: function(response) {
+            const giftCode = self.data('giftcard');
+            const formAction = self.data('gift-type') == 'GIFT_CARD' ? "{% url 'gift_card_to_wallet' %}" : "{% url 'redeem_shero_subscription' %}";
+            $('#loader').hide();
+            $('#js-gift-code').val(giftCode);
+            $('#submit-otp').attr('action', formAction);
+            $('#exampleModal').modal('show');
+            myToast(response.message, SUCCESS_BG);
+         }
+      })
+   })
+</script>
+{% endblock script %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}{% endblock css %}
+
+{% block content%}
+
+{% url 'view_social_media' as view_social_media %}
+{% include "includes/section.html" with page_title="Edit Social Media" btn_url=view_social_media btn_text="Back" %}
+
+<section id="basic-vertical-layouts">
+    <div class="row match-height m-auto">
+        <div class="col-md-12 col-12 p-0">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <form class="form form-vertical" method="POST" id="myForm" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="first-name-icon">Link of Social Media</label>
+                                            <div class="position-relative">
+                                                <input type="text" class="form-control" placeholder="Link" name="link" value="{{ social_media.link }}" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <button 
+                                            type="submit"
+                                            class="btn btn-primary me-1 mx -3 mb-1" id="submitButton">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content%}
+
+{% block script %}
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $("#myForm").validate({
+            rules: {
+                name: {
+                    required: true,
+                    maxlength: 55
+                },
+                flag: {
+                    required: true,
+                },
+                description: {
+                    required: true,
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    })
+</script>
+{% endblock script %}

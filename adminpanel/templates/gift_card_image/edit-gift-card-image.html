@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'adminpanel/image-preview/image-preview.css' %}">
+{% endblock css %}
+
+{% block content%}
+
+{% url 'view_giftcard_image' as view_giftcard_image %}
+{% include "includes/section.html" with page_title="Edit Gift Card Image " btn_url=view_giftcard_image btn_text="Back" %}
+
+<section id="basic-vertical-layouts">
+    <div class="row match-height m-auto">
+        <div class="col-md-12 col-12 p-0">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <form class="form form-vertical" method="POST" id="myForm" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="">Gift Card Type</label>
+                                            <input class="form-control" name="giftcard_type" value="{{ giftcard_type.giftcard_type }}" disabled readonly required/> 
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Images</label>
+                                            <input type="file" id="files" class="form-control" name="giftcard_type_images" accept="image/png, image/gif, image/jpeg"  multiple />
+                                            {% for image in giftcard_type_images %}
+                                                <span class="pip">
+                                                    {% if image.images %}
+                                                    <img class="imageThumb" src="{{ image.images.url }}" />
+                                                    <br />
+                                                    <span class="remove" data-id="{{ image.id }}">x</span>
+                                                    {% else %}
+                                                    <p>No Image</p>
+                                                    {% endif %}
+                                                </span>
+                                            {% endfor %}
+                                        </div> 
+                                    </div>
+                                  
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-primary me-1 mx -3 mb-1" id="submitButton1">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content%}
+{% block script %}
+<script src="{% static 'adminpanel/vendors/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+<script src="{% static 'adminpanel/jquery_validation/validate.js' %}"></script>
+<script src="{% static 'adminpanel/image-preview/image-preview.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        if (window.File && window.FileList && window.FileReader) {
+            $(".remove").click(function () {
+                let id = $(this).data('id')
+                $.ajax({
+                    url: "{% url 'delete_giftcard_type_image' %}",
+                    data: {
+                        giftcard_type_image: id
+                    },
+                    method: "POST",
+                    success: function (response) {
+
+                    }
+                })
+                $(this).parent(".pip").remove();
+            });
+        } else {
+            alert("Your browser doesn't support to File API")
+        }
+    });
+</script>
+{% endblock script %}

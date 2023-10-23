@@ -1,0 +1,33 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}Term & Condition{% endblock title %}
+{% block content %}
+<div class="wraper-inner">
+
+    <section class="cms-head-sec">
+        <img class="cms-head-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+        <img class="cms-head-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+        <div class="container">
+            <h4>Terms & Conditions</h4>
+        </div>
+    </section>
+
+    <section class="infos-sec">
+        <div class="container">
+            {% for i in terms_data%}
+            <div class="infos-content-box">
+                {% comment %} <h4>TERMS OF SERVICE</h4> {% endcomment %}
+                <p>{{i.title|safe}}</p>
+                {% comment %} <h5>ELIGIBILITY</h5> {% endcomment %}
+                <p>{{i.description|safe}}</p>
+                {% comment %} <p>We require that ALL USERS agree to these Terms of Service. IF YOU ARE BELOW THE AGE 18 you may not enter into this Agreement by your own right. Therefore, you must have your parent or legal guardian review these Terms of Service with you before entering into this legally binding Agreement. We kindly ask that have your parent or legal guardians help you carefully read and understand these terms and conditions and help you register an account with us.</p> {% endcomment %}
+                {% comment %} <p>By using the SITE, APP OR SERVICES, DOWNLOADING THE APP, COMPLETING THE REGISTRATION PROCESS AND/OR CLICKING THE “I ACCEPT” BUTTON, you understand and agree that (i) you have read and agree to be bound by this Agreement, and (ii) you are of legal age (18 years old) to form a binding contract with MEGADOLLS.</p> {% endcomment %}
+                {% comment %} <p>NOTICE: PLEASE BE SURE TO CAREFULLY READ OUR PRIVACY POLICY IN SECTION 9 OF THIS AGREEMENT. WE KINDLY ASK ALL PARENTS OF CHILDREN UNDER THE AGE OF 18 TO REVIEW THE PRIVACY POLICY REGARDING PERSONAL INFORMATION THAT WE COLLECT AND USE ABOUT YOU TO IMPROVE OUR SERVICES. BY AGREEING TO THESE TERMS OF SERVICE YOU AGREE THAT YOU HAVE READ AND UNDERSTAND OUR PRIVACY POLICY AND CONSENT TO ITS TERMS.</p> {% endcomment %}
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    
+</div>
+
+{% endblock content %}

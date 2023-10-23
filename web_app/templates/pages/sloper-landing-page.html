@@ -1,0 +1,433 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+
+{% block title %}Sloper Subscription Landing Page{% endblock title %}
+{% block content %}
+<div class="wraper-inner">
+
+    <section class="landing-banner">
+        <div class="container-fluid p-0">
+            <div class="row-ld-img">
+                {% if banner_image.0.banner_img %}
+                    <img src="{{ banner_image.0.banner_img.url }}">
+                {% else %}
+                    <img src="{% static 'web_app/images/landing-img.jpg' %}">
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    
+    <section class="card_htwork">
+        <div class="container">
+            <div class="row-ld-img mb-5" id="sloper-video-div">
+                {% if banner_image.1.banner_img %}
+                    <a href="#" id="play-video" class="video-play-button">
+                        <span></span>
+                    </a>
+                    <video width="1200" id="sloper-landing-page-video">
+                        <source src="{{ banner_image.1.banner_img.url }}">
+                    </video>
+                {% else %}
+                    <img src="{% static 'web_app/images/Group 69444.jpg' %}">
+                {% endif %}
+            </div>
+
+            <div class="sec-head">
+                {% if how_it_work.title %}
+                    <h4>{{ how_it_work.title }}</h4>
+                {% else %}
+                    <h4>How it works</h4>
+                {% endif %}
+
+                {% if how_it_work.description %}
+                    <p>{{ how_it_work.description }}</p>
+                {% else %}
+                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form,</p>
+                {% endif %}
+            </div>
+            <div class="row">
+                {% for how_it_work_section in how_it_work_sections %}
+                    <div class="col-md-6">
+                        <div class="card_htwork">
+                            <figure>
+                                <img src="{% if how_it_work_section.img %}{{ how_it_work_section.img.url }}{% else %}{% static 'web_app/images/paying-with-mega-dolls-1.png' %}{% endif %}">
+                            </figure>
+                            <p>{{ how_it_work_section.description }}</p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-md-6">
+                        <div class="card_htwork">
+                            <figure><img src="{% static 'web_app/images/paying-with-mega-dolls-1.png' %}"></figure>
+                            <p>Playing with Megadolls stimulates your child’s creativity and imagination.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card_htwork">
+                            <figure><img src="{% static 'web_app/images/paying-with-mega-dolls-2.png' %}"></figure>
+                            <p>Playing with Megadolls Sheroes can free your child’s mind and allow them to process through the nuances of difficult emotions. </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card_htwork">
+                            <figure><img src="{% static 'web_app/images/paying-with-mega-dolls-3.png' %}"></figure>
+                            <p>Playing with Megadolls Sheroes can free your child’s mind and allow them to process through the nuances of difficult emotions. </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card_htwork">
+                            <figure><img src="{% static 'web_app/images/paying-with-mega-dolls-4.png' %}"></figure>
+                            <p>The type of imaginative and creative play that arises when your child plays with their Megadolls can enhance their oral communication skills and auditory development.</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="container-fluid sloper-banner mt-5">
+            <div class="row-ld-img1">
+                <a href="{% url 'view_sloper' %}">
+                    <img src="{% if banner_image.2.banner_img %}{{ banner_image.2.banner_img.url }}{% else %}{% static 'web_app/images/sloper-design.jpg' %}{% endif %}">
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="subscript_ps_new">
+        <div class="container">
+            <div class="new_heading">
+                <h4>Subscription Plan</h4>
+            </div>
+            <div class="row subscript_list_new">
+                <div class="col-md-4">
+                     <div class="subscript_card fst-green">
+                        <div class="sub-head-card">
+                            <h3>Individual Plan</h3>
+                            <h5>Monthly</h5>
+                            <h2><span>$</span>10.99</h2>
+                        </div>
+                        <div class="sub-dec-card">
+                            <div class="fst-green-btn">
+                                <a href="javascript:;" class="btn btn-green outline">Personal</a>
+                                <a href="javascript:;" class="btn btn-green outline">Gift</a>
+                            </div>
+                            <ul>
+                                <li>Monthly</li>
+                                <li>15% OF -  Bi-Annual</li>
+                                <li>20% OF -  Annual</li>
+                            </ul>
+                        </div>
+                        <div class="sub_btm_fixed">
+                                <div class="form-group sub-inputs">
+                                    <span>$</span><input type="text" class="form-control" placeholder="">
+                                </div>
+                              <a href="javascript:;" class="btn btn-secondary">Get Started</a>
+                        </div>
+                     </div>
+                </div>
+                <div class="col-md-4">
+                     <div class="subscript_card fst-yellow">
+                        <div class="sub-head-card">
+                            <h3>Hospital Plan</h3>
+                            <h5>Monthly</h5>
+                            <h2><span>$</span>10.99</h2>
+                        </div>
+                        <div class="sub-dec-card">
+                            <ul>
+                                <li>10% Off - 10 + Users</li>
+                                <li>15% Off - 100 + Users</li>
+                                <li>20% Off - 200 + Users</li>
+                                <li>30% Off - 300 + Users</li>
+                            </ul>
+                        </div>
+                        <div class="sub_btm_fixed">
+                                <div class="form-group sub-inputs">
+                                    <span>$</span><input type="text" class="form-control" placeholder="">
+                                </div>
+                              <a href="javascript:;" class="btn btn-secondary">Get Started</a>
+                        </div>
+                     </div>
+                </div>
+                <div class="col-md-4">
+                     <div class="subscript_card fst-pink">
+                        <div class="sub-head-card">
+                            <h3>School Plan</h3>
+                            <h5>Monthly</h5>
+                            <h2><span>$</span>10.99</h2>
+                        </div>
+                        <div class="sub-dec-card">
+                            <p>15% Off</p>
+                            <ul>
+                                <li>Number of Users</li>
+                                <li>Number of Months</li>
+                            </ul>
+                        </div>
+                        <div class="sub_btm_fixed">
+                                <div class="form-group sub-inputs">
+                                    <span>$</span><input type="text" class="form-control" placeholder="">
+                                </div>
+                              <a href="javascript:;" class="btn btn-secondary">Get Started</a>
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="reviews_ps_new">
+        <div class="container">
+            <div class="new_heading">
+                {% if testimonial.title %}
+                <h4>{{ testimonial.title }}</h4>
+                {% else %}
+                <h4>Reviews</h4>
+                {% endif %}
+            </div>
+            
+            <div class="our_customer">
+                <div class="title-review-pt">
+                    {% if testimonial.description %}
+                    <h5>{{ testimonial.description }}</h5>
+                    {% else %}
+                    <h5>Our Customers Love Us!</h5>
+                    {% endif %}
+                    <div class="rating-row">
+                        <div class="flex-rate">
+                            <div class="product-rating">
+                                {% if testimonial.rating %}
+                                <i class="ri-star-{% if testimonial.rating >= 1 %}fill{% else %}line{% endif %}"></i>
+                                <i class="ri-star-{% if testimonial.rating >= 2 %}fill{% else %}line{% endif %}"></i>
+                                <i class="ri-star-{% if testimonial.rating >= 3 %}fill{% else %}line{% endif %}"></i>
+                                <i class="ri-star-{% if testimonial.rating >= 4 %}fill{% else %}line{% endif %}"></i>
+                                <i class="ri-star-{% if testimonial.rating >= 5 %}fill{% else %}line{% endif %}"></i>
+                                {% else %}
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-line"></i>
+                                {% endif %}
+                            </div>
+                            <span>({% if testimonial.rating %}{{ testimonial.rating }}{% else %}4.0{% endif %})</span>
+                        </div>
+                        <a href="javascript:;">{% if testimonial.review_count %}{{ testimonial.review_count }}{% else %}2567{% endif %} Reviews</a>
+                    </div>
+                </div>
+
+                <div class="goals-slides owl-carousel owl-theme">
+                    {% for testimonial_section in testimonial_sections %}
+                    <div class="item">
+                        <div class="card_custrate">
+                            <div class="rate-user">
+                                <figure><img src="{% if testimonial_section.img %}{{ testimonial_section.img.url }}{% else %}{% static 'web_app/images/user.png' %}{% endif %}"></figure>
+                            </div>
+                            <div class="product-rating">
+                                {% if testimonial_section.rating %}
+                                <i class="ri-star-{% if testimonial_section.rating >= 1 %}fill{% else %}line{% endif %}"></i>
+                                <i class="ri-star-{% if testimonial_section.rating >= 2 %}fill{% else %}line{% endif %}"></i>
+                                <i class="ri-star-{% if testimonial_section.rating >= 3 %}fill{% else %}line{% endif %}"></i>
+                                <i class="ri-star-{% if testimonial_section.rating >= 4 %}fill{% else %}line{% endif %}"></i>
+                                <i class="ri-star-{% if testimonial_section.rating >= 5 %}fill{% else %}line{% endif %}"></i>
+                                {% else %}
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-line"></i>
+                                {% endif %}
+                            </div>
+                            {% if testimonial_section.description %}
+                                {{ testimonial_section.description|safe }}
+                            {% else %}
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown.</p>
+                                <h6>-Donna Paige</h6>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="item">
+                        <div class="card_custrate">
+                            <div class="rate-user">
+                                <figure><img src="{% static 'web_app/images/user.png' %}"></figure>
+                            </div>
+                            <div class="product-rating">
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-line"></i>
+                            </div>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown.</p>
+                            <h6>-Donna Paige</h6>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="card_custrate">
+                            <div class="rate-user">
+                                <figure><img src="{% static 'web_app/images/user.png' %}"></figure>
+                            </div>
+                            <div class="product-rating">
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-line"></i>
+                            </div>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown.</p>
+                            <h6>-Donna Paige</h6>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="card_custrate">
+                            <div class="rate-user">
+                                <figure><img src="{% static 'web_app/images/user.png' %}"></figure>
+                            </div>
+                            <div class="product-rating">
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-line"></i>
+                            </div>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown.</p>
+                            <h6>-Donna Paige</h6>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="card_custrate">
+                            <div class="rate-user">
+                                <figure><img src="{% static 'web_app/images/user.png' %}"></figure>
+                            </div>
+                            <div class="product-rating">
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-line"></i>
+                            </div>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown.</p>
+                            <h6>-Donna Paige</h6>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="card_custrate">
+                            <div class="rate-user">
+                                <figure><img src="{% static 'web_app/images/user.png' %}"></figure>
+                            </div>
+                            <div class="product-rating">
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-line"></i>
+                            </div>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown.</p>
+                            <h6>-Donna Paige</h6>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="card_custrate">
+                            <div class="rate-user">
+                                <figure><img src="{% static 'web_app/images/user.png' %}"></figure>
+                            </div>
+                            <div class="product-rating">
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-line"></i>
+                            </div>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown.</p>
+                            <h6>-Donna Paige</h6>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="card_custrate">
+                            <div class="rate-user">
+                                <figure><img src="{% static 'web_app/images/user.png' %}"></figure>
+                            </div>
+                            <div class="product-rating">
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-line"></i>
+                            </div>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown.</p>
+                            <h6>-Donna Paige</h6>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="card_custrate">
+                            <div class="rate-user">
+                                <figure><img src="{% static 'web_app/images/user.png' %}"></figure>
+                            </div>
+                            <div class="product-rating">
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-line"></i>
+                            </div>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown.</p>
+                            <h6>-Donna Paige</h6>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="card_custrate">
+                            <div class="rate-user">
+                                <figure><img src="{% static 'web_app/images/user.png' %}"></figure>
+                            </div>
+                            <div class="product-rating">
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-line"></i>
+                            </div>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown.</p>
+                            <h6>-Donna Paige</h6>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+    
+
+</div>
+{% endblock content %}
+{% block script %}
+    <script>
+        const playVideoBtn = document.getElementById('play-video')
+        const videoElement = document.getElementById('sloper-landing-page-video')
+
+        function togglePlayPause(event) {
+            event.preventDefault()
+            if(videoElement.paused) {
+                videoElement.play()
+                playVideoBtn.style.display = 'none'
+            } else {
+                videoElement.pause()
+                playVideoBtn.style.display = 'block'
+            }
+            
+        }
+
+        playVideoBtn.addEventListener('click', togglePlayPause)
+        videoElement.addEventListener('click', togglePlayPause)
+
+    </script>
+{% endblock script %}

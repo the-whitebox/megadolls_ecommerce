@@ -1,0 +1,111 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}Create{% endblock title %}
+{% block content %}
+<div class="wraper-inner">
+
+   {% comment %} <section class="page-head-sec secondary-bg" {% if subcategory.banner_img %}style="background-image: url({{ subcategory.banner_img.url }})"{% endif %}>
+        <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+        <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+        <div class="container">
+            <div class="page-head-content">
+                
+                <h4>
+                    {% if subcategory.heading %}
+                    {{ subcategory.heading }}
+                    {% else %}
+                    Create
+                    {% endif %}
+                </h4>
+                <p>
+                    {% if subcategory.description %}
+                    {{ subcategory.description }}
+                    {% else %}
+                    Design and create unique outfits for your Megadolls by 
+                    decorating our blank outfit templates. Learn about the 
+                    shapes, lines, colors, and textures used in fashion design.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </section>{% endcomment %}
+    <section> 
+    
+        <img src="{% if subcategory.banner_img %}{{ subcategory.banner_img.url }}{% endif %}" alt="">
+    </section> 
+
+    <section class="shops-list-sec bg-pattern">
+        <div class="container">
+            <div class="shops-list-head">
+                <h4>Imagine- Create</h4>
+                {% include 'includes/imagine-product/imagine_filter.html' %}
+            </div>
+         
+
+            <div class="row">           
+                {% for product in imagine_products %}
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="product-item">
+                        <div class="share_posi_bx">
+                            <div class="social-share">
+                                <div class="social-share-icon-1 facebook"><a href="https://www.facebook.com/sharer/sharer.php?u={{ site_url }}imagine_detail/{{ product.slug }}/" target="_blank"><i class="ri-facebook-fill"></i></a></div>
+                                <div class="social-share-icon-2 twitter"><a href="https://twitter.com/intent/tweet?url={{ site_url }}imagine_detail/{{ product.slug }}/" target="_blank"><i class="ri-twitter-fill"></i></a></div>
+                                <div class="social-share-icon-3 linkedin"><a href="https://www.linkedin.com/sharing/share-offsite/?url={{ site_url }}imagine_detail/{{ product.slug }}/" target="_blank"><i class="ri-linkedin-line"></i></a></div>
+                                <div class="mask2"></div>
+                            </div>
+                            <a href="javascript:void(0);" class="btn btn-primary-light btn-square product-share-btn"><i class="ri-share-line"></i></a>
+                        </div>
+                        <div class="product-slider owl-carousel owl-theme">
+                            {% for product_image in imagine_product_images %}
+                            {% if product_image.imagine_product_id == product.id  %}
+                            <div class="item">
+                                <div class="product-slider-item">
+                                    {% if product_image.primary_img %}
+                                    <img src="{{ product_image.primary_img.url }}">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% comment %}{% for image_sub_table in image_sub_tables %}
+                            {% if product_image.imagine_product_id == product.id and image_sub_table.imagine_product_image_id == product_image.id %}
+                            <div class="item">
+                                <div class="product-slider-item">
+                                    <img src="{{ image_sub_table.images.url }}">
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}{% endcomment %}
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="product-item-content">
+                            <h5 class="product-name mb-3"><a href="javascript:void(0);">{{ product.name }}</a></h5>
+                           
+                            <div class="product-actions">
+                                <input type="hidden" id="userid" value="{{request.user.id}}">
+                                <input type="hidden" id="imagine_id" value="{{product.id}}">
+                                <a href="javascript:void(0);" data-product-id="{{ product.id }}" class="btn btn-primary-light btn-square imagine_category"><i
+                                        class="ri-heart-line"></i></a>
+                                <a href="{% url 'imagine_detail' product.slug %}" class="btn btn-primary">View and Download</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center">
+                    <h4>No Records</h4>
+                </div>
+                {% endfor %}
+
+            </div>
+
+        </div>
+    </section>
+
+    {% comment %} {% include 'includes/featured_and_download.html' %} {% endcomment %}
+
+</div>
+{% endblock content %}
+{% block script %}
+<!-- active heart icon --> 
+{% include 'includes/imagine-product/imagine_product.html' %} 
+{% endblock script %}

@@ -1,0 +1,60 @@
+{% spaceless %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500;700;800;900&display=swap"
+    rel="stylesheet">
+  <meta name="viewport" content="minimum-scale=1.0, maximum-scale=1.0,width=device-width, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  {% include 'email_html/includes/font.html' %}
+</head>
+<body style="font-family: 'Arial', sans-serif;background:#f1f1f1;margin:0px;">
+  <table style="table-layout: fixed;border-spacing: 0;border-collapse: collapse;background-color: #fdfdfd;width:600px;margin:auto;background-image: url({% static 'email_template/images/Forgot-Password-1-ai.jpg' %});
+   background-repeat: no-repeat;background-size:cover;border-collapse: separate;border-spacing:0px 0px;padding: 45px 55px 10px;background-position:top center;">
+   {% comment %} https://megadolls.com/static/email_template/images/Forgot-Password-1-ai.jpg {% endcomment %}
+    <!-- ---1st line---- -->
+    <tr>
+      <td style="width:100%;">
+        <table style="width:100%; background: #fdfdfd;border-radius: 5px;box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.16);min-height: 580px;">
+          <tr>
+            <td style="width:100%;text-align:center;vertical-align: top;padding-bottom: 10px;margin:0; overflow-wrap: anywhere">
+              <br />
+              <div style="text-align:center; margin: 50px 0px;">
+                <img src="{% static 'email_template/images/title_image/Redeem-your-gift-card.png' %}" style="width:70%;">
+              </div>
+              {% comment %} <p style="font-size: 50px;color: #36b378;text-align: center;margin: auto;width: 70%;padding: 15px 0 0 0;line-height: 36px; font-family: Golden-Ranger;">Redeem Gift Card</p> {% endcomment %}
+            <br /><br /><br />
+              <p style="font-size: 14px;color: black;text-align: center;margin: auto;width: 70%;padding: 15px 0 0 0;line-height: 20px; font-family: 'Arial';">
+                Please use the code
+                <br />
+                below to redeem your gift card.
+              </p>
+            <br /><br /><br />
+              {% for i in otp %}
+              <span style="font-size: 36px;color: #111110;text-align: center;margin: auto;;padding: 15px 0 0 0; margin:8px;line-height: 36px; font-family: 'Arial';"><u style="letter-spacing: 10px sspl;">{{ i }}</u></span>
+              {% endfor %}
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <!-- ---End line---- -->
+    <tr>
+      <td style="width:100%; padding-bottom: 40px;">
+        <table style="width:100%; background: #fdfdfd;border-radius: 5px;box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.11);min-height:80px;margin-top: 15px;">
+            <tr>
+              {% include 'email_html/includes/email-footer-links.html' %}
+            </tr>
+        </table>
+      </td>
+    </tr>
+    <!-- ---3trd line---- -->
+    {% include 'email_html/includes/social_link.html' %}
+    <!-- ---End line---- -->
+  </table>
+  <!-- ---------next---------- -->
+</body>
+</html>
+{% endspaceless %}

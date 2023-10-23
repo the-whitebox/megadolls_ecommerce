@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'adminpanel/datetime-picker/jquery.datetimepicker.min.css' %}" />
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+{% endblock css %}
+
+{% block content%}
+{% include "includes/section.html" with page_title="Edit Referral"  %}
+
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <form method="POST" class="card-body" id="myForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Image</label>
+                                <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg" name="image">
+                            </div>
+                            {% if referral_data.image %}
+                            <img src="{{ referral_data.image.url }}" alt="" srcset="" width="10%">
+                            {% endif %}
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Content</label>
+                                <textarea value="" name="content" required>{{referral_data.content|safe}}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-end mt-3">
+                            <button type="submit" class="btn btn-primary me-1 mb-1" id="formSubmit">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content%}
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.19.1/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('content');
+</script>
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/vendors/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'adminpanel/datetime-picker/jquery.datetimepicker.full.min.js' %}"></script>
+<script>
+    $(function () {
+        $('#datetimepicker').datetimepicker({
+            step: 5
+        });
+
+        $('#js-publish').on('change', function () {
+            let value = $(this).val()
+            if (value == 'True') {
+                $('#js-schedule-time').hide()
+            } else {
+                $('#js-schedule-time').show()
+            }
+        })
+    });
+</script>
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+<script>
+    let category_id = $('#basicSelect').val()
+    $('#basicSelect').on('change', function () {
+        if(category_id != '') {
+            $.ajax({
+                url: "{% url 'get_sub_categories' %}",
+                method: "POST",
+                data: {
+                    category_id: $(this).val()
+                },
+                success: function (response) {
+                    $('#sub-category').html(response)
+                }
+            })
+        }
+        
+    })
+
+    $('#formSubmit').on('click', function (e) {
+            e.preventDefault()
+            let id = $(this).data('id')
+            Swal.fire({
+                title: 'Update About Us',
+                text: 'Are You Sure ?',
+                confirmButtonColor: 'rgb(225, 0, 127)',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $("#myForm").submit();
+                }
+            })
+        })
+
+    $("#myForm").validate({
+        rules: {
+            heading: {
+                required: true,
+                maxlength: 55
+            },
+            editor: {
+                required: true,
+            },
+            posted_by: {
+                required: true,
+                maxlength: 55
+            },
+            category: {
+                required: true,
+            },
+            subcategory: {
+                required: true,
+            }
+        }
+    });
+</script>
+{% endblock script %}

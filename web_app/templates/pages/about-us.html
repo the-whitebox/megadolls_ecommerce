@@ -1,0 +1,92 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+
+{% block title %}About Us{% endblock title %}
+{% block content %}
+{% spaceless %}
+<div class="wraper-inner">
+
+    <section class="cms-page-banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="cms-page-content">
+                        <h2>{{ about_us_data.heading_1 }}</h2>
+                        <p>{{  about_us_data.content_1|safe }}</p>
+                    </div>
+                </div>
+                <div class="col-md-4 offset-md-1">
+                    <div class="cms-page-bn">
+                        <figure>
+                            <img src="{{  about_us_data.image_1.url }}">
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="about-sec-style-3">
+        <div class="container">
+            <div class="row about-box-style-3">
+                <div class="col-md-6">
+                    <div class="about-box-info">
+                        <h4>{{  about_us_data.heading_2 }}</h4>
+                        <p>{{  about_us_data.content_2|safe }}</p>
+                        
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="about-box-img">
+                        <figure>
+                            <img src="{{  about_us_data.image_2.url }}">
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-sec-style-2">
+        <div class="container">
+            <div class="about-box-style-2">
+                <h4>{{ about_us_data.heading_3 }}</h4>
+                <p>{{ about_us_data.content_3|safe }}</p>
+               
+            </div>
+        </div>
+    </section>
+
+    <section class="about-sec-style-3">
+        <div class="container">
+            <div class="row about-box-style-3">
+                <div class="col-md-6">
+                    <div class="about-box-img">
+                        <figure>
+                            <img src="{{  about_us_data.image_4.url }}">
+                        </figure>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="about-box-info">
+                        <h4>{{  about_us_data.heading_4 }}</h4>
+                        <p>{{  about_us_data.content_4|safe }}</p>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="about-sec-style-2">
+        <div class="container">
+            <div class="about-box-style-2">
+                <h4>{{ about_us_data.heading_5 }}</h4>
+                <p>{{ about_us_data.content_5|safe }}</p>
+               
+            </div>
+        </div>
+    </section>
+    
+</div>
+{% endspaceless %}
+{% endblock content %}

@@ -1,0 +1,91 @@
+{% spaceless %}
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+  <meta name="viewport" content="minimum-scale=1.0, maximum-scale=1.0,width=device-width, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+{% include 'email_html/includes/font.html' %}
+</head>
+<body style="font-family: 'M PLUS Rounded 1c', sans-serif;background:#f1f1f1;margin:0px;">
+
+  <table style="table-layout: fixed;border-spacing: 0;border-collapse: collapse;background-color: #fdfdfd;width:600px;margin:auto;background-image: url(https://megadolls.com/static/email_template/images/shero-subscription-cancellation-bg.jpg);
+   background-repeat: no-repeat;background-size:cover;border-collapse: separate;border-spacing:0px 0px;padding: 45px 55px 10px;background-position:top center;">
+
+    <!-- ---1st line---- -->
+      <tr>
+        <td style="width:100%;">
+          <table style="width:100%; background: #fdfdfd;border-radius: 5px;box-shadow: 0px 1px 12px rgba(0, 0, 0, 0.16);min-height: 580px;">
+              <tr>
+                <td style="width:100%;text-align:center;vertical-align: top;padding-bottom: 10px;margin:0; overflow-wrap: anywhere">
+                  <p style="font-size: 45px;color: #15b3a7;text-align: center;margin: auto;width: 90%;padding: 15px 0 0 0;line-height:44px; font-family: Brush Script MT;">
+                      We notice you left <br /> something in your cart.
+                  </p>
+                    <br /><br /><br /><br />
+                    <p style="font-size: 18px;">
+                        Hi, Consumer,
+                        <br />
+                        We noticed you left something in your basket.
+                        <br />
+                        How about a FREE SHIPPING to help you make up your mind?
+                    </p>
+                     <p style="font-size: 48px;color: #15b3a7;text-align: center;margin: auto;width: 90%; font-family: Brush Script MT;">
+                       Use code:
+                     </p> 
+                </td>
+              </tr>
+              <tr>
+                <td style="width:100%;text-align:right;padding-bottom: 15px;vertical-align: bottom;">
+                  
+                    <a style="background: -moz-linear-gradient(top,  rgba(246,217,9,1) 50%, rgba(203,149,1,1) 100%);
+                      background: -webkit-linear-gradient(top,  rgba(246,217,9,1) 50%,rgba(203,149,1,1) 100%);
+                      background: linear-gradient(to bottom,  rgba(246,217,9,1) 50%,rgba(203,149,1,1) 100%);
+                      background-color: rgb(23,178,166);
+                      display: block;
+                      border-radius: 5px;
+                      font-size: 18px;
+                      text-align: center;
+                      color: #fff;
+                      padding: 1px 5px;
+                      width: 160px;
+                      margin: auto;
+                      text-decoration: none;
+                      font-family: 'Golden-Ranger';
+                      line-height: 38px;" href="javascript:;">View Cart</a>
+                </td>
+              </tr>
+          </table>
+        </td>
+      </tr>
+    <!-- ---End line---- -->
+    <!-- ---2nd line---- -->
+      <tr>
+        <td style="width:100%; padding-bottom: 40px;">
+          <table style="width:100%; background: #fdfdfd;border-radius: 5px;box-shadow: 0px 1px 12px rgba(0, 0, 0, 0.11);min-height:80px;margin-top: 15px;">
+              <tr>
+                {% include 'email_html/includes/email-footer-links.html' %}
+                <td style="text-align:center;">
+                  <a style="background: -moz-linear-gradient(top, rgba(23,178,166,1) 0%, rgba(4,118,104,1) 100%);
+                            background: -webkit-linear-gradient(top, rgba(23,178,166,1) 0%,rgba(4,118,104,1) 100%);
+                            background: linear-gradient(to bottom, rgba(23,178,166,1) 0%,rgba(4,118,104,1) 100%);
+                  display:block; border-radius: 25px;height: 34px;font-size: 11px;text-align: center;color: #fff;padding:1px 5px;width:90px;margin:auto; text-decoration: none;font-weight: 700;line-height: 34px;" href="javascript:;">Unsubscribe</a>
+                </td>
+              </tr>
+          </table>
+        </td>
+      </tr>
+    <!-- ---End line---- -->
+    
+    <!-- ---3trd line---- -->
+    {% include 'email_html/includes/social_link.html' %}
+    <!-- ---End line---- -->
+
+  </table>
+
+   <!-- ---------next---------- -->
+
+</body>
+</html>
+{% endspaceless %}

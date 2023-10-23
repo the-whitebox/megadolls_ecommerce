@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'adminpanel/data-table/dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+{% endblock css %}
+
+{% block content %}
+{% url 'add_super_admin' as add_super_admin %}
+{% include "includes/section.html" with page_title="Super Admin Management" btn_url=add_super_admin btn_text="Add Super Admin" %}
+
+<!-- Contextual classes start -->
+<section class="section">
+    <div class="row w-100" id="table-striped">
+        <div class="col-12">
+            <div class="card py-2 px-2">
+                <div class="card-content">
+                    <!-- table contextual / colored -->
+                    <div class="table-responsive">
+                        {% if users %}
+                            <table class="table table table-striped text-center" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th>Sr no.</th>
+                                        <th>Name</th>
+                                        <th>Image</th>
+                                        <th>Mobile</th>
+                                        <th>Email</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for user in users %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td class="text-bold-500 w-25 profile_img_tbl"> 
+                                            {% if user.profile_img %}
+                                            <figure> <img src="{{ user.profile_img.url }}" alt="" > </figure>
+                                            {% else %}
+                                            <figure><img src="{% static 'adminpanel/images/faces/1.jpg' %}" alt=""></figure>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ user.name }}</td>
+                                        <td>{{ user.mobile }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td class="is-active">
+                                            {% if user.is_active %}
+                                            <span class="badge bg-success">Active</span>
+                                            {%else%}
+                                            <span class="badge bg-danger">Deactive</span>
+                                            {% endif %}
+                                        </td>
+                                        {% if request.user.user_type == "SUPERADMIN" %}
+                                        <td>
+                                            <a href="{% url 'edit_super_admin' user.id %}" class="mx-1">
+                                                <span class="fa-fw select-all fas"></span>
+                                            </a>                 
+                                            <a href="{% url 'view_super_admin_detail' user.id %}" class="mx-1">
+                                                <span class="fa-fw select-all fas"></span>
+                                            </a>       
+                                            <a href="#" class="mx-1 btn-delete-user">
+                                                <span class="fa-fw select-all fas"></span>
+                                            </a> 
+                                            <form method="POST" action="{% url 'delete_super_admin' %}" class="mx-1" style="display: inline;">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="user" value="{{ user.id }}">
+                                            </form>
+                                        </td>
+                                        {% endif %}
+
+                                        {% if request.user.user_type == "SUBADMIN" %}
+                                            <td>
+                                                {% for i in m_check %}
+                                                    {% if i.edit == True %}
+                                                    <a href="{% url 'edit_super_admin' user.id %}" class="mx-1">
+                                                        <span class="fa-fw select-all fas"></span>
+                                                    </a>
+                                                    {% endif %}
+                                                    {% if i.view == True %}
+                                                        <a href="{% url 'view_super_admin_detail' user.id %}" class="mx-1">
+                                                            <span class="fa-fw select-all fas"></span>
+                                                        </a>
+                                                    {% endif %}
+                                                    {% if i.delete == True %}
+                                                        <a href="#" class="mx-1 btn-delete-user">
+                                                            <span class="fa-fw select-all fas"></span>
+                                                        </a>         
+                                                        <form method="POST" action="{% url 'delete_super_admin' %}" class="mx-1" style="display: inline;">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="user" value="{{ user.id }}">
+                                                        </form>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <div class="text-center">
+                                <strong style="font-size: 1.5em;">No Records</strong>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/data-table/dataTables.min.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.btn-delete-user').on('click', function (e) {
+            e.preventDefault()
+            Swal.fire({
+                title: 'Delete User',
+                text: 'Are You Sure ?',
+                confirmButtonColor: 'rgb(225, 0, 127)',
+                showCancelButton: true,
+                customClass: 'delete-user'
+            })
+            form = $(this).siblings("form")
+            $('.delete-user .swal2-confirm').attr('id', 'confirm-delete-user')
+            document.getElementById("confirm-delete-user").onclick = deleteUser;
+        })
+    })
+</script>
+<script>
+    function deleteUser() {
+        form.submit()
+    }
+</script>
+{% endblock script %}

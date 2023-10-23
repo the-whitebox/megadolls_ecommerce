@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+{% endblock css %}
+
+{% block content %}
+
+{% url 'giftcard_view' as giftcard_view %}
+{% include "includes/section.html" with page_title="Add Gift Card" btn_url=giftcard_view  btn_text="Back" %}
+
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <form method="POST" class="row" id="myForm" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="col-6">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Gift Price *</label>
+                                        <input type="text" class="form-control" placeholder="Gift Price" name="gift_price" onkeypress="return event.charCode >= 48 && event.charCode <= 57" required >
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Days After Gift Card Expire*</label>
+                                        <input type="text" class="form-control" placeholder="Enter Days" name="days_of_expire" id="expiry_date" min="1" max="365" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <button  id="formSubmit" class="btn btn-primary me-1 mb-1 float-end">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+{% block script %}
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+<script src="{% static 'adminpanel/jquery_validation/validate.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $("#myForm").validate({
+            rules: {
+                gift_price: {
+                    required: true,
+                    number: true
+                },
+                days_of_expire: {
+                    required: true,
+                    number: true
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    })
+</script>
+{% endblock script %}

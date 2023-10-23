@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+  <meta name="viewport" content="minimum-scale=1.0, maximum-scale=1.0,width=device-width, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="icon" href="{% static  'web_app/images/favicon.png' %}" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+{% include 'email_html/includes/font.html' %}
+</head>
+<body style="font-family: 'M PLUS Rounded 1c', sans-serif;background:#f1f1f1;margin:0px;">
+  <div class="row">
+    <div class="col-md-12">
+      <table style="table-layout: fixed;border-spacing: 0;border-collapse: collapse;background-color: #fdfdfd;width:600px;margin:auto;background-image: url(https://megadolls.com/static/email_template/images/Forgot-Password-1-ai.jpg); background-repeat: no-repeat;background-size:cover;border-collapse: separate;border-spacing:0px 0px;padding: 45px 55px 10px;background-position:top center;">
+        <!-- ---1st line---- -->
+        <tr>
+          <td style="width:100%;">
+            <table style="width:100%; background: #fdfdfd;border-radius: 5px;box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.16);min-height: 580px;">
+              <tr>
+                <td style="width:100%;text-align:center;vertical-align: top;padding-bottom: 10px;margin:0; overflow-wrap: anywhere">
+                  <p style="font-size: 54px;color: #fc57a9;text-align: center;margin: auto;width: 70%;padding: 15px 0 0 0;line-height: 36px; font-family:Brush Script MT;">
+                    Address not found
+                  </p>
+                  <br /><br /><br />
+                  <p style="font-size: 20px;color: black;text-align: left;margin: auto;width: 90%;padding: 15px 0 0 0;line-height: 36px; font-family: 'Golden-Ranger';">
+                    Hi, "{Cosumer}",<br />
+                    We apologize.we aren't able to deliver your Megadolls gift to "{recipient's email}"
+                    because the address couldn't be found or is unable to receive email. <br />
+                    Please get in touch with your recipient for the correct email to receive an electronic gift
+                    notification.
+                    <br /><br /><br />
+                    All the best,<br />
+                    The Megadolls Team
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width:100%;text-align:right;padding-bottom: 15px;vertical-align: bottom;">
+                  
+                  <a style="
+                    background: -moz-linear-gradient(top,  rgba(23,178,166,1) 0%, rgba(4,118,104,1) 100%);
+                    background: -webkit-linear-gradient(top,  rgba(23,178,166,1) 0%,rgba(4,118,104,1) 100%);
+                    background: linear-gradient(to bottom,  rgba(23,178,166,1) 0%,rgba(4,118,104,1) 100%);
+                    background-color: rgb(23,178,166);
+                      display: block;
+                      border-radius: 5px;
+                      font-size: 15px;
+                      text-align: center;
+                      color: #fff;
+                      padding: 1px 5px;
+                      width: 160px;
+                      margin: auto;
+                      font-family: 'Arial';
+                      text-decoration: none;
+                      line-height: 38px;" href="{{ link }}">Activate your account</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <!-- ---End line---- -->
+        <!-- ---2nd line---- -->
+        <tr>
+          <td style="width:100%; padding-bottom: 40px;">
+            <table
+              style="width:100%; background: #fdfdfd;border-radius: 5px;box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.11);min-height:80px;margin-top: 15px;">
+              <tr>
+                {% include 'email_html/includes/email-footer-links.html' %}
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <!-- ---End line---- -->
+        <!-- ---3trd line---- -->
+        {% include 'email_html/includes/social_link.html' %}
+        <!-- ---End line---- -->
+      </table>
+      <!-- ---------next---------- -->
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="38.601" height="24.315" viewBox="0 0 38.601 24.315">
+  <g id="card" transform="translate(0 -6.952)">
+    <path id="Path_19627" data-name="Path 19627" d="M36.275,6.952H2.326A2.232,2.232,0,0,0,0,9.074v20.07a2.232,2.232,0,0,0,2.326,2.123H36.275A2.232,2.232,0,0,0,38.6,29.144V9.074A2.232,2.232,0,0,0,36.275,6.952Z" fill="#2f4859"/>
+    <path id="Path_19628" data-name="Path 19628" d="M31.135,14.232v3.457a.983.983,0,0,0,.983.983h5.423a.983.983,0,0,0,.983-.983V14.232a.983.983,0,0,0-.983-.983H32.118A.983.983,0,0,0,31.135,14.232Z" transform="translate(-3.333 -1.358)" fill="#e56353"/>
+    <g id="Group_27375" data-name="Group 27375" transform="translate(1.922 10.44)">
+      <path id="Path_19629" data-name="Path 19629" d="M4.438,11.4H5.966a4.414,4.414,0,0,1,.677.038.994.994,0,0,1,.4.158.981.981,0,0,1,.293.319.865.865,0,0,1,.117.447.906.906,0,0,1-.537.829,1,1,0,0,1,.537.347.92.92,0,0,1,.188.576,1.136,1.136,0,0,1-.121.507,1.022,1.022,0,0,1-.331.394,1.093,1.093,0,0,1-.518.181q-.193.021-.931.026h-1.3Zm.772.636v.884h.506q.451,0,.561-.013a.511.511,0,0,0,.312-.137.4.4,0,0,0,.113-.3.419.419,0,0,0-.1-.288.442.442,0,0,0-.291-.134q-.115-.013-.66-.013H5.21Zm0,1.52v1.022h.714a3.49,3.49,0,0,0,.529-.023.478.478,0,0,0,.28-.153.47.47,0,0,0,.108-.325.5.5,0,0,0-.083-.292.472.472,0,0,0-.241-.175,2.62,2.62,0,0,0-.684-.055H5.21Z" transform="translate(-2.879 -11.399)" fill="#ebf0f3"/>
+      <path id="Path_19630" data-name="Path 19630" d="M12.691,15.222h-.84l-.334-.868H9.99l-.316.868H8.856L10.345,11.4h.816ZM11.27,13.709l-.527-1.418-.516,1.418Z" transform="translate(-3.214 -11.399)" fill="#ebf0f3"/>
+      <path id="Path_19631" data-name="Path 19631" d="M14.278,15.222V11.4h.751l1.564,2.553V11.4h.717v3.822h-.774l-1.541-2.493v2.493h-.717Z" transform="translate(-3.894 -11.399)" fill="#ebf0f3"/>
+      <path id="Path_19632" data-name="Path 19632" d="M19.2,15.222V11.4h.772v1.7l1.559-1.7h1.038l-1.439,1.489,1.517,2.334h-1l-1.051-1.794-.626.639v1.155H19.2Z" transform="translate(-4.471 -11.399)" fill="#ebf0f3"/>
+      <rect id="Rectangle_1922" data-name="Rectangle 1922" width="2.991" height="1.865" transform="translate(0 15.473)" fill="#ebf0f3"/>
+      <rect id="Rectangle_1923" data-name="Rectangle 1923" width="4.715" height="1.865" transform="translate(6.111 15.473)" fill="#ebf0f3"/>
+      <rect id="Rectangle_1924" data-name="Rectangle 1924" width="5.325" height="1.865" transform="translate(13.066 15.473)" fill="#ebf0f3"/>
+      <rect id="Rectangle_1925" data-name="Rectangle 1925" width="6.205" height="1.865" transform="translate(21.157 15.473)" fill="#ebf0f3"/>
+      <rect id="Rectangle_1926" data-name="Rectangle 1926" width="4.487" height="1.865" transform="translate(30.272 15.473)" fill="#ebf0f3"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content%}
+
+{% url 'contact_us_details' as contact %}
+{% include "includes/section.html" with page_title="Add New Contact Details" btn_url=contact btn_text="Back" %}
+
+<style>
+    #add_contact_us_details {
+        color: #c00;   
+    }
+</style>
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <form method="POST" class="card-body" action="{% url 'add_coordinates_details' %}" id="add_contact_us_details">
+                    {% csrf_token %}
+                    <div class="col-12">
+                        <div class="form-group">
+                            <h6>Email</h6>
+                            <input type="email" value="{{email}}" class="form-control" placeholder="Email" name="email" >
+                            <br />
+                            <h6>Mobile</h6>
+                            <input type="text" value="{{mobile}}" class="form-control" placeholder="Mobile" name="mobile" >
+                            <br />
+                            <h6>Address</h6>
+                            <input type="text" value="{{address}}" class="form-control" placeholder="Address" name="address" >
+                            <br />
+                            <p style=" color: red; " >Sorry, geographic coordinate not found, Please provide latitude and longitude of address for Google Map.</p>
+                            <br />
+                            <h6>Latitude</h6>
+                            <input type="text" class="form-control" placeholder="Latitude" name="lat" >
+                            <br />
+                            <h6>Longitude</h6>
+                            <input type="text" class="form-control" placeholder="Longitude" name="long" >                            
+                        </div>
+                    </div>
+                        <button type="submit" class="btn btn-primary me-1 mb-1" id="update-template">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% include 'includes/js.html' %}
+
+<script>
+    $("#add_contact_us_details").validate({
+        rules: {
+            email: {
+                required: true,
+            },
+            mobile: {
+                required: true,
+            },
+            address: {
+                required: true,
+            },
+            lat: {
+                required: true,
+            },
+            long: {
+                required: true,
+            }
+        },
+        submitHandler: function (form) {
+            form.submit()
+        }
+    });
+</script>
+{% endblock content%}
+
+

@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css%}
+<link rel="stylesheet" href="{% static 'adminpanel/data-table/dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+{% endblock css %}
+
+{% block content %}
+{% include "includes/section.html" with page_title="Resolved User's Inquiry" %}
+
+<section class="section">
+    <div class="row w-100" id="table-striped">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="table-responsive p-2">
+                        {% if inquiry_data %}
+                        <div class="row my-2">
+                            <div class="col-6">
+                            <h4><input type="checkbox" id="selectall" class="mx-2">Select All</h4>
+                            </div>
+                            <div class="col-6">
+                            <button type="button" class="btn btn-outline-primary w-30 float-end" id="delete-slected-all" disabled>Delete Selected</button>
+                            </div>
+                        </div>
+                            <table class="table table table-striped text-center mb-0" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th>Select</th>
+                                        <th>Sr. No.</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Subject</th>
+                                        <th>Description</th>
+                                        <th>Action</th>
+                            
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for inquirydata in inquiry_data %}
+                                
+                                    <tr>
+                                        <td> <input type="checkbox" class="checkbox" name="check" value="{{ inquirydata.id }}"/></td>
+                                        <td>{{ forloop.counter }}</td>
+
+                                        <td class="text-bold-500 w-5">{{ inquirydata.name|truncatechars:40 }}</td>
+                                        <td class="text-bold-500 w-25">{{ inquirydata.email }}</td>
+                                        <td class="text-bold-500 w-25">{{ inquirydata.subject }}</td>
+                                        <td class="text-bold-500 w-25">{{ inquirydata.inquiry|safe|truncatechars:40 }}</td>
+                                        {% if request.user.user_type == "SUPERADMIN"%}
+                                            <td>
+                                                <a href="{% url 'view_resolved_inquiry' inquirydata.id %}" class="mx-1">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                                <a href="#" class="mx-1 btn-delete" data-id="{{ inquirydata.id }}">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                            </td>
+                                        {% endif %}
+
+                                        {% if request.user.user_type == "SUBADMIN" %}
+                                            <td>
+                                                {% for i in m_check %}
+                                                    {% if i.view == True %}
+                                                        <a href="{% url 'view_user_inquiry' inquirydata.id %}" class="mx-1">
+                                                            <span class="fa-fw select-all fas"></span>
+                                                        </a>
+                                                    {% endif %}
+
+                                                    {% if i.delete == True and request.user.user_type == "SUBADMIN" %}
+                                                        <a href="#" class="mx-1 btn-delete" data-id="{{ inquirydata.id }}">
+                                                            <span class="fa-fw select-all fas"></span>
+                                                        </a>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <input type="hidden" name="" id="all_id_list">
+                                <input type="hidden" name="" id="model_name" value="ContactUsInquiry">
+                            </table>
+                        {% else %}
+                            <div class="text-center">
+                                <strong style="font-size: 1.5em;">No Records</strong>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form method="POST" action="{% url 'delete_resolved_inquiry' %}" class="mx-1" style="display: inline;" id="delete_form">
+        {% csrf_token %}
+        <input type="hidden" name="user_inquiry" value="" id="user_inquiry">
+    </form>
+</section>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/data-table/dataTables.min.js' %}"></script>
+<script>
+    csrf_tocken = document.querySelector('[name=csrfmiddlewaretoken]').value
+</script>
+{% include 'select-all-delete.html' %}
+<script>
+    $(document).ready(function () {
+        $('.btn-delete').on('click', function (e) {
+            e.preventDefault()
+            let id = $(this).data('id')
+            Swal.fire({
+                title: 'Delete Inquiry',
+                text: 'Are You Sure ?',
+                confirmButtonColor: 'rgb(225, 0, 127)',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#user_inquiry').val(id)
+                    $('#delete_form').submit()
+                }
+            })
+        })
+    })
+</script>
+
+{% endblock script %} 

@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'adminpanel/data-table/dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+{% endblock css %}
+
+{% block content %}
+{% url 'add_sub_admin' as add_sub_admin %}
+{% include "includes/section.html" with page_title="Sub Admin Management" btn_url=add_sub_admin btn_text="Add Sub Admin" %}
+
+<!-- Contextual classes start -->
+<section class="section">
+    <div class="row w-100" id="table-striped">
+        <div class="col-12">
+            <div class="card py-2 px-2">
+                <div class="card-content">
+                    <!-- table contextual / colored -->
+                    <div class="table-responsive">
+                        {% if sub_admins %}
+                            <table class="table table table-striped text-center" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th>Sr no.</th>
+                                        <th>NAME</th>
+                                        <th>MOBILE</th>
+                                        <th>EMAIL</th>
+                                        <th>STATUS</th>
+                                        {% for x in m_check %}
+                                        {% if  x.view == True or x.edit == True or x.delete == True  and request.user.user_type == "SUBADMIN"%}
+                                        <th>ACTION</th>
+                                        {% endif %}
+                                        {% endfor %}
+                                        {% if request.user.user_type == "SUPERADMIN" %}
+                                        <th>ACTION</th>
+                                        {% endif %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for sub_admin in sub_admins %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ sub_admin.name }}</td>
+                                        <td>{{ sub_admin.mobile }}</td>
+                                        <td>{{ sub_admin.email }}</td>
+                                        <td class="is-active">
+                                            {% if sub_admin.is_active %}
+                                            <span class="badge bg-success">Active</span>
+                                            {% else %}
+                                            <span class="badge bg-danger">Deactive</span>
+                                            {% endif %}
+                                        </td>
+                                        
+                                        {% if request.user.user_type == "SUPERADMIN" %}
+                                            <td>
+                                                <a href="{% url 'edit_sub_admin' sub_admin.id %}" class="mx-1">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                                <a href="{% url 'view_sub_admin_detail' sub_admin.id %}" class="mx-1">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                                <a href="#" class="mx-1 btn-delete-sub_admin" data-id="{{ sub_admin.id }}">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                            </td>
+                                        {% endif %}
+                                        
+                                        {% if request.user.user_type == "SUBADMIN" %}
+                                            <td>
+                                                {% if x.edit == True %}
+                                                    <a href="{% url 'edit_sub_admin' sub_admin.id %}" class="mx-1">
+                                                        <span class="fa-fw select-all fas"></span>
+                                                    </a>
+                                                {% endif %}
+                                                {% if x.view == True %}
+                                                    <a href="{% url 'view_sub_admin_detail' sub_admin.id %}" class="mx-1">
+                                                        <span class="fa-fw select-all fas"></span>
+                                                    </a>
+                                                {% endif %}
+                                                {% if x.delete == True %}
+                                                    <a href="#" class="mx-1 btn-delete-sub_admin" data-id="{{ sub_admin.id }}">
+                                                        <span class="fa-fw select-all fas"></span>
+                                                    </a>
+                                                {% endif %}
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <div class="text-center">
+                                <strong style="font-size: 1.5em;">No Records</strong>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<form method="POST" action="{% url 'delete_sub_admin' %}" class="mx-1" style="display: inline;" id="delete_form">
+    {% csrf_token %} <input type="hidden" name="sub_admin" value="" id="sub_admin">
+</form>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/data-table/dataTables.min.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.btn-delete-sub_admin').on('click', function (e) {
+            e.preventDefault()
+            let id = $(this).data('id')
+            Swal.fire({
+                title: 'Delete Sub Admin',
+                text: 'Are You Sure ?',
+                confirmButtonColor: 'rgb(225, 0, 127)',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#sub_admin').val(id)
+                    $('#delete_form').submit()
+                }
+            })
+        })
+    })
+</script>
+<script>
+     let p = localStorage.getItem("Parent_id");
+</script>
+{% endblock script %}

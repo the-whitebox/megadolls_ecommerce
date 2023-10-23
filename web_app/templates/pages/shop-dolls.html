@@ -1,0 +1,149 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}Shop Dolls{% endblock title %}
+{% block content %}
+<div class="wraper-inner">
+    {% comment %}
+    <section class="page-head-sec">
+        <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+        <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+        <div class="container">
+            <div class="page-head-content">
+                {% for shop in shop_products %}
+                    {% if forloop.counter == 1 %}
+                        <h4>{{ shop.subcategory.heading }}</h4>
+                        <p>{{ shop.subcategory.description }}</p>
+                    {% endif %}
+                {% endfor %} 
+            </div>
+        </div>
+    </section>
+    {% endcomment %}
+    <section> 
+        <img src=" {% if subcategory_data.banner_img %}{{ subcategory_data.banner_img.url }} {% endif %}" alt="">
+    </section> 
+    <section class="shops-list-sec bg-pattern">
+        <div class="container">
+            <div class="shops-list-head">
+                <h4>Shop - Dolls</h4>
+                <div class="shop-filter-blk dropdown">
+                    <button class=" dropdown-toggle megamenu-btn" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">Filter <i class="ri-filter-fill"></i></button>
+                    <form action="{% url 'web_shop_filter' %}" method="POST" class="dropdown-menu megamenu " aria-labelledby="dropdownMenuButton1">
+                        {% csrf_token %}
+                        <input type="hidden" name="subcategory_name" value="Dolls">
+                        <div class="row" id="filter-section">
+                            <div class="col-md-4 col-sm-6">
+                                <div class="filter-menu-content">
+                                    <h5>Category</h4>
+                                    {% for category in subcategories_for_filter %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="subcategory_filter" id="category{{ forloop.counter }}" value="{{ category.id }}">
+                                        <label class="form-check-label" for="category{{ forloop.counter }}">{{ category.name }}</label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% comment %} <div class="col-md-4 col-sm-6">
+                                <div class="filter-menu-content">
+                                    <h5>Collections</h4>
+                                        {% for collection in collections_for_filter %}
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="collections"
+                                                id="collections{{ forloop.counter }}" value="{{ collection.id }}">
+                                            <label class="form-check-label" for="collections{{ forloop.counter }}">{{ collection.name }}</label>
+                                        </div>
+                                        {% endfor %}
+                                </div>
+                            </div> {% endcomment %}
+                            {% comment %} <div class="col-md-4 col-sm-6">
+                                <div class="filter-menu-content">
+                                    <h5>Sort by Price</h4>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="sort" id="sort1" value="1">
+                                            <label class="form-check-label" for="sort1">Ascending</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="sort" id="sort2" value="2">
+                                            <label class="form-check-label" for="sort2">Descending</label>
+                                        </div>
+                                </div>
+                            </div> {% endcomment %}
+                        </div>
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-primary">Apply Filters</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+            <div class="row">
+                {% include 'includes/shop-product/products.html' %}
+            </div>
+        </div>
+    </section>
+
+    {% comment %} {% include 'includes/featured_and_download.html' %} {% endcomment %}
+
+</div>
+
+{% endblock content %}
+
+{% block script %}
+<!-- active heart icon -->
+{% include 'includes/shop-product/shop_product.html' %}
+<script>
+    $(document).ready(function() {
+
+var active1 = false;
+var active2 = false;
+var active3 = false;
+var active4 = false;
+
+  $('.product-share-btn').on('mousedown touchstart', function() {
+  
+  if (!active1) $(this).siblings('.social-share').find('.social-share-icon-1').css({'background-color': 'gray', 'transform': 'translate(5px, 73px)'});
+  else $(this).siblings('.social-share').find('.social-share-icon-1').css({'background-color': 'dimGray', 'transform': 'none'}); 
+   if (!active2) $(this).siblings('.social-share').find('.social-share-icon-2').css({'background-color': 'gray', 'transform': 'translate(-45px,50px)'});
+  else $(this).siblings('.social-share').find('.social-share-icon-2').css({'background-color': 'darkGray', 'transform': 'none'});
+    if (!active3) $(this).siblings('.social-share').find('.social-share-icon-3').css({'background-color': 'gray', 'transform': 'translate(-65px,0px)'});
+  else $(this).siblings('.social-share').find('.social-share-icon-3').css({'background-color': 'silver', 'transform': 'none'});
+    if (!active4) $(this).siblings('.social-share').find('.social-share-icon-4').css({'background-color': 'gray', 'transform': 'translate(-105px,0px)'});
+  else $(this).siblings('.social-share').find('.social-share-icon-4').css({'background-color': 'silver', 'transform': 'none'});
+  active1 = !active1;
+  active2 = !active2;
+  active3 = !active3;
+  active4 = !active4;
+    
+  });
+});
+
+</script>
+<script>
+    $('[name=subcategory_filter]').click(function() {
+        const subscatId = $(this).val()
+        $.ajax({
+            url: "{% url 'collection_according_subcategory_and_product' %}",
+            data: {
+                subcategory_id: subscatId
+            },
+            success: function(response) {
+                let collection = `<div class="col-md-4 col-sm-6" id="product-collections">
+                    <div class="filter-menu-content">
+                        <h5>Collections</h4>`;
+                $.each(response.collections, function(index, data) {
+                    collection += `<div class="form-check">
+                        <input class="form-check-input" type="radio" name="collections" id="collections${ index+1 }"
+                            value="${ data.product_collection_id }">
+                        <label class="form-check-label" for="collections${ index+1 }">${ data.product_collection__name }</label>
+                    </div>`
+                })
+                collection += `</div></div>`
+                $('#product-collections').remove()
+                $('#filter-section').append(collection)
+            }
+        })
+    })
+</script>
+{% endblock script %}

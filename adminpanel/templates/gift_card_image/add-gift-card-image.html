@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content%}
+
+{% url 'view_giftcard_image' as view_giftcard_image %}
+{% include "includes/section.html" with page_title="Add Gift Card Image" btn_url=view_giftcard_image btn_text="Back" %}
+
+<section id="basic-vertical-layouts">
+    <div class="row match-height m-auto">
+        <div class="col-md-12 col-12 p-0">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <form class="form form-vertical" method="POST" id="myForm" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="">Gift Card Type</label>
+                                            <select class="form-control" name="giftcard_type" required>
+                                                <option value="" disabled selected>Please Select Gift Card Type</option>
+                                                {% for giftcard_type in giftcard_types  %}
+                                                    {% if not giftcard_type.id in giftcard_type_list %} 
+                                                        <option value="{{ giftcard_type.id }}">{{ giftcard_type.giftcard_type }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Images</label>
+                                            <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg"
+                                                name="images" multiple required>
+                                            <span id="max-image-error" style="color: red;"></span>
+                                        </div>
+                                    </div> 
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-primary me-1 mx -3 mb-1 show-loader">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content%}
+
+{% block script %}
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+<script src="{% static 'adminpanel/jquery_validation/validate.js' %}"></script>
+{% endblock script %}

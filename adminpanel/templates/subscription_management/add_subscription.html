@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content%}
+
+{% url 'subscription_plan' as view_collections %}
+{% include "includes/section.html" with page_title="Add Subscription" btn_url=view_collections btn_text="Back" %}
+
+<section id="basic-vertical-layouts">
+    <div class="row match-height m-auto">
+        <div class="col-md-12 col-12 p-0">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <form class="form form-vertical" method="POST" id="myForm">
+                            {% csrf_token %}
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-6 form-group">
+                                        <label>Subscription Type</label>
+                                        <select class="form-select" name="subscription_type" required>
+                                            <option value="" disabled selected>Please Select</option>
+                                            <option value="Annual">Annual</option>
+                                            <option value="Bi-Annual">Bi-Annual</option>
+                                            <option value="Quarterly">Quarterly</option>
+                                            <option value="Monthly">Monthly</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Original Price*</label>
+                                            <input type="text" class="form-control" placeholder="original price" name="original_price" id="original_price" required>
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Offer Price*</label>
+                                            <input type="text" class="form-control" placeholder="offer price" name="offer_price" value="0.00" id="offer_price">
+                                        </div>
+                                    </div>
+                                
+                            
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Select Subscription Benefits</label>
+                                            <br />
+                                            <br />
+                                            <label><h5>Select All</h5></label>
+                                            <input type="checkbox" onClick="toggle(this)" />
+                                            <br />
+                                            {% for benefit in subscription_benefit %}
+                                            <label>{{ benefit.title }}</label>
+                                            <input type="checkbox" id="" name="subscription_benefit" value="{{ benefit.id }}">
+                                            <br />
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <button type="submit"
+                                            class="btn btn-primary me-1 mx -3 mb-1 show-loader">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content%}
+
+{% block script %}
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#myForm").validate({
+            rules: {
+                name: {
+                    required: true,
+                    maxlength: 55
+                },
+                offer_price: {
+                    required: true,
+                    number: true
+                },
+                original_price: {
+                    required: true,
+                    number: true
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    })
+</script>
+
+
+
+<script>
+    function toggle(source) {
+        checkboxes = document.getElementsByName('subscription_benefit');
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+            checkboxes[i].checked = source.checked;
+        }
+    }
+</script>
+{% endblock script %}

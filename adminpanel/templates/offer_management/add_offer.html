@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/choices.js/choices.min.css' %}" />
+{% endblock css %}
+
+{% block content %}
+
+{% url 'offer_view' as offer_view %}
+{% include "includes/section.html" with page_title="Add Offers" btn_url=offer_view  btn_text="Back" %}
+
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <form method="POST" class="row" id="myForm" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Name*</label>
+                                        <input type="text" class="form-control" placeholder="Name" name="name" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Percentage*</label>
+                                        <input type="text" class="form-control" placeholder="percentage" name="percentage" id="percentage" required>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Start Date*</label>
+                                        <input type="date" class="form-control" placeholder="start_date" name="start_date" id="start_date" required>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>End Date*</label>
+                                        <input type="date" class="form-control" placeholder="end_date" name="end_date" id="end_date" required>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Status</label>
+                                        <select class="form-select" id="status" name="is_active" required>
+                                            <option value="" disabled selected>Please Select</option>
+                                            <option value="True" {% if subcategory_data.is_active == True %} selected {% endif %}>Active</option>
+                                            <option value="False" {% if subcategory_data.is_active == False %} selected {% endif %}>Deactive</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <button  id="formSubmit" class="btn btn-primary me-1 mb-1 float-end">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+{% block script %}
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $.validator.addMethod('validEndDate', function(value, element) {
+            let startDate = $('#start_date').val()
+            return startDate <= value;
+        }, 'End Date Should be Greater than Start Date');
+
+        $.validator.addMethod('validStartDate', function(value, element) {
+            let endDate = $('#end_date').val()
+            return endDate == '' || value < endDate;
+        }, 'Start Date Should be less than End Date');
+
+        $("#myForm").validate({
+            rules: {
+                gift_price: {
+                    required: true,
+                    number: true
+                },
+                gift_price: {
+                    required: true,
+                    digits: true
+                },
+                percentage: {
+                    required: true,
+                    number: true,
+                    "max" : 100,        // substitute your own
+                    "min" : 1
+                },
+                quantity: {
+                    required: true,
+                    digits: true
+                },
+                start_date: {
+                    validStartDate: true
+                },
+                end_date: {
+                    validEndDate: true
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    })
+</script>
+{% endblock script %}

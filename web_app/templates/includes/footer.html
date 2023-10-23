@@ -1,0 +1,89 @@
+{% load static %}
+<footer>
+    <div class="footer-menu">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 footer-box-one">
+                    <div class="footer-main-content">
+                        <a class="footer-logo" href="{% url 'home' %}">
+                            <img src="{% static  'web_app/images/logo.png' %}" />
+                        </a>
+                        <p>Megadolls is an inclusive, two-sided Paper Doll Line with patented innovative tab-less
+                            clothing design. Megadolls outfits have a unique fastening system-allowing the doll's outfit
+                            to rest on the paper doll's
+                            shoulders-covering the front and back of the doll.</p>
+                        <ul class="footer-social">
+                            <li id="facebook">
+                                <a href="javascript:void(0);" target="_blank"><i class="ri-facebook-fill"></i></a>
+                            </li>
+                            <li id="youtube">
+                                <a href="javascript:void(0);" target="_blank"><i class="ri-youtube-fill"></i></a>
+                            </li>
+                            <li id="twitter">
+                                <a href="javascript:void(0);" target="_blank"><i class="ri-twitter-fill"></i></a>
+                            </li>
+                            <li id="instagram">
+                                <a href="javascript:void(0);" target="_blank"><i class="ri-instagram-fill"></i></a>
+                            </li>
+                            <li id="linkedin">
+                                <a href="javascript:void(0);" target="_blank"><i class="ri-linkedin-fill"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 ms-auto footer-box-two">
+                    <div class="footer-content-blk">
+                        <h4>Explore</h4>
+                        <ul>
+                            <li><a href="{% url 'home' %}" class="footer-links">Home</a></li>
+                            <li><a href="{% url 'about_us' %}" class="footer-links">About us</a></li>
+                            <li><a href="{% url 'contact_us' %}" class="footer-links">Contact us</a></li>
+                            <li><a href="{% url 'shop_dolls' %}" class="footer-links">Products</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 footer-box-three">
+                    <div class="footer-content-blk">
+                        <h4>Legal & Support</h4>
+                        <ul>
+                            <li><a href="{% url 'term_condition' %}" class="footer-links">Terms and conditions</a></li>
+                            {% comment %} <li><a href="{% url 'privacy_policy' %}" class="footer-links">Privacy
+                                    Policy</a></li> {% endcomment %}
+                            <li><a href="{% url 'shipping_return_policy' %}" class="footer-links">Shipping - Return
+                                    Policy</a>
+                            </li>
+                            <li><a href="{% url 'faq' %}" class="footer-links">FAQs</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-3 ms-auto footer-box-four">
+                    <div class="footer-content-blk">
+                        <h4>Subscribe to our Newsletter</h4>
+                        <p>So you can be the first to know about new offers and promotions</p>
+                        <form method="POST" action="{% url 'newsletter' %}" id="newsletterForm">
+                            {% csrf_token %}
+                            <div class="footer-newsletter">
+                                <input type="email" name="email" class="form-control" placeholder="Email address"
+                                    id="newsletter-email-input" required>
+                                <button type="submit" class="btn send-btn" id="newsletter-btn"><i
+                                        class="ri-send-plane-2-line"></i></button>
+                            </div>
+                        </form>
+                        <div class="footer-payments">
+                            <p>Accepted payment methods</p>
+                            <img src="{% static  'web_app/images/payments.svg' %}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copy-text">
+        <div class="container">
+            <p>© Copyright
+                <script>document.write(new Date().getFullYear())</script> Megadolls. All Rights Reserved
+            </p>
+            <p>Powered by<a href="https://devtechnosys.com/" target="blank"> Dev Technosys</a></p>
+        </div>
+    </div>
+</footer>

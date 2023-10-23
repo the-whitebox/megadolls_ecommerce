@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock title %}
+{% load static %}
+
+{% block content %}
+
+{% url 'referral' as referral %}
+{% include "includes/section.html" with page_title="Referee Details" btn_url=referral btn_text="Back" %}
+
+
+<main class="main content-wrapper container">
+    <section class="section profile">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body pt-3">
+                        <ul class="nav nav-tabs nav-tabs-bordered text-center">                           
+                        </ul>
+                        <div class="tab-content pt-4">
+                            <style>
+                                #profile-overview .row:nth-child(odd){
+                                    background-color: rgba(201, 197, 197, 0.371);                       
+                                }
+                                .row-padding .row {padding: 10px 0px;}
+                            </style>
+                           <div class="tab-pane fade show active profile-overview row-padding" id="profile-overview">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4"><strong>Name :</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ user_data.name}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 "><strong>Email :</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ user_data.email}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 "><strong>Mobile : </strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ user_data.mobile}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 "><strong>Total Referrals :</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ referral_count}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 "><strong>Total orders By Referrals  :</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{referral_order_count}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 "><strong>Total Dolls To Send:</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ user_data.dolls_to_get_count }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 "><strong>Total Dolls Sent:</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ user_data.dolls_got_count }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 "><strong>Default Address :</strong></div>
+                                    <div class="col-lg-9 col-md-8">{{ user_address.name }}, {% comment %}{{ user_address.house_num }},{% endcomment %} {{ user_address.area_name }}, {{ user_address.zip_code }}, {{ user_address.web_city }}, {{ user_address.web_state.name }}, {{ user_address.web_country.name }}</div>
+                                  
+                                </div> 
+                                <hr>
+                                <form action="" method="POST" id="myForm" >
+                                    {% csrf_token %}
+                                    <div class="row">                             
+                                        <div class="col-md-6 form-group">
+                                            <label>Change Reward Status :</label>
+                                            <select class="form-select" name="status" required >
+                                                <option value="True" {% if user_data.referral_reward_status %} selected {% endif %}>Completed</option>
+                                                <option value="False" {% if not user_data.referral_reward_status  %} selected {% endif %}>Pending</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Number of Dolls</label>
+                                                <input type="number" value="{{ user_data.dolls_to_get_count }}" class="form-control" placeholder="Number of Dolls You Are Sending To Customer" name="dolls_sent_count" min="1" {% comment %}max="{{user_data.dolls_to_get_count}}"{% endcomment %} required>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="col-md-12">
+                                            <button id="formSubmit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#myForm").validate({
+            rules: {
+                dolls_sent_count: {
+                    required: true,
+                    digit: true,
+                    maxlength: "{{user_data.dolls_to_get_count}}"
+                }
+                
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    })
+</script>
+
+{% endblock script %}

@@ -1,0 +1,68 @@
+{% spaceless %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500;700;800;900&display=swap"
+    rel="stylesheet">
+  <meta name="viewport" content="minimum-scale=1.0, maximum-scale=1.0,width=device-width, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+{% include 'email_html/includes/font.html' %}
+</head>
+<body style="font-family: sans-serif;background:#f1f1f1;margin:0px;">
+  <table
+    style="table-layout: fixed;border-spacing: 0;border-collapse: collapse;background-color: #fdfdfd;width: 700px;margin:auto;background-image: url({% static 'email_template/images/shero-gift-subscription-bg.jpg' %});background-repeat: no-repeat;background-size:cover;border-collapse: separate;border-spacing:0px 0px;padding: 45px 100px 10px;background-position:top center;">
+    {% comment %} https://megadolls.com/static/email_template/images/shero-gift-subscription-bg.jpg {% endcomment %}
+    <!-- ---1st line---- -->
+    <tr>
+      <td style="width:100%;">
+        <table style="width:100%; background: #fdfdfd;border-radius: 12px;box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.16);min-height: 580px;">
+          <tr>
+            <td
+              style="width:100%;text-align:center;vertical-align: top;padding-bottom: 10px;margin:0; overflow-wrap: anywhere">
+              <div style="text-align:center;margin:50px 0px;">
+                <img src="{% static 'email_template/images/title_image/school-or-hospital-gift-subscription.png' %}" style="width:70%;margin-bottom:50px;">
+                <img src="{% static 'email_template/images/title_image/gift-subscription-sender.png' %}" style="width:70%;">
+              </div>
+              {% comment %} <p style="font-size: 32px;color: #ffd739;text-shadow: 1px 2px #1A1A1A99;text-align: center;margin: auto;width: 70%;padding: 15px 0 0 0;line-height:44px; font-family: 'Golden-Ranger';">Megadolls Gift Subscription</p>
+              <p style="font-size: 45px;color: #15b3a7;text-align: center;margin: auto;width: 90%;padding: 15px 0 0 0;line-height:44px; font-family: 'Arial';margin-bottom:70px">Your gift subscription <br />has been sent!</p> {% endcomment %}
+              <p style="font-size: 18px;color: black;text-align:left;margin: auto;width: 90%;padding: 15px 55px 0;line-height: 36px; font-family: 'Arial';margin-bottom:200px;">
+                Hi {{sender_name}},
+                <span style="display:block;margin: 15px 0px;">Thanks for gifting {{ receiver_email }} with the Megadolls {{ subscription_plan }} subscription.</span>
+                We are processing your order, and soon recipient
+                will discover that pretend play is more fun with Megadolls.
+                <br /><br /><br />
+                <span style="display:block;">All the best,</span>
+                <span style="display:block;">The Megadolls Team</span>
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="width:100%;text-align:right;padding-bottom: 15px;vertical-align: bottom;">
+              
+              <a style="background: -moz-linear-gradient(top, rgba(23,178,166,1) 0%, rgba(4,118,104,1) 100%);background: -webkit-linear-gradient(top, rgba(23,178,166,1) 0%,rgba(4,118,104,1) 100%);background: linear-gradient(to bottom, rgba(23,178,166,1) 0%,rgba(4,118,104,1) 100%);background-color: rgb(23,178,166);display: block;border-radius: 5px;font-size: 17px;text-align: center;color: #fff;padding: 1px 5px;width: 200px;margin: auto;text-decoration: none;font-family: 'ariel';line-height: 38px;" href="{{receipt}}">Receipt</a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <!-- ---End line---- -->
+    <!-- ---2nd line---- -->
+    <tr>
+      <td style="width:100%; padding-bottom: 40px;">
+        <table style="width:100%; background: #fdfdfd;border-radius: 5px;box-shadow: 0px 1px 12px rgba(0, 0, 0, 0.11);min-height:80px;margin-top: 15px;">
+          <tr>
+            {% include 'email_html/includes/email-footer-links.html' %}
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <!-- ---End line---- -->
+    <!-- ---3trd line---- -->
+    {% include 'email_html/includes/social_link.html' %}
+    <!-- ---End line---- -->
+  </table>
+</body>
+</html>
+{% endspaceless %}

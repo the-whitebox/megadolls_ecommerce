@@ -1,0 +1,44 @@
+<div class="shop-filter-blk dropdown dropdown-md">
+    <button class="dropdown-toggle megamenu-btn" type="button" id="dropdownMenuButton1"
+        data-bs-toggle="dropdown" aria-expanded="false">Filter <i class="ri-filter-fill"></i></button>
+    <form action="" method="POST" class="dropdown-menu megamenu " aria-labelledby="dropdownMenuButton1" id="filter-form">
+        {% csrf_token %}
+        <input type="hidden" name="subcategory_name" value="Play">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="filter-menu-content">
+                    <h5>Dress Type</h4>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="dress_type" id="dress-type" value="dress_type_all" {% if selected_dress_type and selected_dress_type == dress_type_all %} selected {% endif %}>
+                        <label class="form-check-label" for="dress-type">All</label>
+                    </div>
+                    {% for dress_type in dress_types %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="dress_type" id="dress-type{{ forloop.counter }}" value="{{ dress_type.url_slug }}" {% if selected_dress_type and selected_dress_type.url_slug == dress_type.url_slug %} selected {% endif %}>
+                        <label class="form-check-label" for="dress-type{{ forloop.counter }}">{{ dress_type.name }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="filter-menu-content">
+                    <h5>Color</h4>
+                        <div class="form-check color-check-all">
+                            <input class="form-check-input" type="radio" name="color" id="colorall" value="color_all" {% if selected_color == color_all %} selected {% endif %}>
+                            <label class="form-check-label" for="colorall"><i class="ri-apps-fill"></i>
+                                All</label>
+                        </div>
+                        {% for color in colors %}
+                        <div class="form-check color-check">
+                            <input class="form-check-input" type="radio" name="color" id="color{{ forloop.counter }}" value="{{ color.url_slug }}" {% if selected_color and selected_color.url_slug == color.url_slug %} selected {% endif %}>
+                            <label class="form-check-label" for="color{{ forloop.counter }}"><span style="background: {{ color.image_color_code }}"></span> {{ color.name }}</label>
+                        </div>
+                        {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <button type="button" class="btn btn-primary filter-btn" id="applyFilter" >Apply Filters</button>
+        </div>
+    </form>
+</div>

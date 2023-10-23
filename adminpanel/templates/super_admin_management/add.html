@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+<link rel="stylesheet" href="{% static 'adminpanel/intl-tel-input-master/build/css/intlTelInput.css' %}">
+{% endblock css %}
+
+
+{% block content%}
+{% url 'view_super_admins' as view_super_admins %}
+{% include "includes/section.html" with page_title="Add Super Admin" btn_url=view_super_admins btn_text="Back" %}
+
+<section id="basic-vertical-layouts">
+    <div class="row match-height m-auto">
+        <div class="col-md-12 col-12 p-0">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <form class="form form-vertical" method="POST" id="myForm">
+                            {% csrf_token %}
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="first-name-icon">User Name</label>
+                                            <div class="position-relative">
+                                                <input type="text" class="form-control" name="name" value="{{ post_data.name }}" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <div class="position-relative">
+                                                <input type="text" class="form-control" name="email" value="{{ post_data.email }}" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="mobile-id-icon">Mobile Number</label>
+                                            <div class="position-relative">
+                                                <input type="hidden" name="country_code" id="country-code" readonly>
+                                                <input type="text" id="mob-code" class="form-control"
+                                                    placeholder="Mobile" name="mobile_number" value="{{ post_data.mobile_number }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <button type="button" id="formSubmit" class="btn btn-primary me-1 mx -3 mb-1 show-loader">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content%}
+
+{% block script %}
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+<script src="{% static 'adminpanel/templates/user_management/validation.js' %}"></script>
+<script src="{% static 'adminpanel/intl-tel-input-master/build/js/intlTelInput.min.js' %}"></script>
+<script>
+    const input = document.querySelector("#mob-code");
+    const inst = window.intlTelInput(input, ({}));
+    function addCountryCodeToFrom() {
+        let information = inst.getSelectedCountryData()['dialCode'];
+        $('#country-code').val(information);
+        $('#myForm').submit();
+    };
+    
+    $('#formSubmit').on('click', function (e) {
+        e.preventDefault()
+        let id = $(this).data('id')
+        Swal.fire({
+            title: 'Add Super Admin',
+            text: 'Are You Sure ?',
+            confirmButtonColor: 'rgb(225, 0, 127)',
+            showCancelButton: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                addCountryCodeToFrom()
+            }
+        })
+    })
+</script>
+
+
+<!-- <script>
+    $(document).ready(function () {
+        $('#loader').hide();
+        $('.send-mail').on('click', function () {
+            $('#loader').show()
+        })
+    })
+</script> -->
+{% endblock script %}

@@ -1,0 +1,484 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}Cart{% endblock title %}
+{% block content %}
+<script src="https://js.stripe.com/v3/"></script>
+
+<div class="wraper-inner">
+    <section class="page-head-sec">
+        <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+        <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+        <div class="container">
+            <div class="page-head-content">
+                <h4>Cart</h4>
+            </div>
+        </div>
+    </section>
+    <section class="cart-inner-block" id="reach-to-cart">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="cart-detail-blk">
+                        <div class="cart-detail-head">
+                            <a href="{% url 'home' %}" class="btn btn-primary">Continue Shopping</a>
+                            {% if shop_products or shero_dolls %}
+                            <a href="#" id="empty_cart" class="btn btn-primary outline js-if-cart-empty">Empty Cart</a>
+                            {% endif %}
+                        </div>
+                        <div class="cart-list-item-blk">
+                            {% if shop_products %}
+                                <h4 class="cart-product-title">Products</h4>
+                                <br />
+                            {% endif %}
+                            {% for shop_product in shop_products %}
+                            <div class="cart-list-item">
+                                <div class="cart-list-item-left">
+                                    {% for shop_product_img in shop_product_imgs %}
+                                    {% if shop_product.id == shop_product_img.shop_product_id and shop_product_img.primary_img %}
+                                    <figure>
+                                        <img src="{{ shop_product_img.primary_img.url }}">
+                                    </figure>
+                                    {% endif %}
+                                    {% endfor %}
+                                    <figcaption>
+                                        <h4><a href="{% url 'shop_doll_detail' shop_product.slug %}">{{ shop_product.name }}</a></h4>
+                                        <div class="product-detail-category">{{ shop_product.subcategory.name}}</div>
+                                        <div class="product-price">
+                                            {% if shop_product.offer_price %}
+                                            <span class="amount">${{ shop_product.offer_price }}</span>
+                                            <span class="pre-price">${{ shop_product.original_price }}</span>
+                                            <span class="offer">({{ shop_product.discount_percentage|floatformat:2 }}% OFF)</span>
+                                            {% else %}
+                                            <span class="amount">${{ shop_product.original_price }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </figcaption>
+                                </div>
+                                <div class="cart-list-item-right">
+                                    <div class="cart-list-item-actions">
+                                        {% if shop_product.quantity > 0 %}
+                                            <div class="quantity-control" data-quantity="">
+                                                <button class="quantity-btn" data-quantity-minus=""><i class="ri-subtract-line"></i></button>
+                                                {% for key, value in product_dict.items %}
+                                                {% if shop_product.id == key %}
+                                                <input type="text" class="quantity-input" data-quantity-target="" value="{{ value }}" step="1" min="1" max="{{ shop_product.quantity }}" name="quantity" data-product-id="{{ shop_product.id }}" readonly >
+                                                {% endif %}
+                                                {% endfor %}
+                                                <button class="quantity-btn" data-quantity-plus=""><i class="ri-add-fill"></i></button>
+                                            </div>
+                                        {% else %}
+                                            <strong class="text-danger">This Product is Out of Stock</strong>
+                                        {% endif %}
+                                        <a href="{% url 'remove_item' shop_product.id %}" class="btn btn-primary no-bg delete-btn"><i class="ri-delete-bin-fill"></i></a>
+                                    </div>
+                                    {% if shop_product.id in wishlist_item_ids %}
+                                        <a href="{% url 'remove_from_wishlist' shop_product.id %}" class="btn btn-primary no-bg wishlist-btn">Remove From Wishlist</a>
+                                    {% else %}
+                                        <a href="{% url 'add_to_wishlish_cart' shop_product.id %}" class="btn btn-primary no-bg wishlist-btn">Add to Wishlist</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <br />
+                        {% if shero_dolls %}
+                        <div class="cart-list-item-blk py-3">
+                            <h4 class="cart-product-title">Shero Dolls</h4>
+                            <br />
+                            {% for dolls in shero_dolls %}
+                            <div class="cart-list-item">
+                                <div class="cart-list-item-left">
+                                    {% for dolls_image in shero_dolls_images %}
+                                    {% if dolls.id == dolls_image.shero_dolls_id%}
+                                    <figure>
+                                        <img src="{{ dolls_image.primary_img.url }}">
+                                    </figure>
+                                    {% endif %}
+                                    {% endfor %}
+                                    <figcaption>
+                                        <h4><a href="">{{ dolls.name }}</a></h4>
+                                        <div class="product-price">
+                                            {% if dolls.offer_price %}
+                                            <span class="amount">${{ dolls.offer_price }}</span>
+                                            <span class="pre-price">${{ dolls.original_price }}</span>
+                                            <span class="offer">({{ dolls.discount_percentage|floatformat:2 }}% OFF)</span>
+                                            {% else %}
+                                            <span class="amount">${{ dolls.original_price }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </figcaption>
+                                </div>
+                                <div class="cart-list-item-right">
+                                    <div class="cart-list-item-actions">
+                                        <div class="quantity-control" data-quantity="">
+                                            <button class="quantity-btn" data-quantity-minus=""><i class="ri-subtract-line"></i></button>
+                                            {% for key, value in shero_dict.items %}
+                                            {% if dolls.id == key %}
+                                            <input type="text" class="quantity-input" data-quantity-target="" value="{{ value }}" step="1" min="1" max="3" name="quantity" data-type="shero" data-product-id="{{ dolls.id }}">
+                                            {% endif %}
+                                            {% endfor %}
+                                            <button class="quantity-btn" data-quantity-plus="" ><i class="ri-add-fill"></i></button>
+                                        </div>
+                                        <a href="{% url 'remove_shero_dolls' dolls.id %}" class="btn btn-primary no-bg delete-btn"><i class="ri-delete-bin-fill"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if shop_products or shero_dolls %}
+                <div class="col-md-4 js-if-cart-empty">
+                    <div class="cart-summary-blk">
+                        <h4>Your Order</h4>
+                        {% if request.user.is_authenticated %}
+                            <div class="cart-promocode">
+                                <label>Enter promo code if any</label>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" value="{% if cart.offer_id %} {{ cart.offer.name }} {% endif %}" placeholder="Gift Card/Discount Code" id="appy-offer" disabled readonly>
+                                    
+                                    <button type="button" class="btn btn-primary offer-show-hide" id="apply-offer">Apply</button>
+                                    <button type="button" class="btn btn-primary deselect-offer offer-show-hide" id="remove-offer" style="display: none;">Remove</button>
+                                    
+                                </div>
+                                <div class="coupon-list-blk accordion my-2" id="accordionExample">
+                                    <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                        Show Coupons 
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            {% for offer in offers %}
+                                                <div class="coupon-list-item">
+                                                    <h4>{{ offer.name }}</h4>
+                                                    <button class="btn btn-primary select-offer" data-name="{{ offer.name }}" data-id="{{ offer.id }}">Select</button>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <ul class="cart-billing-details" id="js-your-order-section">
+                            {% comment %} here html coming from javascript {% endcomment %}
+                        </ul> 
+                         <div class="form-group">
+                            <div class="row">
+                                {% comment %} here html coming from javascript {% endcomment %}
+                            </div>
+                        </div>
+                        {% if is_any_out_of_stock %}
+                            <div class="text-center">
+                                <p class="text-danger">Please remove out of stock product from the cart first to proceed further</p>
+                            </div>
+                        {% else %}
+                            {% if request.user.is_authenticated %}
+                                <div class="text-center">
+                                    <a href="{% url 'billing' %}" class="btn btn-primary">Continue</a>
+                                </div>
+                            {% else %}
+                                <!-- Button trigger modal -->
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                        Continue
+                                    </button>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </div>  
+                </div>
+                {% endif %}
+                {% if not shop_products and not shero_dolls %}
+                <div class="text-center">
+                    <h4>Cart is Empty</h4>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    {% if may_like_product %}
+    <section class="products-sec bg-primary-light-2">
+        <div class="container">
+            <div class="sec-head">
+                <h4>You May Also Like</h4>
+            </div>
+            <div class="row">
+                {% for product in may_like_product %}
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="product-item">
+                        <div class="share_posi_bx">
+                            <div class="social-share">
+                                <div class="social-share-icon-1 facebook"><a href="https://www.facebook.com/sharer/sharer.php?u={{ site_url }}shop_doll_detail/{{ product.slug }}" target="_blank"><i class="ri-facebook-fill"></i></a></div>
+                                <div class="social-share-icon-2 twitter"><a href="https://twitter.com/intent/tweet?url={{ site_url }}shop_doll_detail/{{ product.slug }}" target="_blank"><i class="ri-twitter-fill"></i></a></div>
+                                <div class="social-share-icon-3 linkedin">
+                                    <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ site_url }}shop_doll_detail/{{ product.slug }}" target="_blank"><i class="ri-linkedin-line"></i></a>
+                                </div>
+                                <div class="mask2"></div>
+                            </div>
+                            <a href="javascript:void(0);" class="btn btn-primary-light btn-square product-share-btn"><i
+                                    class="ri-share-line"></i></a>
+                        </div>
+                        <div class="product-slider owl-carousel owl-theme">
+                            {% for product_img in may_like_product_images %}
+                            {% for sub_img in may_like_product_sub_images %}
+                            {% if product_img.id == sub_img.shop_product_image_id and product.id == product_img.shop_product_id %}
+                            <div class="item">
+                                <div class="product-slider-item">
+                                    <img src="{{sub_img.images.url}}">
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                            {% endfor %}
+                        </div>
+                        <div class="product-item-content"> 
+                            <h6 class="product-category">{{product.subcategory}}</h6>
+                            <h5 class="product-name"><a href="javascript:void(0);">{{product.name}}</a></h5>
+                            <span class="product-rating">
+                                <i class="ri-star-{% if product.average_rating >= 1 %}fill{% else %}line{% endif %}"></i>
+                                <i class="ri-star-{% if product.average_rating >= 2 %}fill{% else %}line{% endif %}"></i>
+                                <i class="ri-star-{% if product.average_rating >= 3 %}fill{% else %}line{% endif %}"></i>
+                                <i class="ri-star-{% if product.average_rating >= 4 %}fill{% else %}line{% endif %}"></i>
+                                <i class="ri-star-{% if product.average_rating >= 5  %}fill{% else %}line{% endif %}"></i>
+                            </span>
+                            <h4 class="product-price">${{product.original_price}}</h4>
+                            <div class="product-actions">
+                                <a href="{% url 'may_like_add_to_wishlish_cart' product.id %}" class="btn btn-primary-light btn-square"><i class="ri-heart-line"></i></a>
+                                {% if product.id in shop_product_list %}
+                                    <a href="#reach-to-cart" class="btn btn-primary"><i class="ri-shopping-cart-2-line"></i> Go to Cart</a>
+                                {% else %}
+                                    <a href="{% url 'may_like_product_add_cart' product.slug %}" class="btn btn-primary"><i class="ri-shopping-cart-2-line"></i> Add to Cart</a>
+                                {% endif %}
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Checkout</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="d-flex">
+                        <div class="w-50 px-3" style="border-right: 1px solid #ebebeb;">
+                            <div class="text-center mb-4">
+                                <p>REGISTERED CUSTOMER</p>
+                            </div>
+                            <form action="{% url 'web_login' %}" method="POST" class="d-grid gap-2" id="sign-in-form">
+                                {% csrf_token %}
+                                <input type="hidden" name="cart_redirect" value="True"/>
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="text" name="email" id="email" class="form-control" placeholder="Enter Email Address">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" name="password" id="password" class="form-control">
+                                </div>
+                                <div class="action-link-blk">
+                                    <a href="{% url 'web_forgot_password' %}" class="action-links">Forgot Password ?</a>
+                                    <button type="submit" class="btn btn-primary float-end">SIGN IN</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="w-50 px-3">
+                            <div class="text-center mb-4">
+                                <p>GUEST CHECKOUT</p>
+                                <small>Hey there! Checkout is fast and easy</small>
+                            </div>
+                            <form action="{% url 'register_guest_user' %}" method="POST" class="d-grid gap-2" id="myForm">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="guest-email">Email Address</label>
+                                    <input type="text" name="guest_email" id="guest-email" class="form-control" placeholder="Enter Email Address" required/>
+                                </div>
+                                <button type="submit" class="btn btn-primary">CONTINUE</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% comment %} <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Understood</button>
+            </div> {% endcomment %}
+        </div>
+        </div>
+    </div>
+
+    {% comment %} {% include 'includes/featured_and_download.html' %} {% endcomment %}
+</div>
+{% endblock content %}
+{% block script %}
+
+<script>
+    $.validator.addMethod("noSpace", function(value, element) { 
+        return !value.startsWith(" ") && value != ""; 
+    }, "No space please and don't leave it empty")
+
+    $.validator.addMethod('emailRegex', function(value, element) {
+        let emailExp = new RegExp(/^\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i);
+        return emailExp.test(value);
+    }, 'Email format is not valid');
+
+    $("#sign-in-form").validate({
+        rules: {
+            email: {
+                emailRegex: true,
+                noSpace: true,
+                required: true,
+            },
+            password: {
+                noSpace: true
+            }
+        },
+        submitHandler: function (form) {
+            form.submit()
+        }
+    })
+  
+    $("#myForm").validate({
+        rules: {
+            guest_email: {
+                emailRegex: true,
+                noSpace: true,
+                required: true
+            },
+        },
+        submitHandler: function (form) {
+            form.submit()
+        }
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+
+        var active1 = false;
+        var active2 = false;
+        var active3 = false;
+        var active4 = false;
+
+        $('.product-share-btn').on('mousedown touchstart', function() {
+            if (!active1) $(this).siblings('.social-share').find('.social-share-icon-1').css({'background-color': 'gray', 'transform': 'translate(5px, 73px)'});
+            else $(this).siblings('.social-share').find('.social-share-icon-1').css({'background-color': 'dimGray', 'transform': 'none'}); 
+            if (!active2) $(this).siblings('.social-share').find('.social-share-icon-2').css({'background-color': 'gray', 'transform': 'translate(-45px,50px)'});
+            else $(this).siblings('.social-share').find('.social-share-icon-2').css({'background-color': 'darkGray', 'transform': 'none'});
+                if (!active3) $(this).siblings('.social-share').find('.social-share-icon-3').css({'background-color': 'gray', 'transform': 'translate(-65px,0px)'});
+            else $(this).siblings('.social-share').find('.social-share-icon-3').css({'background-color': 'silver', 'transform': 'none'});
+                if (!active4) $(this).siblings('.social-share').find('.social-share-icon-4').css({'background-color': 'gray', 'transform': 'translate(-105px,0px)'});
+            else $(this).siblings('.social-share').find('.social-share-icon-4').css({'background-color': 'silver', 'transform': 'none'});
+            active1 = !active1;
+            active2 = !active2;
+            active3 = !active3;
+            active4 = !active4;
+        });
+    });
+
+</script>
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#empty_cart').on('click', function (e) {
+            e.preventDefault()
+            Swal.fire({
+                title: 'Empty Cart',
+                text: 'Are You Sure ?',
+                confirmButtonColor: 'rgb(225, 0, 127)',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.replace("{% url 'empty_cart' %}")
+                }
+            })
+        })
+    })
+    stripePayment()
+</script>
+
+<script>
+    $('.select-offer').on('click', function() {
+        let name = $(this).data('name')
+        let id = $(this).data('id')
+        $('#apply-offer').data('offer-id', id)
+        $('#appy-offer').val(name)
+    })
+
+    {% if cart.offer_id %}
+        $('#apply-offer').hide()
+        $('#remove-offer').show()
+        $('.select-offer').hide()
+    {% else %}
+        $('#remove-offer').hide()
+        $('#apply-offer').show()
+        $('.select-offer').show()
+    {% endif %}
+
+    $('#apply-offer').on('click', function() {
+        let offer_id = $('#apply-offer').data('offer-id')
+        if(offer_id) {
+            $.ajax({
+                url: '{% url "apply_offer" %}',
+                method: 'POST',
+                data: {
+                    'offer_id': offer_id
+                },
+                success: function(response) {
+                    $('#apply-offer').data('offer-id', '')
+                    $('#apply-offer').val('')
+                    if(response.success == false) {
+                        myToast(response.message, ERROR_BG)
+                    } else {
+                        getCartProductData()
+                        myToast(response.message, SUCCESS_BG)
+                        $('#apply-offer').hide()
+                        $('#remove-offer').show()
+                        $('.select-offer').hide()
+                    }
+                }
+            })
+        } else {
+            myToast('Please Select a Coupon', ERROR_BG)
+        }
+    })
+</script>
+
+<script>
+    $('.deselect-offer').on('click', function() {
+    })
+    $('#remove-offer').on('click', function() {
+        if($('#appy-offer').val()) {
+            $.ajax({
+            url: '{% url "remove_offer" %}',
+    
+            success: function(response) {
+                if(response.success == false) {
+                    myToast(response.message, ERROR_BG)
+                } else {
+                    getCartProductData()
+                    myToast(response.message, SUCCESS_BG)
+                    $('#remove-offer').hide()
+                    $('#apply-offer').show()
+                    $('.select-offer').show()
+                    $('#appy-offer').val('')
+                }
+            }
+        })
+        }
+    })
+</script>
+{% endblock script %}   

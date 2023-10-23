@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'adminpanel/data-table/dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+{% endblock css %}
+
+{% block content %}
+{% url 'add_legal' as add_legal %}
+{% include "includes/section.html" with page_title="Legal " btn_url=add_legal btn_text="Add Legal" %}
+
+<!-- Contextual classes start -->
+<section class="section">
+    <div class="row w-100" id="table-striped">
+        <div class="col-12">
+            <div class="card py-2 px-2">
+                <div class="card-content">
+                    <!-- table contextual / colored -->
+                    <div class="table-responsive">
+                        {% if viewlegal %}
+                            <table class="table table table-striped text-center" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th>Sr no.</th>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in viewlegal %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{i.title|safe}}</td>
+                                        <td>{{i.description|safe|truncatechars:70}}</td>
+                                        {% if  request.user.user_type == "SUPERADMIN" %}
+                                            <td>
+                                                <a href="{% url 'edit_legal' i.id %}" class="mx-1">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>         
+                                            </td>
+                                        {% endif %}
+
+                                        {% if request.user.user_type == "SUBADMIN" %}
+                                            <td>
+                                                {% for i in m_check %}
+                                                    {% if i.edit == True %}
+                                                    <a href="{% url 'edit_legal' i.id %}" class="mx-1">
+                                                        <span class="fa-fw select-all fas"></span>
+                                                    </a>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <div class="text-center">
+                                <strong style="font-size: 1.5em;">No Records</strong>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/data-table/dataTables.min.js' %}"></script>
+{% endblock script %}

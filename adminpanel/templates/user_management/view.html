@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'adminpanel/data-table/dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+{% endblock css %}
+
+{% block content %}
+{% url 'add_user' as add_sub_admin %}
+{% include "includes/section.html" with page_title="Customer Management" btn_url=add_sub_admin btn_text="Add Customer" %}
+
+<!-- Contextual classes start -->
+<section class="section">
+    <div class="row w-100" id="table-striped">
+        <div class="col-12">
+            <div class="card py-2 px-2">
+                <div class="card-content">
+                    <!-- table contextual / colored -->
+                    <div class="table-responsive">
+                        {% if users %}
+                            <table class="table table table-striped text-center" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th>Sr No.</th>
+                                        <th>Name</th>
+                                        <th>Mobile</th>
+                                        <th>Email</th>
+                                        <th>Mailing Address</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for user in users %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ user.user.name }}</td>
+                                        <td>{{ user.user.mobile }}</td>
+                                        <td>{{ user.user.email }}</td>
+                                        <td>{{ user.web_city}} {{user.area_name}} <br> houseNo: {{user.house_num}}</td>
+                                        <td class="is-active">
+                                            {% if user.is_active %}
+                                                <span class="badge bg-success">Active</span>
+                                            {% else %}
+                                                <span class="badge bg-danger">Deactive</span>
+                                            {% endif %}
+                                        </td>
+                                        {% if request.user.user_type == "SUPERADMIN" %}
+                                            <td>
+                                                <a href="{% url 'edit_user' user.id %}" class="mx-1">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                                <a href="{% url 'view_user_detail' user.id %}" class="mx-1">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                                <a href="#" class="mx-1 btn-delete" data-id="{{ user.id }}">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                            </td>
+                                        {% endif %}
+
+                                        {% if request.user.user_type == "SUBADMIN" %}
+                                            <td>
+                                                {% for x in m_check %}
+                                                    {% if x.edit == True %}
+                                                        <a href="{% url 'edit_user' user.id %}" class="mx-1">
+                                                            <span class="fa-fw select-all fas"></span>
+                                                        </a>
+                                                    {% endif %}
+                                                    {% if x.view == True %}
+                                                        <a href="{% url 'view_user_detail' user.id %}" class="mx-1">
+                                                            <span class="fa-fw select-all fas"></span>
+                                                        </a>
+                                                    {% endif %}
+                                                    {% if x.delete == True %}
+                                                        <a href="#" class="mx-1 btn-delete" data-id="{{user.id}}">
+                                                            <span class="fa-fw select-all fas"></span>
+                                                        </a>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <form method="POST" action="{% url 'delete_user' %}" class="mx-1" id="delete_form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="user_id" value="" id="delete_user_data">
+                                </form>
+                            </table>
+                        {% else %}
+                            <div class="text-center">
+                                <strong style="font-size: 1.5em;">No Records</strong>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/data-table/dataTables.min.js' %}"></script>
+
+
+<script>
+    $(document).ready(function () {
+        $('.btn-delete').on('click', function (e) {
+            e.preventDefault()
+            let id = $(this).data('id')
+            Swal.fire({
+                title: 'Delete User',
+                text: 'Are You Sure ?',
+                confirmButtonColor: 'rgb(225, 0, 127)',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#delete_user_data').val(id)
+                    $('#delete_form').submit()
+                }
+            })
+        })
+    })
+</script>
+
+{% endblock script %}

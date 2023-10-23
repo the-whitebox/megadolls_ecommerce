@@ -1,0 +1,217 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}Blog{% endblock title %}
+{% block content %}
+<style>
+    .blog-list-item p {
+        word-wrap: break-word;
+    }
+</style>
+<div class="wraper-inner">
+    <section class="cms-page-banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="cms-page-content">
+                        <h2>{{ blog_content.heading}}</h2>
+                        <p>{{ blog_content.description|safe }}</p>
+                    </div>
+                </div>
+                <div class="col-md-4 offset-md-1">
+                    <div class="cms-page-bn">
+                        <figure>
+                            <img src="{{ blog_content.image.url }}">
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>  
+    <section class="blog-inner-sec">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="blog-list-left-box">
+                        <ul>
+                            <li>
+                                <div class="blog-infos-blk">
+                                    <h4>Search in Blog</h4>
+                                    <div class="blog-search-box">
+                                        <form action="{% url 'search_in_blog' %}" method="GET" id="search">
+                                        <input type="text" name="text" class="form-control" placeholder="Search here">
+                                        <button type="submit" class="btn search-btn"><i class="ri-search-line"></i></button>
+                                    </form>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="blog-infos-blk">
+                                    <h4>Subscribe to Blog</h4>
+                                    <div class="blog-search-box">
+                                        <form action="{% url 'blog_subscriber' %}" method="POST" id="subscribe">
+                                        {% csrf_token %}
+                                        <input type="email" name="subscriber" class="form-control" placeholder="Email Address">
+                                        <button type="submit" class="btn search-btn"><i class="ri-send-plane-2-line"></i></button>
+                                    </form>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- <li> 
+                                <h4><a href="{% url 'home' %}" class="blog-link-item">Back To Home Page</a></h4>
+                            </li>  -->
+                            <li>
+                                <div class="blog-infos-blk">
+                                    <h4>Topic</h4>
+                                    {% comment %} {% for cat_data in blogs %}
+                                    <h5>{{ cat_data.blog_category.name }}</h5>
+                                    <ul>
+                                        <li><a href="{% url 'blog_filter_by_subcategory' cat_data.sub_category.id  %}">{{ cat_data.sub_category.name }}</a></li>
+                                    </ul>
+                                    {% endfor  %} {% endcomment %}
+                                    
+                                    {% for key, value in cat_and_subcat.items %}
+                                        <h5>{{ key }}</h5>
+                                        <ul>
+                                            {% for v in value %}
+                                                <li><a href="{% url 'blog_detail' v.blog_slug %}">{{ v.blog_heading }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endfor %}
+                                </div>
+                            </li>
+                            {% for social_link in social_links %}
+                            <li class="facebook-blk">
+                                <iframe src="{{ social_link.url }}" width="100%" height="500" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                            </li>
+                            {% endfor %}                          
+                        </ul>
+                    </div>
+                </div>          
+                <div class="col-md-6">      
+                    <div class="blog-list-block">
+                        {% if page_obj %}
+                        {% for blog in page_obj %}
+                        <div class="blog-list-item">
+                            {% if blog.image %}
+                            <figure>
+                                <!-- <img src="{% static 'web_app/images/blog-1.png' %}"> -->
+                                <img src="{{ blog.image.url }}">
+                            </figure>
+                            {% endif %}
+                            <h4>{{ blog.heading }}</h4>
+                            <div class="col-12">
+                                {{ blog.remove_html_from_content|truncatechars:200 }}
+                            </div>   
+                            <div class="col-12">
+                                <a href="{% url 'blog_detail' blog.slug %}" class="btn btn-secondary">Read More</a>
+                            </div>
+                        </div>
+                        <hr>
+                        {% endfor %}
+                        {% else %}                   
+                        <p style="text-align: center;" ><strong>No Blogs</strong></p>
+                        {% endif %}
+                    </div>
+                    <div class="pagination-blk mt-5">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                {% if page_obj %}                                
+                                {%if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                        <span aria-hidden="true">
+                                            <i class="ri-arrow-left-line"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                                {% endif %}
+                                {% for page_number in page_obj.paginator.page_range %}
+                                <li class="page-item">
+                                    <a class="page-link {% if page_number == page_obj.number %}active {% endif %}" href="?page={{ page_number }}">
+                                        {{ page_number }}
+                                    </a>
+                                </li>
+                                {% endfor %}
+                                {%if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}&text={{ text }}" aria-label="Next">
+                                        <span aria-hidden="true">
+                                            <i class="ri-arrow-right-line"></i>
+                                        </span>
+                                    </a>
+                                </li>                              
+                                {% endif %}  
+                                {% endif %}                           
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    {% for link in links %}
+                    <div class="info-box-2 mb-4">
+                        <a href="{{ link.url }}">
+                            {% if link.title %}
+                            <h4>{{ link.title }}</h4>
+                            {% endif %}
+                            {% if link.image %}
+                            <figure>
+                                <img style="border-radius: 6%;" src="{{ link.image.url }}">
+                            </figure>
+                            {% else %}
+                            <figure>
+                                <img src="{% static 'web_app/images/blog-b-1.png' %}">
+                            </figure>
+                            {% endif %}
+                        </a>
+                    </div>  
+                    {% endfor %}
+                </div>
+               
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock content %}
+{% block script %}
+<script>
+    $.validator.addMethod("noSpace", function(value, element) { 
+        return !value.startsWith(" ") && value != ""; 
+    }, "No space please and don't leave it empty")
+    $(document).ready(function() {
+        $("#search").validate({
+        rules: {
+            text: {
+                required: true,
+                noSpace: true
+            }
+        },
+        submitHandler: function (form) {
+            form.submit()
+        }
+    });
+    })  
+</script>
+<script>
+    $.validator.addMethod("noSpace", function(value, element) { 
+        return !value.startsWith(" ") && value != ""; 
+    }, "No space please and don't leave it empty")
+    $.validator.addMethod('emailRegex', function(value, element) {
+            let emailExp = new RegExp(/^\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i);
+            return emailExp.test(value);
+        }, 'Email format is not valid');
+        $(document).ready(function() {
+        $("#subscribe").validate({
+        rules: {
+            subscriber: {
+                required: true,
+                noSpace: true
+
+            }
+        },
+        submitHandler: function (form) {
+            form.submit()
+        }
+    });
+    })
+</script>
+{% endblock script %}

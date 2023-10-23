@@ -1,0 +1,68 @@
+{% spaceless %}
+{% load static %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500;700;800;900&display=swap"
+    rel="stylesheet">
+  <meta name="viewport" content="minimum-scale=1.0, maximum-scale=1.0,width=device-width, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  {% include 'email_html/includes/font.html' %}
+</head>
+<body style="font-family: 'M PLUS Rounded 1c', sans-serif;background:#f1f1f1;margin:0px;">
+  <table style="table-layout: fixed;border-spacing: 0;border-collapse: collapse;background-color: #fdfdfd;width:600px;margin:auto;background-image: url({% static 'email_template/images/top-bg1.png' %}); background-repeat: no-repeat; background-size:cover;border-collapse: separate;border-spacing:0px 0px;padding: 45px 55px 10px;background-position:top center;">
+    {% comment %} https://megadolls.com/static/email_template/images/top-bg1.png {% endcomment %}
+    <!-- ---1st line---- -->
+    <tr>
+      <td style="width:100%;">
+        <table style="width:100%; background: #fdfdfd;border-radius: 5px;box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.16);min-height: 580px;">
+          <tr>
+            <td style="width:100%;text-align:center;vertical-align: top;padding-bottom: 10px;margin:0; overflow-wrap: anywhere">
+              <br />
+              <div style="text-align:center;margin: 50px 0px;">
+                <img src="{% static 'email_template/images/title_image/subscribe-to-our-newsletter.png' %}" style="width:70%">
+              </div>
+              {% comment %} <p style="font-size: 50px;color: #ffd739;text-align: center;margin: auto;width: 70%;padding: 15px 0 0 0;line-height: 36px; font-family: 'Golden-Ranger';">Welcome to <br /> Megadollls</p> {% endcomment %}
+              <br /><br /><br />
+              <p style="font-size: 16px;color: black;text-align: center;margin: auto;width: 70%;padding: 15px 0 0 0;line-height: 36px; font-family: 'ariel';">
+                Hi, {{name}},
+                Your Account on Megadolls.com has been created.
+                With you, Megadolls’ community got a little bigger.
+                Our brand was created to empower boys and girls around the world.
+                We strive to create beautiful pieces that inspire everyone to live with awareness
+                and compassion for others. <br />
+                Please use the credentials given below to login on Megadolls.<br/>
+                Email: {{email}} <br/>
+                Password: {{password}}<br/>
+                We can’t wait to tell you more about our latest insights, products, promotions,
+                and blog post. <br />
+                All the best, <br />
+                The Megadolls Team
+              </p>
+              <br />
+              <a style="background: -moz-linear-gradient(top, rgba(23,178,166,1) 0%, rgba(4,118,104,1) 100%); background: webkit-linear-gradient(top, rgba(23,178,166,1) 0%,rgba(4,118,104,1) 100%);background: linear-gradient(to bottom, rgba(23,178,166,1) 0%,rgba(4,118,104,1) 100%);background-color: rgb(23,178,166);display: block;border-radius: 5px;font-size: 17px;text-align: center;color: #fff;padding: 1px 5px;width: 285px;margin: auto;text-decoration: none;font-family: 'ariel';line-height: 38px;" href="{{ explore_link }}">Go to Megadolls</a>
+              <br />
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="width:100%; padding-bottom: 40px;">
+        <table style="width:100%; background: #fdfdfd;border-radius: 5px;box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.11);min-height:80px;margin-top: 15px;">
+          <tr>
+            {% include 'email_html/includes/email-footer-links.html' %}
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <!-- ---End line---- -->
+    <!-- ---3trd line---- -->
+    {% include 'email_html/includes/social_link.html' %}
+    <!-- ---End line---- -->
+  </table>
+</body>
+</html>
+{% endspaceless %}

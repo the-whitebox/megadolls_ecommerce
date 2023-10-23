@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="37.979" height="32.433" viewBox="0 0 37.979 32.433">
+  <g id="cash" transform="translate(0 -2.651)">
+    <path id="Path_19621" data-name="Path 19621" d="M32.593,14.907v8.536L37.979,21.4,30.516,2.651,0,14.907" fill="#6f9935"/>
+    <path id="Path_19622" data-name="Path 19622" d="M34.077,22.381v-9.5H3.8l-2.313.929v.623H32.525V22.97Z" transform="translate(0.069 0.473)" fill="#658b30"/>
+    <path id="Path_19623" data-name="Path 19623" d="M0,14.366H32.593V34.542H0Z" transform="translate(0 0.542)" fill="#79a73a"/>
+    <path id="Path_19624" data-name="Path 19624" d="M2.967,20.988a5.444,5.444,0,0,0,3.655-3.655H25.7a5.443,5.443,0,0,0,3.655,3.655v6.658A5.443,5.443,0,0,0,25.7,31.3H6.621a5.444,5.444,0,0,0-3.654-3.655Z" transform="translate(0.137 0.679)" fill="#aac16b"/>
+    <circle id="Ellipse_3175" data-name="Ellipse 3175" cx="3.88" cy="3.88" r="3.88" transform="translate(12.416 21.115)" fill="#79a73a"/>
+    <path id="Path_19625" data-name="Path 19625" d="M31.678,14.674,29.838,9.94l-.084-.209A5.444,5.444,0,0,1,25.007,7.69l-.208.084-16.64,6.9Z" transform="translate(0.377 0.233)" fill="#aac16b"/>
+    <path id="Path_19626" data-name="Path 19626" d="M11.9,12.882,8.159,14.434H31.678l-.6-1.552Z" transform="translate(0.377 0.473)" fill="#89b140"/>
+    <g id="Group_27374" data-name="Group 27374" transform="translate(6.984 24.219)">
+      <circle id="Ellipse_3176" data-name="Ellipse 3176" cx="0.776" cy="0.776" r="0.776" fill="#79a73a"/>
+      <circle id="Ellipse_3177" data-name="Ellipse 3177" cx="0.776" cy="0.776" r="0.776" transform="translate(17.073)" fill="#79a73a"/>
+    </g>
+  </g>
+</svg>

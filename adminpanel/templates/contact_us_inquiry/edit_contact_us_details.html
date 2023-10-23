@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content%}
+
+{% url 'contact_us_details' as contact %}
+{% include "includes/section.html" with page_title="Edit Contact Details" btn_url=contact btn_text="Back" %}
+<style>
+    #edit_contact_us_details {
+        color: #c00;   
+    }
+</style>
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <form method="POST" class="card-body" id="edit_contact_us_details">
+                    {% csrf_token %}
+                    <div class="col-12">
+                        <div class="form-group">
+                            <h6>Email</h6>
+                            <input type="text" class="form-control" placeholder="Email" name="email" value="{{ contact_us_details.email }}" required>
+                            <br />
+                            <h6>Mobile</h6>
+                            <input type="text" class="form-control" placeholder="Mobile" name="mobile" value="{{ contact_us_details.mobile }}" required>
+                            <br />
+                            <h6>Address</h6>
+                            <input type="text" class="form-control" placeholder="Address" name="address" value="{{ contact_us_details.address }}" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary me-1 mb-1" id="update-template">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $("#edit_contact_us_details").validate({
+        rules: {
+            email: {
+                required: true,
+            },
+            mobile: {
+                required: true,
+            },
+            address: {
+                required: true,
+            },
+            lat: {
+                required: true,
+            },
+            long: {
+                required: true,
+            }
+        },
+        submitHandler: function (form) {
+            form.submit()
+        }
+    });
+</script>
+{% endblock content%}
+

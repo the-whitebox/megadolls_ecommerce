@@ -1,0 +1,455 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}Home Page{% endblock title %}
+{% block content %}
+{% block additional_styles %}
+<style>
+    body {
+        background-image: url(/static/web_app/images/bg-pattern-2.png);
+        background-size: 1800px;
+        background-position: center;
+        background-origin: content-box;
+        background-repeat: repeat;
+        background-opacity:0.2;
+    }
+</style>
+{% endblock %}
+
+<div class="wraper-inner">
+    <section class="main-banner-slider">
+        <div class="banner-slider owl-carousel owl-theme">
+            {% if slider %}
+                {% for data in slider %}
+                    {% if data %}
+                        <div class="item banner-slider-item"  >
+                            <div class="banner-slider-blk" >
+                                <img src="{{ data.image.url }}" >
+                                <div class="banner-slider-content">
+                                    {% comment %}<h2>{{data.title|safe}}</h2>
+                                    <h4>{{data.content|safe}}</h4>{% endcomment %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif%}
+                {% endfor %}
+            {% else %}
+            <div class="item banner-slider-item"  >
+                <div class="banner-slider-blk" >
+                    <img src="{% static  'web_app/images/slider-img-1.png' %}">
+                    {% comment %} <img src="{% static  'web_app/images/slider-img-2.png' %}">
+                    <img src="{% static  'web_app/images/slider-img-3.png' %}">
+                      {% endcomment %}
+                    <div class="banner-slider-content">
+                        <h2></h2>
+                        <h4></h4> 
+                    </div>
+                </div>
+            </div>
+            {% endif %} 
+            {% comment %} <div class="item banner-slider-item">
+                <a href="javascript:void(0);" class="banner-slider-blk">
+                    {% for data in slider %}
+                    <img src="{{ data.image.url }}">
+                    {% endfor %}
+                    <div class="banner-slider-content">
+                        <h2>Explore the world with Megadolls.</h2>
+                        <h4>Learn about people from other countries, their cultures, and traditions with our paper Dolls from Around the World.</h4>
+                    </div>
+                </a>
+            </div> {% endcomment %}
+            {% comment %} <div class="item banner-slider-item">
+                <a href="javascript:void(0);" class="banner-slider-blk">
+                    <img src="{% static  'web_app/images/slider-img-3.png' %}">
+                    <div class="banner-slider-content">
+                        <h2>Welcome to the world of Megadolls.</h2>
+                        <h4>Join us on an adventure of creativity, fun, and play while learning about people who are different from us while practicing being a better,
+                            kinder, gentler, and more understanding person.</h4>
+                    </div>
+                </a>
+            </div>
+        </div> {% endcomment %}
+    </section>
+    <section class="category-sec">
+        <div class="container" style="background-color:white;">
+            <div class="row">
+                {% if  product_shop_data %}
+                    {% for data in product_shop_data %}
+                        <div class="col-md-4 category-box-item">
+                            <article>
+                                <figure style="background-color:white;">
+                                    {% if data.image %}
+                                        <img src="{{data.image.url}}">
+                                    {% else %}
+                                        {% if data.id == 2 %}
+                                            <img src="{% static  'web_app/images/category-1.png' %}">
+                                        {% elif data.id == 3 %}
+                                            <img src="{% static  'web_app/images/category-2.png' %}">
+                                        {% elif data.id == 1 %}
+                                            <img src="{% static  'web_app/images/category-3.png' %}">
+                                        {% endif %}
+                                    {% endif %}
+                                </figure>
+                                <figcaption>
+                                    <h4>{{data.title|safe}}</h4>
+                                    <p>{{data.content|safe}} </p>
+                                    {% if data.id == 2 %}
+                                    <a href="{% url 'shop_dolls' %}" class="btn btn-primary outline">Shop Now</a>
+                                    {% elif data.id == 3 %}
+                                        <a href="{% url 'shop_dolls_sets' %}" class="btn btn-primary outline">Shop Now</a>
+                                    {% elif data.id == 1 %}
+                                        <a href="{% url 'shop_dress_sets' %}" class="btn btn-primary outline">Shop Now</a>
+                                    {% endif %}
+                                </figcaption>
+                            </article>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    <section class="subscription-sec">
+        {% if subscription_data %}
+            {% for data in subscription_data %}
+                <div class="headings">
+                    <h4>{{data.title|safe}}</h4>
+                    <p>{{data.content|safe}}</p>
+                </div>
+                    <div class="main-banner-slider subscription-main-sec">
+                        <div class="container">
+                            <div class="banner-subscription owl-carousel owl-theme">
+                                <div class="item banner-slider-item">
+                                    <div class="banner-slider-blk d-flex">
+                                        <img src="{{ data.image.url }}" >
+                                        <div class="btn-subscription">
+                                            <a class="btn btn-primary view-doll" href="{% url 'subscription' %}">Learn More</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+            {% endif %}
+               {%comment %}<div class="subscription-bg-blk">
+                    {% if data.image %}
+                            <div class="subscription-main-sec">
+                                <div class="container">
+
+                                    <div class="subscription-inner-sec">
+                                    <figure><img src="{{ data.image.url }}"></figure>
+                                    <div class="btn-subscription">
+                                        <a class="btn btn-primary view-doll" href="{% url 'subscription' %}">Learn More</a>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                                <!-- <div class="container"> -->
+                                <!-- <div class="sub_row_card"> -->
+                                   
+                                        <!-- <a class="btn btn-yellow" href="{% url 'subscription' %}">SUBSCRIBE NOW</a> -->
+
+                                    <!-- </div> -->
+                                <!-- </div> -->
+                    {% else %}
+                        <img src="{% static 'web_app/images/subscription-bg-blur.png' %}">
+                    {% endif %}
+                </div>{%endcomment %}
+    </section>
+    <!-- <section class="imagine-sec">
+        <div class="container">
+            <div class="sec-head">
+                <h4>Imagine</h4>
+                <p>Turn your design into reality</p>
+            </div>
+            <div class="row justify-content-between">
+                <div class="col-md-6">
+                    <div class="imagine-picture">
+                        <img src="{% static  'web_app/images/imagine-create.png' %}">
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="imagine-content">
+                        <h4>Create</h4>
+                        <h5>Dress your doll with your personal creation</h5>
+                        <p>Cultivate your imagination and learn the value of the shapes, lines, colors, and textures in
+                            fashion design. </p>
+                        <a href="{% url 'create' %}" class="btn btn-secondary">Create</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-between">
+                <div class="col-md-5">
+                    <div class="imagine-content">
+                        <h4>Play</h4>
+                        <h5>Imagine and dress your doll for pretend play</h5>
+                        <p>Let’s be superheroes, be a princess, have tea parties in a ball gown or let’s fly to the
+                            moon. Choose a colored outfit that portrays your doll’s personality for the role she will
+                            perform in your pretend play.</p>
+                        <a href="{% url 'play' %}" class="btn btn-primary">Play</a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="imagine-picture">
+                        <img src="{% static  'web_app/images/imagine-play.png' %}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+    <div class="imagine-update">
+        <div class="container">
+            <div class="headings">
+                <h4>Imagine</h4> 
+                <p>Stimulate your imagination by creating and designing your own outfits or jump right into playing with our ready-made range.</p>
+            </div>
+            <div class="imagine-content" id="imagine">
+                {% if product_imagine_data %}
+                    <div class="row">
+                        <div class="col-sm-6"> 
+                            <div class="card create-card">
+                                <div class="card-head fig_card">
+                                    {% if product_imagine_data.0.image %}
+                                        <figure><img src="{{ product_imagine_data.0.image.url }}" alt="Dress"></figure>
+                                    {% else %}
+                                        <figure><img src="{% static  'web_app/images/product-3.png' %}" ></figure>
+                                    {% endif %}
+                                </div>
+                                <div class="card-body">
+                                    <figure><img src="https://cdn.megadolls.com/media/images/home-play.svg" alt="Dress"></figure>
+                                    <p class="imagine-p">{{product_imagine_data.0.content|safe}}</p>
+                                    <div class="d-flex"><a href="{% url 'create' %}" class="btn btn-white">Create</a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card play-card">
+                                <div class="card-head fig_card">
+                                    {% if product_imagine_data.0.image %}
+                                        <figure><img src="{{product_imagine_data.1.image.url}}" alt="Dress"></figure>
+                                    {% else %}
+                                        <figure><img src="{% static 'web_app/images/product-2.png' %}" ></figure>
+                                    {% endif %}
+                                </div>
+                                <div class="card-body">
+                                    <img src="https://cdn.megadolls.com/media/images/home-create.svg" alt="Dress">
+                                    <p class="imagine-p">{{product_imagine_data.1.content|safe}}.</p>
+                                    <div class="d-flex"><a class="btn btn-white" href="{% url 'play' %}">Play</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% if what_is_new %}
+    <section class="products-sec bg-primary-light">
+        <div class="container">
+            <div class="sec-head">
+                <h4>What's New</h4>
+                <!-- <a href="{% url 'shop_dolls' %}" class="btn btn-primary">View All <i class="ri-arrow-right-s-line"></i></a> -->
+            </div>            
+            <div class="row">
+                {% for shop_product in what_is_new %}
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="product-item" >
+                       
+                        <div class="share_posi_bx">
+                            <div class="social-share">
+                                <div class="social-share-icon-1 facebook"><a href="https://www.facebook.com/sharer/sharer.php?u={{ site_url }}shop_doll_detail/{{ shop_product.slug }}" target="_blank"><i class="ri-facebook-fill"></i></a></div>
+                                <div class="social-share-icon-2 twitter"><a href="https://twitter.com/intent/tweet?url={{ site_url }}shop_doll_detail/{{ shop_product.slug }}" target="_blank"><i class="ri-twitter-fill"></i></a></div>
+                                <div class="social-share-icon-3 linkedin"><a href="https://www.linkedin.com/sharing/share-offsite/?url={{ site_url }}shop_doll_detail/{{ shop_product.slug }}" target="_blank"><i class="ri-linkedin-fill"></i></a></div>
+                                <!-- <div class="social-share-icon-3 linkedin"><a href=""><i class="ri-instagram-line"></i></a></div> -->
+                                <div class="mask2"></div>
+                            </div>
+                            <a href="javascript:void(0);" class="btn btn-primary-light btn-square product-share-btn"><i
+                                    class="ri-share-line"></i></a>
+                        </div>
+                        <a id="product-details" href="{% url 'shop_doll_detail' shop_product.slug %}">
+                        <div class="product-slider owl-carousel owl-theme">   
+                            {% for shop_product_image in primary_image %}
+                            {% if shop_product_image.shop_product.id == shop_product.id %}
+                            <div class="item">
+                                <div class="product-slider-item">
+                                    <img src="{{ shop_product_image.primary_img.url }}">
+                                </div>
+                            </div>
+                            {% for image_sub_table in other_images %}
+                            {% if shop_product_image.shop_product_id == shop_product.id and image_sub_table.shop_product_image_id == shop_product_image.id %}
+                            <div class="item">
+                                <div class="product-slider-item">
+                                    <img src="{{ image_sub_table.images.url }}">
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                            {% endfor %}   
+                        </div>
+                       
+                        
+                        <div class="product-item-content">
+                            
+                            <h5 class="product-name">{{shop_product.name}}</h5>
+                            <div class="rating" style="color: orange;" >
+                                {% for key, value in rating_avg.items %}
+                                {% if shop_product.id == key %}
+                                    <i class="ri-star-{% if value >= 1 %}fill{% else %}line{% endif %} "></i>
+                                    <i class="ri-star-{% if value >= 2 %}fill{% else %}line{% endif %}"></i>
+                                    <i class="ri-star-{% if value >= 3 %}fill{% else %}line{% endif %}"></i>
+                                    <i class="ri-star-{% if value >= 4 %}fill{% else %}line{% endif %}"></i>
+                                    <i class="ri-star-{% if value >= 5  %}fill{% else %}line{% endif %}"></i>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                            <h4 class="product-price">
+                                {% if shop_product.offer_price %} 
+                                ${{ shop_product.offer_price }} 
+                                {% else %} 
+                                ${{ shop_product.original_price }} 
+                                {% endif %}
+                            </h4>
+
+
+                            {%comment %}
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                            <div class="product-actions">
+                                <input type="hidden" id="userid" name="user_id" value="{{request.user.id}}">
+                                <a  href="javascript:void(0);"  data-product-id="{{ shop_product.id }}" class="btn btn-primary-light btn-square shop_category"><i class="ri-heart-line"></i></a>
+                        
+                               <a href="{% url 'shop_doll_detail' shop_product.slug %}" class="btn btn-primary view-doll">{% if shop_product.quantity > 0 %} View and Buy {% else %} Out of Stock {% endif %} </a>
+            
+                            </div>
+                        </form>
+                        {% endcomment %}
+                    
+                        </div>
+                        </a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center">
+                    <h4>No Record</h4>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        </div>
+    </section>
+    <section class="products-sec">
+        <div class="container">
+            <div class="sec-head">
+                <h4>Recently Visited Items</h4>
+                <!-- <a href="javascript:void(0);" class="btn btn-primary">View All <i class="ri-arrow-right-s-line"></i></button> -->
+            </div>
+            <div class="row">
+                {% for shop_product in recently_visited_items %}
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4" >
+                    <div class="product-item">
+                        <div class="share_posi_bx">
+                            <div class="social-share">
+                                <div class="social-share-icon-1 facebook"><a href="https://www.facebook.com/sharer/sharer.php?u={{ site_url }}shop_doll_detail/{{ shop_product.slug }}"><i class="ri-facebook-fill"></i></a></div>
+                                <div class="social-share-icon-2 twitter"><a href="https://twitter.com/intent/tweet?url={{ site_url }}shop_doll_detail/{{ shop_product.slug }}"><i class="ri-twitter-fill"></i></a></div>
+                                <div class="social-share-icon-3 linkedin"><a href="https://www.linkedin.com/sharing/share-offsite/?url={{ site_url }}shop_doll_detail/{{ shop_product.slug }}"><i class="ri-linkedin-fill"></i></a></div>
+                                <!-- <div class="social-share-icon-3 linkedin"><a href=""><i class="ri-instagram-line"></i></a></div> -->
+                                <div class="mask2"></div>
+                            </div>
+                            <a href="javascript:void(0);" class="btn btn-primary-light btn-square product-share-btn"><i
+                                    class="ri-share-line"></i></a>
+                        </div>
+                        <a href="{% url 'shop_doll_detail' shop_product.product.slug %}">
+                        <div class="product-slider owl-carousel owl-theme">                           
+                            {% for shop_product_image in primary_image %}
+                            {% if shop_product_image.shop_product_id == shop_product.product.id %}
+                            <div class="item">
+                                <div class="product-slider-item">
+                                    <img src="{{ shop_product_image.primary_img.url }}">
+                                </div>
+                            </div>
+                            {% for image_sub_table in other_images %}
+                            {% if shop_product_image.shop_product_id == shop_product.product.id and image_sub_table.shop_product_image_id == shop_product_image.id %}
+                            <div class="item">
+                                <div class="product-slider-item">
+                                    <img src="{{ image_sub_table.images.url }}">
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                            {% endfor %}  
+                        </div>
+                        <div class="product-item-content">
+                            <h5 class="product-name">{{shop_product.product.name}}</h5>
+                            <div class="rating" style="color: orange;" >
+                                {% for key, value in rating_avg.items %}
+                                {% if shop_product.product.id == key %}
+                                    <i class="ri-star-{% if value >= 1 %}fill{% else %}line{% endif %} "></i>
+                                    <i class="ri-star-{% if value >= 2 %}fill{% else %}line{% endif %}"></i>
+                                    <i class="ri-star-{% if value >= 3 %}fill{% else %}line{% endif %}"></i>
+                                    <i class="ri-star-{% if value >= 4 %}fill{% else %}line{% endif %}"></i>
+                                    <i class="ri-star-{% if value >= 5  %}fill{% else %}line{% endif %}"></i>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                            <h4 class="product-price">
+                                {% if shop_product.product.offer_price %} 
+                                ${{ shop_product.product.offer_price }} 
+                                {% else %} 
+                                ${{ shop_product.product.original_price }} 
+                                {% endif %}
+                            </h4>
+                            {% comment %}
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                            <div class="product-actions">
+                                <input type="hidden" id="userid" name="user_id" value="{{request.user.id}}">
+                                <a  href="javascript:void(0);"  data-product-id="{{ shop_product.product.id }}" class="btn btn-primary-light btn-square shop_category"><i class="ri-heart-line"></i></a>
+                                
+                                <a href="{% url 'shop_doll_detail' shop_product.product.slug %}" class="btn btn-primary view-doll"> {% if shop_product.product.quantity > 0 %} View and Buy {% else %} Out of Stock {% endif %} </a>
+                                
+                            </div>
+                        </form>
+                        {% endcomment %}
+                        
+                        </div>
+                    </a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center">
+                    <h4>No Record</h4>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    {% comment %} {% include 'includes/featured_and_download.html' %} {% endcomment %}
+</div>
+{% endblock content %}
+{% block script %}
+
+<script>
+    $(document).ready(function() {
+    var active1 = false;
+    var active2 = false;
+    var active3 = false;
+    var active4 = false;
+    $('.product-share-btn').on('mousedown touchstart', function() {
+    if (!active1) $(this).siblings('.social-share').find('.social-share-icon-1').css({'background-color': 'gray', 'transform': 'translate(5px, 73px)'});
+    else $(this).siblings('.social-share').find('.social-share-icon-1').css({'background-color': 'dimGray', 'transform': 'none'}); 
+    if (!active2) $(this).siblings('.social-share').find('.social-share-icon-2').css({'background-color': 'gray', 'transform': 'translate(-45px,50px)'});
+    else $(this).siblings('.social-share').find('.social-share-icon-2').css({'background-color': 'darkGray', 'transform': 'none'});
+        if (!active3) $(this).siblings('.social-share').find('.social-share-icon-3').css({'background-color': 'gray', 'transform': 'translate(-65px,0px)'});
+    else $(this).siblings('.social-share').find('.social-share-icon-3').css({'background-color': 'silver', 'transform': 'none'});
+        if (!active4) $(this).siblings('.social-share').find('.social-share-icon-4').css({'background-color': 'gray', 'transform': 'translate(-105px,0px)'});
+    else $(this).siblings('.social-share').find('.social-share-icon-4').css({'background-color': 'silver', 'transform': 'none'});
+    active1 = !active1;
+    active2 = !active2;
+    active3 = !active3;
+    active4 = !active4;
+    });
+    });
+</script>
+{% endblock script %}

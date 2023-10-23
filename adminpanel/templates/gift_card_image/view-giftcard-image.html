@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'adminpanel/data-table/dataTables.min.css' %}">
+{% endblock css %}
+
+{% block content %}
+
+{% url 'add_giftcard_image' as add_giftcard_image %}
+{% include "includes/section.html" with page_title="Gift Card Image Management" btn_url=add_giftcard_image btn_text="Add Gift Card Image " %}
+
+<section class="section">
+    <div class="row w-100" id="table-striped">
+        <div class="col-12">
+            <div class="card py-2 px-2">
+                <div class="card-content">
+                    <div class="table-responsive p-2">
+                        {% if image_data %}
+                            <table class="table table table-striped text-center mb-0 text-center" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th>Sr no.</th>
+                                        <th>Gift Card Type</th>
+                                        <th style="width: 40%;">Image</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data in image_data %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td class="text-bold-500">{{ data.giftcard_type.giftcard_type|safe}}</td>
+                                        <td>
+                                            {% if data.images %}
+                                                <img src="{{ data.images.url }}" style="width: 8%;" />
+                                            {% endif %}
+                                        </td>
+                                        {% if  request.user.user_type == "SUPERADMIN" %}
+                                            <td>
+                                                <a href="{% url 'edit_giftcard_image' data.giftcard_type_id %}"
+                                                    class="mx-1 edit_giftcard_image">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                                <a href="#" class="mx-1 btn-delete" data-id="{{ data.giftcard_type_id }}">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                            </td>
+                                        {% endif %}
+                                        {% if request.user.user_type == "SUBADMIN" %}
+                                            <td>
+                                                {% for i in m_check %}
+                                                    {% if i.edit == True %}
+                                                        <a href="{% url 'edit_giftcard_image' data.giftcard_type_id %}" class="mx-1 edit_giftcard_image">
+                                                            <span class="fa-fw select-all fas"></span>
+                                                        </a>
+                                                    {% endif %}
+
+                                                 
+
+                                                    {% if i.delete == True %}
+                                                        <a href="#" class="mx-1 btn-delete" data-id="{{ data.giftcard_type_id }}">
+                                                            <span class="fa-fw select-all fas"></span>
+                                                        </a>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <div class="text-center">
+                                <strong style="font-size: 1.5em;">No Records</strong>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<form method="POST" action="{% url 'delete_giftcard_image' %}" class="mx-1" style="display: inline;" id="delete_form">
+    {% csrf_token %}
+    <input type="hidden" name="giftcard_image" value="" id="giftcard_image">
+</form>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/data-table/dataTables.min.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        $('.btn-delete').on('click', function (e) {
+            e.preventDefault()
+            const ele = $(this)
+            let id = ele.data('id')
+            Swal.fire({
+                title: 'Delete Gift Card Image',
+                text: 'Are You Sure ?',
+                confirmButtonColor: 'rgb(225, 0, 127)',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#giftcard_image').val(id)
+                    $('#delete_form').submit()
+                }
+            })
+        })
+    })
+</script>
+{% endblock script %}

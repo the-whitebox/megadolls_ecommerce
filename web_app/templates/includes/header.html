@@ -1,0 +1,175 @@
+{% load static %}
+<div class="wraper">
+    <header class="topHeader" id="fixed-header">
+        <div class="container head-nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}"><img src="{% static  'web_app/images/logo.png' %}" /></a>
+            </div>
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <button class="btn" id="menu-button" type="button" data-toggle="" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"><i class="ri-menu-line"></i></span>
+                </button>
+                <div class="nave-bar" id="navbarSupportedContent">
+                    <div class="header-search">
+                        <form action="{% url 'search_product' %}" id="search" method="GET">
+
+                            <input type="text" name="search_word" class="form-control"
+                                placeholder="Search products here ">
+                            <button type="submit" class="btn search-btn"><i class="ri-search-line"></i></button>
+                        </form>
+
+                    </div>
+                    <ul class="nav-btn-group">
+                        <li>
+                            <a href="{% url 'view_wishlist' %}" class="head-btn">
+                                <i class="ri-heart-line"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'view_cart' %}" class="head-btn">
+                                <i class="ri-shopping-cart-2-line">
+                                    <span class="counts" style="display: none;">0</span>
+                                </i>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="btn-group profile-dropdown">
+                        {% if request.user.is_anonymous %}
+                        <a href="{% url 'web_login' %}" class="head-btn">
+                            <i class="ri-user-line"></i>
+                            <span class="btn-name"></span>Sign in</span>
+                        </a>
+                        {% else %}
+                        <button class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            {% if request.user.profile_img %}
+                            <figure><img src="{{ request.user.profile_img.url }}" alt="Avatar"></figure>
+                            {% else %}
+                            <figure><img src="{% static  'adminpanel/images/faces/1.jpg' %}" alt="Avatar"></figure>
+                            {% endif %}
+                            {% if request.user.name %}
+                            <h6>{{ request.user.name }}</h6>
+                            {% else %}
+                            <h6>{{ request.user.email }}</h6>
+                            {% endif %}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item " href="{% url 'web_profile' %}">My Profile</a></li>
+                            {% comment %} <li><a class="dropdown-item" href="notification.php">Notification Settings</a>
+                            </li>
+                            <li><a class="dropdown-item" href="help.php">Help</a></li> {% endcomment %}
+                            <li><a class="dropdown-item" href="{% url 'web_logout' %}">Logout</a></li>
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="header-bottom" id="hide-menu">
+            <a href="javascript:void(0)" class="closebtn" id="close" onclick="closeNav()">×</a>
+            <div class="header_fully_over">
+                <div class="header-bottom-item">
+                    <div class="container">
+                        <ul class="header-link-list">
+                            <li class="dropdown" id="js-drop-down-shop">
+                                <a class="header-links dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                    data-bs-toggle="dropdown" aria-expanded="false">Imagine</a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li><a class="dropdown-item" href="{% url 'play' %}">Play</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'create' %}">Create</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#" class="header-links">The Runway</a></li>
+                            <li><a href="{% url 'blog' %}" class="header-links">A Meaningful Play</a></li>
+                            <li class="dropdown">
+                                <a class="header-links dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                    data-bs-toggle="dropdown" aria-expanded="false">Corporate</a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li><a class="dropdown-item" href="{% url 'about_us' %}">About Us</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="header-bottom-item color-bg">
+                    <div class="container">
+                        <ul class="header-link-list">
+                            <li class="dropdown" id="js-drop-down-imagine">
+                                <a class="header-links dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                    data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li><a class="dropdown-item" href="{% url 'shop_dolls' %}">Dolls</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'shop_dolls_sets' %}">Post Cards</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'shop_dress_sets' %}">Shero Cards</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="{% url 'subscription' %}" class="header-links">Shero</a></li>
+                            <li><a href="{% url 'create_gift_card' %}" class="header-links">Give a Gift</a></li>
+                            {% comment %} <li class="dropdown">
+                                <a class="header-links dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                    data-bs-toggle="dropdown" aria-expanded="false">Give a Gift</a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li><a class="dropdown-item" href="{% url 'create_gift_card' %}">e-card shero</a>
+                                    </li> {% endcomment %}
+                                    {% comment %} <li><a class="dropdown-item" href="{% url 'redeem_my_gift_card' %}">
+                                            Gift card section</a></li> {% endcomment %}
+                                    {% comment %} <li><a class="dropdown-item" href="#">Something else here</a></li> {%
+                                    endcomment %}
+                                    {% comment %}
+                                </ul>
+                            </li> {% endcomment %}
+                            
+                             <li class="dropdown" id="js-drop-down-shop">
+                                <a class="header-links dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                    data-bs-toggle="dropdown" aria-expanded="false">Fundraising</a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li><a class="dropdown-item" href="{% url 'about_us' %}">About Us</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'create' %}">How it works </a></li>
+                                    <li><a class="dropdown-item" href="{% url 'Start_Fundraising' %}">Start a Fundraiser </a></li>
+                              </ul>
+                            </li>
+                            <li class="dropdown" id="js-drop-down-shop">
+                                <a class="header-links dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                    data-bs-toggle="dropdown" aria-expanded="false">Referral</a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li><a class="dropdown-item" href="{% url 'about_us' %}">About Us</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'Start_Fundraising' %}">SCHOOL </a></li>
+                              </ul>
+                            </li>
+                            <li><a href="{% url 'render_sloper_landing_page' %}" class="header-links">Sloper</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.3.min.js"
+    integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+
+<script>
+    function save_search_word() {
+        localStorage.setItem('nameOfItem', 'value');
+    }
+    save_search_word()
+    function getValue() {
+        return localStorage.getItem('nameOfItem');
+    }
+
+    $.validator.addMethod("noSpace", function (value, element) {
+        return !value.startsWith(" ") && value != "";
+    }, "No space please and don't leave it empty")
+    $("#search").validate({
+        rules: {
+            search_word: {
+                required: true,
+                noSpace: true
+            }
+        },
+        submitHandler: function (form) {
+            form.submit()
+        }
+    });
+</script>

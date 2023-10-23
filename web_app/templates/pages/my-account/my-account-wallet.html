@@ -1,0 +1,218 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}My Account - Wallet{% endblock title %}
+{% block content %}
+<div class="wraper-inner">
+   <section class="page-head-sec">
+      <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+      <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+      <div class="container">
+         <div class="page-head-content">
+            <h4>My Account</h4>
+         </div>
+      </div>
+   </section>
+   <section class="shops-list-sec pt-5">
+      <div class="container">
+         <div class="my-account account-subscription">
+            
+            {% include 'includes/my-account/left-sidebar.html' %}
+
+            <div class="my-account-R">
+               <div class="wallets-tabs">
+                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+                     {% comment %}<li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="home" aria-selected="true">My Cards</button>
+                     </li>{% endcomment %}
+                     
+                     {% comment %}<li class="nav-item" role="presentation">
+                        <button class="nav-link " id="balance-tab" data-bs-toggle="tab" data-bs-target="#tab4" type="button" role="tab" aria-controls="balance" aria-selected="false">Gift Card Balance</button>
+                     </li>{% endcomment %}
+                  </ul>
+                  <div class="tab-content" id="myTabContent">
+                     {% comment %}<div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="card-details-box">
+                           <div class="card-details-box-L">
+                              <figure><img src="{% static 'web_app/images/visa-img.png' %}"></figure>
+                              <h5>**** **** **** 6678</h5>
+                              <div class="card-info">
+                                 <span>EMILY STONES</span>
+                                 <small>10/22</small>
+                              </div>
+                           </div>
+                           <div class="card-details-box-R action-info-btn">
+                              <a><i class="ri-pencil-fill"></i></a>
+                              <a><i class="ri-delete-bin-5-fill"></i></a>
+                           </div>
+                        </div>
+                        <hr class="grey-line">
+                        <div class="card-details-box">
+                           <div class="card-details-box-L">
+                              <figure><img src="{% static 'web_app/images/visa-img.png' %}"></figure>
+                              <h5>**** **** **** 6678</h5>
+                              <div class="card-info">
+                                 <span>EMILY STONES</span>
+                                 <small>10/22</small>
+                              </div>
+                           </div>
+                           <div class="card-details-box-R action-info-btn">
+                              <a><i class="ri-pencil-fill"></i></a>
+                              <a><i class="ri-delete-bin-5-fill"></i></a>
+                           </div>
+                        </div>
+                        <hr class="grey-line">
+                        <div class="card-details-box">
+                           <div class="card-details-box-L">
+                              <figure><img src="{% static 'web_app/images/visa-img.png' %}"></figure>
+                              <h5>**** **** **** 6678</h5>
+                              <div class="card-info">
+                                 <span>EMILY STONES</span>
+                                 <small>10/22</small>
+                              </div>
+                           </div>
+                           <div class="card-details-box-R action-info-btn">
+                              <a><i class="ri-pencil-fill"></i></a>
+                              <a><i class="ri-delete-bin-5-fill"></i></a>
+                           </div>
+                        </div>
+                        <div class="d-flex mt-4">
+                           <a class="btn btn-primary">Save</a>
+                           <a class="btn btn-primary outline ms-4" data-bs-toggle="modal" data-bs-target="#add-new-card">Add new Card</a>
+                        </div>
+                     </div>{% endcomment %}
+                     {% comment %}<div class="tab-pane fade show active" id="tab2" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="Referral-tabs text-center pt-5">
+                           {% if referral_content_data.image %}
+                           <figure><img src="{{ referral_content_data.image.url }}"></figure>
+                           {% else %}
+                           <figure><img src="{% static 'web_app/images/share-link-img.png' %}"></figure>
+                           {% endif %}
+
+                           <h6>{{ referral_content_data.content|safe }}</h6>
+                           <div class="mb-3 Referral-input-box">
+                              <label class="form-label">Referral Link</label>
+                              <div class="icon-input">
+                                 <i class="ri-file-copy-line" style="cursor: pointer;"></i>
+                                 <input type="text" value="{{ link|truncatechars:60 }}" class="form-control js-referral-inp" data-referral="Link" placeholder="Referral Link" disabled>
+                              </div>
+                           </div>
+                           <!-- <div class="d-flex mt-4 justify-content-center">
+                              <a class="btn btn-primary">Save</a>
+                           </div> -->
+                           <br />
+                           {% if referrals %}
+                           <hr>
+                           <h4 style="color: #FA53A0;">Details of Your Referees</h4>
+                           <h6>Total Dolls: {{total_points}} </h6>
+                           <h6>Total Dolls To Receive: {{dolls_to_recieve}} </h6>
+                           <h6>Total Dolls Received: {{received_dolls}} </h6>
+                           <p>( On 3 user's order completion you get 1 doll)</p>
+                           <hr>
+                           <div class="table-responsive p-2">
+                              <table class="table table-striped text-center mb-0" id="myTable">
+                                 <thead>
+                                    <tr>
+                                       <th>Sr. No.</th>
+                                       <th>Recipients</th>                             
+                                       <th>Order Status</th>                                     
+                                    </tr>
+                                 </thead>
+                                 {% for referral in referrals %}
+                                  <tbody>                                                     
+                                      <tr>
+                                         <td>{{ forloop.counter }}</td>
+                                          <td>{{ referral.user_to.name }}</td>
+                                          <td class="is-active">
+                                             {% if referral.order_status %}
+                                             <span class="badge bg-success">Completed</span>
+                                             {%else%}
+                                             <span class="badge bg-danger">Pending</span>
+                                             {% endif %}
+                                         </td>                             
+                                    </tr>                          
+                                  </tbody>
+                                  {% endfor %}
+                              </table>
+                          </div>
+                          {% endif %}
+                        </div>
+                     </div>{% endcomment %}
+                    {% comment %} <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="contact-tab">
+                        <div class="Rewards-box">
+                           <h4>American Doll</h4>
+                           <p>Code Shared with: Michael Bruno</p>
+                        </div>
+                        <hr class="grey-line">
+                        <div class="Rewards-box">
+                           <h4>American Doll</h4>
+                           <p>Code Shared with: Michael Bruno</p>
+                        </div>
+                        <hr class="grey-line">
+                        <div class="Rewards-box">
+                           <h4>American Doll</h4>
+                           <p>Code Shared with: Michael Bruno</p>
+                        </div>
+                        <hr class="grey-line">
+                        <div class="Rewards-box">
+                           <h4>American Doll</h4>
+                           <p>Code Shared with: Michael Bruno</p>
+                        </div>
+                        <div class="d-flex mt-4 ">
+                           <a class="btn btn-primary">Save</a>
+                        </div>
+                     </div>{% endcomment %}
+
+                     {% comment %}<div class="tab-pane fade " id="tab4" role="tabpanel" aria-labelledby="balance-tab">
+                        <div class="Rewards-box text-center py-5 my-5">
+                           <h4>Available Gift Card Balance</h4>
+                           <p>${{ request.user.wallet }}</p>
+                        </div>
+                     </div>{% endcomment %}
+                     <div class="Rewards-box text-center py-5 my-5">
+                        <h4>Available Gift Card Balance</h4>
+                        <p>${{ request.user.wallet }}</p>
+                     </div>
+
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+</div>
+<!----add-new-card--->
+<div class="modal-status download-inst-md modal fade" id="add-new-card" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-md modal-dialog-centered">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><img src="{% static 'web_app/images/modal-close-icon.svg' %}"></button>
+         </div>
+         <div class="modal-body">
+            <div class="download-instructions-block">
+               <img class="logo-icon" src="{% static 'web_app/images/logo.png' %}">
+               <h4>Add New Card</h4>
+               <form>
+                  <div class="mb-3">
+                     <input type="text" name="" placeholder="Cardholder Name" class="form-control">
+                  </div>
+                  <div class="mb-3">
+                     <input type="text" name="" placeholder="Card Number" class="form-control">
+                  </div>
+                  <div class="combine-group">
+                     <div class="mb-3">
+                        <input type="text" name="" placeholder="Expiry Date" class="form-control">
+                     </div>
+                     <div class="mb-3">
+                        <input type="text" name="" placeholder="CVV" class="form-control">
+                     </div>
+                  </div>
+                  <div class="mt-4 pb-3 btn-box">
+                     <button class="btn btn-primary">Add</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock content %}

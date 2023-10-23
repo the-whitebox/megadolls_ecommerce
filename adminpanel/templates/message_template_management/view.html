@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'adminpanel/data-table/dataTables.min.css' %}">
+{% endblock css %}
+
+{% block content %}
+{% comment %} {% url 'add_email_template' as add_email_template %}btn_url=add_email_template btn_text="Add Email Template" {% endcomment %}
+{% include "includes/section.html" with page_title="Message Template Management"  %}
+
+<section class="section">
+    <div class="row w-100" id="table-striped">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content">
+                    <!-- table contextual / colored -->
+                    <div class="table-responsive p-2">
+                        {% if templates %}
+                            <table class="table table table-striped text-center mb-0" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th>Sr no.</th>
+                                        <th>Subject</th>
+                                        <th>Content</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for template in templates %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td class="text-bold-500">{{ template.subject }}</td>
+                                        <td class="">{{ template.content|safe }}</td>
+                                        {% if request.user.user_type == "SUPERADMIN" %}
+                                            <td>
+                                                <a href="{% url 'edit_message_template' template.id %}" class="mx-1">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                            </td>
+                                        {% endif %}
+
+                                        {% if request.user.user_type == "SUBADMIN" %}
+                                            <td>
+                                                {% for i in m_check %}
+                                                    {% if i.edit == True %}
+                                                        <a href="{% url 'edit_message_template' template.id %}" class="mx-1">
+                                                            <span class="fa-fw select-all fas"></span>
+                                                        </a>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <div class="text-center">
+                                <strong style="font-size: 1.5em;">No Records</strong>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'adminpanel/data-table/dataTables.min.js' %}"></script>
+{% endblock script %}

@@ -1,0 +1,95 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+
+{% block title %}Album Detail{% endblock title %}
+{% block content %}
+<div class="wraper-inner">
+
+    <section class="page-head-sec">
+        <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+        <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+        <div class="container">
+            <div class="page-head-content">
+                <h4>My Album</h4>
+            </div>
+        </div>
+    </section>
+    
+    <section class="sec-style-box-1">
+        <div class="container">
+            <div class="breadcrumb-blk mb-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">My Profile</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Album Name</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="box-style-1">
+                <div class="row justify-content-center">
+                    <div class="col-md-11">
+                        <div class="row mb-4">
+                            <div class="col-md-4 col-sm-6 mb-4">
+                                <div class="album-detail-box">
+                                    <figure>
+                                        <img src="{% static 'web_app/images/album-1.png' %}">
+                                    </figure>
+                                    <a href="javascript:void(0);" class="btn btn-primary delete-btn"><i class="ri-delete-bin-fill"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6 mb-4">
+                                <div class="album-detail-box">
+                                    <figure>
+                                        <img src="{% static 'web_app/images/album-2.png' %}">
+                                    </figure>
+                                    <a href="javascript:void(0);" class="btn btn-primary delete-btn"><i class="ri-delete-bin-fill"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6 mb-4">
+                                <div class="album-detail-box">
+                                    <figure>
+                                        <img src="{% static 'web_app/images/album-3.png' %}">
+                                    </figure>
+                                    <a href="javascript:void(0);" class="btn btn-primary delete-btn"><i class="ri-delete-bin-fill"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6 mb-4">
+                                <div class="album-detail-box">
+                                    <figure>
+                                        <img src="{% static 'web_app/images/album-2.png' %}">
+                                    </figure>
+                                    <a href="javascript:void(0);" class="btn btn-primary delete-btn"><i class="ri-delete-bin-fill"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6 mb-4">
+                                <div class="album-detail-box">
+                                    <figure>
+                                        <img src="{% static 'web_app/images/album-1.png' %}">
+                                    </figure>
+                                    <a href="javascript:void(0);" class="btn btn-primary delete-btn"><i class="ri-delete-bin-fill"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6 mb-4">
+                                <div class="album-detail-box">
+                                    <figure>
+                                        <a href="javascript:void(0);" class="album-upload">
+                                            <i class="ri-add-box-line"></i>
+                                            <p>Upload Image</p>
+                                            <input type="file">
+                                        </a>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn-group-btm text-center">
+                            <button type="button" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock content %}

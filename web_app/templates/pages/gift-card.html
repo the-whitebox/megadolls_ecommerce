@@ -1,0 +1,579 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}Gift Card{% endblock title %}
+{% block content %}
+<script src="https://js.stripe.com/v3/"></script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" rel="stylesheet" />
+{% include 'includes/ring-loader.html' %}
+<style>
+    .active-gift-card-img {
+        background: grey;
+    }
+</style>
+<div class="wraper-inner">
+
+    <section class="gift-card-sec">
+        <div class="container">
+            <div class="sec-head">
+                <h4>Give a Gift</h4>
+            </div>
+
+            <div class="row mb-5">
+                <div class="col-md-6">
+                    <div class="gift-card-block">
+                        <div class="gift-card-label">
+                            <img src="{% static 'web_app/images/E_CARDS.jpg' %}">
+                        </div>
+                        <a href="javascript:void(0);" class="btn btn-primary outline" id="gift-card-btn">Gift Card</a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="gift-card-block">
+                        <div class="gift-card-label">
+                            <img src="{% static 'web_app/images/SHERO_GIFT.jpg' %}">
+                        </div>
+                        <a href="javascript:void(0);" class="btn btn-primary outline" id="shero-gift-card-btn">Shero Subscription</a>
+                    </div>
+                </div>
+                {% comment %} <div class="col-md-4">
+                    <div class="gift-card-block">
+                        <div class="gift-card-label">
+                            <img src="{% static 'web_app/images/gift-card-3.png' %}">
+                        </div>
+                        <a href="javascript:void(0);" class="btn btn-primary outline">Sloper Subscription</a>
+                    </div>
+                </div> {% endcomment %}
+            </div>
+            <form method="POST" id="gift-card-form">
+                {% csrf_token %}
+                <div class="gift-card-share-block">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="gift-card-info">
+                                <h4>Megadolls Gift Cards</h4>
+                                {% comment %} <p>Please select any one image for your card.</p> {% endcomment %}
+                                <p>Select a card</p>
+                                <br />
+                                <ul> 
+                                    {% for images in giftcard_type_images %}
+                                    <li class="gift-card-images"><img src="{{ images.images.url }}" data-image-id="{{ images.id }}" data-gift_card_id="{{images.giftcard_type_id}}"></li>
+                                    {% endfor %}
+                                    <li id="gift-card-image-preview"></li>
+                                </ul>
+                                
+                                <!-- <p>The gift card can only be used to purchase eligible goods and services available on Megadolls.com</p> -->
+                            </div>
+                        </div>
+                        <div class="col-md-6" id="js-gift-card">
+                            <div class="gift-card-info">
+                                <div class="gift-card-form">
+                                    <div class="form-group row align-items-center">
+                                        <div class="col-md-2 text-end">
+                                            <label>Amount</label>
+                                        </div>
+                                        <div class="col-md-10 custom-radio-v d-flex">
+                                            <div class="amount-select-blk">
+                                                {% for i in data %}
+                                                <div class="form-check custom-radio">
+                                                    <input class="form-check-input" type="radio" name="gift_card_id" id="amount{{forloop.counter}}" value="{{i.id}}" {% if forloop.counter == 1 %} checked {% endif %}>
+                                                     <label class="form-check-label" for="amount{{forloop.counter}}">
+                                                         ${{i.gift_price}}</label>
+                                                </div>
+                                                {% endfor %}
+                                            </div> 
+                                            <div class="input-group row">
+                                                <span class="input-group-text" id="basic-addon1" style=" -webkit-appearance: none;">$</span>
+                                                <input type="number" max=0 class="form-control" placeholder="Select Amount or Enter Amount" oninput="format(this)" name="gift_card_amount" aria-label="Username" aria-describedby="basic-addon1" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <div class="col-md-2 text-end">
+                                            <label>Type Of Gift Card</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <select class="form-control select_image"  name="title">
+                                                {% if giftcard_type %}
+                                                    {% for type in giftcard_type %}
+                                                    <option value="{{ type.id}}" {% if forloop.counter == 1 %}selected{% endif %}>{{ type.giftcard_type }}</option>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <option disabled selected >Options Are Coming Soon</option>
+                                                {% endif %}
+                                            </select>   
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <div class="col-md-2 text-end">
+                                            <label>Recipient's Email</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="email" class="form-control" placeholder="Enter Recipient Email" name="receiver_email">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <div class="col-md-2 text-end">
+                                            <label>Re-Enter Recipient's Email</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="email" onpaste="return false;" ondrop="return false;" autocomplete="off" class="form-control" placeholder="Re-Enter Recipient Email" name="re_enter_receiver_email">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <input type="hidden" value="" id="giftcard_image_id"  name="giftcard_image">
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <div class="col-md-2 text-end">
+                                            <label>Your Name</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="text" class="form-control" name="sender_name" placeholder="Enter Your Name">
+                                        </div>
+                                    </div>
+                                    {% if not request.user.is_authenticated %}
+                                    <div class="form-group row align-items-center">
+                                        <div class="col-md-2 text-end">
+                                            <label>Your Email</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="email" class="form-control" placeholder="Enter Your Email" name="sender_email">
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    <div class="form-group row">
+                                        <div class="col-md-2 text-end">
+                                            <label>Message</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <textarea class="form-control" name="message" placeholder="Add Message"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-10 offset-md-2">
+                                            <button type="submit" class="btn btn-primary" id="send-gift-card">Send</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <form method="POST" id="shero-gift-card-form" style="display: none">
+                {% csrf_token %}
+                <div class="gift-card-share-block">
+                    <div class="row">
+                        <div class="col-md-10" id="js-shero-gift-card">
+                            <div class="gift-card-info">
+                                <div class="gift-card-form">
+                                    <div class="form-group row align-items-center">
+                                        <div class="col-md-2 text-end">
+                                            <label>Subscription Plan</label>
+                                        </div>
+                                        <div class="col-md-10 custom-radio-v">
+                                            {% for plan in subscription_plans %}
+                                                <div class="d-inline-block my-1">
+                                                    <div class="amount-select-blk">
+                                                        <div class="form-check custom-radio">
+                                                            <input class="form-check-input" type="radio" name="plan_id" id="plan{{forloop.counter}}" value="{{ plan.id }}" {% if forloop.counter == 1 %} checked {% endif %}>
+                                                            <label class="form-check-label" for="plan{{forloop.counter}}">
+                                                                {{ plan.plan_type }} 
+                                                                {% if plan.offer_price > 0 %}
+                                                                    (${{ plan.offer_price }})
+                                                                {% else %}
+                                                                    (${{ plan.original_price }})
+                                                                {% endif %}
+                                                            </label>
+                                                        </div>
+                                                    </div> 
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    {% comment %} <div class="form-group row align-items-center">
+                                        <div class="col-md-2 text-end">
+                                            <label>Type Of Gift Card</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <select class="form-control select_image"  name="title">
+                                                {% if giftcard_type %}
+                                                    {% for type in giftcard_type %}
+                                                        <option value="{{ type.id }}" {% if forloop.counter == 1 %}selected{% endif %}>{{ type.giftcard_type }}</option>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <option disabled selected >Options Are Coming Soon</option>
+                                                {% endif %}
+                                            </select>   
+                                        </div>
+                                    </div> {% endcomment %}
+                                    <div class="form-group row align-items-center">
+                                        <div class="col-md-2 text-end">
+                                            <label>Receiver's Email</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="email" class="form-control" placeholder="Enter Recipient Email" name="receiver_email">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <div class="col-md-2 text-end">
+                                            <label>Re-Enter Receiver's Email</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="email" class="form-control" onpaste="return false;" ondrop="return false;" autocomplete="off" placeholder="Re-Enter Recipient Email" name="re_enter_receiver_email">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <input type="hidden"  value="" id="shero_giftcard_image_id"  name="giftcard_image">
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <div class="col-md-2 text-end">
+                                            <label>Your Name</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="text" class="form-control" name="sender_name" placeholder="Enter Your Name">
+                                        </div>
+                                    </div>
+                                    {% if not request.user.is_authenticated %}
+                                    <div class="form-group row align-items-center">
+                                        <div class="col-md-2 text-end">
+                                            <label>Your Email</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="email" class="form-control" placeholder="Enter Your Email" name="sender_email">
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    <div class="form-group row">
+                                        <div class="col-md-2 text-end">
+                                            <label>Message</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <textarea class="form-control" name="message" placeholder="Add Message"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-10 offset-md-2">
+                                            <button type="submit" class="btn btn-primary" id="send-shero-gift-card">Send</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    {% comment %} {% include 'includes/featured_and_download.html' %} {% endcomment %}
+</div>
+
+{% endblock content %}
+{% include 'includes/js.html' %}
+{% block script %}
+
+<script>
+    $(function() {
+        const currentMousePos = { x: -1, y: -1 };
+        $('.gift-card-images').mousemove(function (event) {
+            currentMousePos.x = event.pageX;
+            currentMousePos.y = event.pageY;
+            if($('#gift-card-image-preview').css('display') != 'none') {
+                $('#gift-card-image-preview').css({
+                    top: currentMousePos.y,
+                    left: currentMousePos.x + 12
+                });
+            }
+        });
+
+        $('.gift-card-images').hover(function() {
+            var image = $(this).find('img');
+            const modal = $('#gift-card-image-preview');
+            modal.show();
+            modal.html(image.clone());
+            modal.css({
+                top: currentMousePos.y,
+                left: currentMousePos.x + 12
+            }); 
+        }, function() {
+            $('#gift-card-image-preview').hide();
+        })
+    }); 
+
+    $(document).ready(function () {
+        $('.gift-card-images').hide()
+        $(`img[data-gift_card_id='${$('.select_image').val()}'`).parent().show()
+
+        $('.select_image').change(function() {
+            let id = $(this).val()
+            $('.gift-card-images').hide()
+            $(`img[data-gift_card_id='${id}'`).parent().show()
+        })
+
+        $('[name=gift_card_amount]').on('focus', function() {
+            $('[name=gift_card_id]').prop('checked', false)
+        })
+
+        $('[name=gift_card_id]').on('click', function() {
+            $('[name=gift_card_amount]').val('')
+        })
+
+        $('.gift-card-images').on('click', function () {
+            let id = $(this).find('img').data('image-id')
+            $('#giftcard_image_id').val(id)
+            $('#shero_giftcard_image_id').val(id)
+            $('.gift-card-images').removeClass('active-gift-card-img')
+            $(this).addClass('active-gift-card-img')
+        })
+    })
+
+    function format(input){
+    if(input.value < 0) input.value=Math.abs(input.value);
+    if(input.value.length > 7) input.value = input.value.slice(0, 5);
+
+}
+</script>
+
+{% comment %} form validation {% endcomment %}
+<script>
+    (function() {
+        $.validator.addMethod('emailRegex', function(value, element) {
+            const emailExp = /^\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i;
+            return emailExp.test(value);
+        }, 'Email format is not valid');
+
+        $.validator.addMethod('sameConfirmation', function(value, element) {
+            const form = element.closest('form')
+            return value === $(form).find('[name=receiver_email]').val();
+        }, "Email is not same");
+
+        {% comment %} $.validator.addMethod('twoDecimal', function(value, element) {
+            const regex = /^\d+(?:\.\d\d?)?$/;
+            return value == '' || regex.test(value);
+        }, 'Number Only and Allowed Only to 2 Decimal'); {% endcomment %}
+
+        $.validator.addMethod("noSpace", function(value, element) { 
+            return !value.startsWith(" ") && value != ""; 
+        }, "No space please and don't leave it empty")
+        $.validator.addMethod('amountRegex', function(value, element) {
+        let percentagExp = new RegExp(/^\d*(\.\d{0,2})?$/i);
+        return percentagExp.test(value);
+        }, 'Only 2 decimal place allowed');
+
+        const giftCardForm = $("#gift-card-form").validate({
+            rules: {
+                gift_card_id: {
+                    required: '[name=gift_card_amount]:blank'
+                },
+                title: {
+                    required: true,
+                    noSpace: true
+                },
+                receiver_email: {
+                    required: true,
+                    emailRegex: true
+                },
+                re_enter_receiver_email: {
+                    sameConfirmation: true,
+                    noSpace: true
+                },
+                sender_name: {
+                    required: true,
+                    noSpace: true
+                },
+                sender_email: {
+                    required: true,
+                    emailRegex: true
+                },
+                gift_card_amount: {
+                    required: '[name=gift_card_id]:blank',
+                    number: true,
+                    amountRegex: true,
+                    max: 1500,
+                    min: 1
+                },
+                message: {
+                    required: true,
+                    maxlength: 700,
+                    noSpace: true
+                }
+            },
+            submitHandler: function (form) {
+                createGiftCardCheckoutSession().then(function(data) {
+                    // Call Stripe.js method to redirect to the new Checkout page
+                    if(data.sessionId) {
+                        if(data.message) {
+                            myToast(data.message, SUCCESS_BG)
+                        }
+                        stripe.redirectToCheckout({sessionId: data.sessionId}).then(handleResult);
+                    } else {
+                        if(data.message) {
+                            myToast(data.message, ERROR_BG)
+                        }
+                    }
+                });
+            }
+        });
+    
+        const sheroGiftCardForm = $("#shero-gift-card-form").validate({
+            rules: {
+                plan_id: {
+                    required: true
+                },
+                title: {
+                    required: true,
+                    noSpace: true
+                },
+                receiver_email: {
+                    required: true,
+                    emailRegex: true
+                },
+                re_enter_receiver_email: {
+                    sameConfirmation: true,
+                    noSpace: true
+                },
+                sender_name: {
+                    required: true,
+                    noSpace: true
+                },
+                sender_email: {
+                    required: true,
+                    emailRegex: true,
+                    noSpace: true,
+                },
+                message: {
+                    required: true,
+                    maxlength: 700,
+                    noSpace: true
+                }
+            },
+            submitHandler: function (form) {
+                createSheroGiftCardCheckoutSession().then(function(data) {
+                    // Call Stripe.js method to redirect to the new Checkout page
+                    if(data.sessionId) {
+                        if(data.message) {
+                            myToast(data.message, SUCCESS_BG)
+                        }
+                        stripe.redirectToCheckout({sessionId: data.sessionId}).then(handleResult);
+                    } else {
+                        if(data.message) {
+                            myToast(data.message, ERROR_BG)
+                        }
+                    }
+                });
+            }
+        });
+
+        $('#gift-card-btn').on('click', function () {
+            $('.select_image').trigger('change')
+            $('#shero-gift-card-form').hide()
+            $('#gift-card-form').show()
+            $('#gift-card-form')[0].reset()
+            giftCardForm.resetForm()
+        })
+
+        $('#shero-gift-card-btn').click(function() {
+            $('.select_image').trigger('change')
+            $('#gift-card-form').hide()
+            $('#shero-gift-card-form').show()
+            $('#shero-gift-card-form')[0].reset()
+            sheroGiftCardForm.resetForm()
+        })
+
+    })()
+</script>
+<script>
+    $('#loader').hide()
+    var DOMAIN = window.location.origin;
+    var stripe = Stripe("{{ STRIPE_PUB_KEY }}");
+
+    // Handle any errors from Checkout
+    var handleResult = function (result) {
+        if (result.error) {
+            var displayError = document.getElementById("error-message");
+            displayError.textContent = result.error.message;
+        }
+    };
+
+    function sendData(url, body) {
+        return fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken":  '{{csrf_token}}',
+            },
+            body: JSON.stringify(body),
+        }).then(function(result) {
+            $('#loader').hide()
+            return result.json();
+        });
+    } 
+
+    // Create a Checkout Session with the selected plan ID
+    var createGiftCardCheckoutSession = function() {
+        $('#loader').show()
+        const body = {
+            gift_card_id: $('#js-gift-card [name=gift_card_id]:checked').val(),
+            username: $('#js-gift-card [name=username]').val(),
+            title: $('#js-gift-card [name=title]').val(),
+            receiver_email: $('#js-gift-card [name=receiver_email]').val(),
+            message: $('#js-gift-card [name=message]').val(),
+            giftcard_image_id : $('#js-gift-card [name=giftcard_image]').val(),
+            sender_email : $('#js-gift-card [name=sender_email]').val(),
+            re_enter_receiver_email : $('#js-gift-card [name=re_enter_receiver_email]').val(),
+            gift_card_amount: $('#js-gift-card [name=gift_card_amount]').val() ?? 0
+        }
+        return sendData("{% url 'create_gift_card' %}", body)
+    };
+
+  // Setup event handler to create a Checkout Session when button is clicked
+    {% comment %} document.getElementById("send-gift-card").addEventListener("click", function (evt) {
+        createGiftCardCheckoutSession().then(function(data) {
+            // Call Stripe.js method to redirect to the new Checkout page
+            if(data.sessionId) {
+                if(data.message) {
+                    myToast(data.message, SUCCESS_BG)
+                }
+                stripe.redirectToCheckout({sessionId: data.sessionId}).then(handleResult);
+            } else {
+                if(data.message) {
+                    myToast(data.message, ERROR_BG)
+                }
+            }
+        });
+    }); {% endcomment %}
+
+    var createSheroGiftCardCheckoutSession = function() {
+        $('#loader').show()
+        const body = {
+            plan_id: $('#js-shero-gift-card [name=plan_id]:checked').val(),
+            username: $('#js-shero-gift-card [name=username]').val(),
+            title: $('#js-shero-gift-card [name=title]').val(),
+            receiver_email: $('#js-shero-gift-card [name=receiver_email]').val(),
+            message: $('#js-shero-gift-card [name=message]').val(),
+            giftcard_image_id : $('#js-shero-gift-card [name=giftcard_image]').val(),
+            sender_email : $('#js-shero-gift-card [name=sender_email]').val(),
+            re_enter_receiver_email : $('#js-shero-gift-card [name=re_enter_receiver_email]').val(),
+            {% comment %} gift_card_amount: $('#js-shero-gift-card [name=gift_card_amount]').val() ?? 0 {% endcomment %}
+        }
+        return sendData("{% url 'create_shero_gift_card' %}", body)
+    };
+
+    {% comment %} $('#send-shero-gift-card').click(function(e) {
+        createSheroGiftCardCheckoutSession().then(function(data) {
+            // Call Stripe.js method to redirect to the new Checkout page
+            if(data.sessionId) {
+                if(data.message) {
+                    myToast(data.message, SUCCESS_BG)
+                }
+                stripe.redirectToCheckout({sessionId: data.sessionId}).then(handleResult);
+            } else {
+                if(data.message) {
+                    myToast(data.message, ERROR_BG)
+                }
+            }
+        });
+    }) {% endcomment %}
+</script>
+{% endblock script %}

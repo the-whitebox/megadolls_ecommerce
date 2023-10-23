@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css%}
+<link rel="stylesheet" href="{% static 'adminpanel/data-table/dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+{% endblock css %}
+{% block content %}
+{% include "includes/section.html" with page_title="Users who are eligible for referral rewards" btn_url=add_link btn_text="Add Links" %}
+<section class="section">
+    <div class="row w-100" id="table-striped">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="table-responsive p-2">
+                        <table class="table table-striped text-center mb-0" id="myTable">
+                            {% if users_who_referred %}
+                            <thead>
+                                <tr>
+                                    <th>Sr. No.</th>
+                                    <th>Customer Name</th>
+                                    <th>Reward Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in users_who_referred %}                          
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ user.user_from.name }}</td>                            
+                                    <td class="is-active">
+                                        {% if user.user_from.referral_reward_status == 0 %}
+                                        <span class="badge bg-danger">Pending</span>
+                                        {%else%}
+                                        <span class="badge bg-success">Completed</span>
+                                        {% endif %}
+                                    </td>  
+                                    <td>
+                                        {% if request.user.user_type == "SUPERADMIN" %}
+                                            <a href="{% url 'view_referral_details' user.user_from_id %}" class="mx-1">
+                                                <span class="fa-fw select-all fas"></span>
+                                            </a>
+                                    
+                                            <a href="#" class="mx-1 btn-delete" data-id="{{user.user_from.id}}">
+                                                <span class="fa-fw select-all fas"></span>
+                                            </a>
+                                        {% endif %}
+
+                                        {% if request.user.user_type == "SUBADMIN" %}
+                                            {% for i in m_check %}
+                                                {% if i.view == True %}
+                                                    <a href="{% url 'view_referral_details' user.user_from_id %}" class="mx-1">
+                                                        <span class="fa-fw select-all fas"></span>
+                                                    </a>
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {% for i in m_check %}
+                                                {% if i.delete == True %}
+                                                    <a href="#" class="mx-1 btn-delete" data-id="{{user.user_from.id}}">
+                                                        <span class="fa-fw select-all fas"></span>
+                                                    </a>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center">
+                                        <strong style="font-size: 1.5em;">No Records</strong>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form method="POST" action="{% url 'delete_referral_user' %}" class="mx-1" style="display: inline;" id="delete_form">
+        {% csrf_token %}
+        <input type="hidden" name="delete_referral_user" value="" id="delete_user">
+    </form>
+</section>
+{% endblock content %}
+{% block script %}
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/data-table/dataTables.min.js' %}"></script>  
+
+<script>
+    $(document).ready(function () {
+        $('.btn-delete').on('click', function (e) {
+            e.preventDefault()
+            let id = $(this).data('id')
+            Swal.fire({
+                title: 'Delete Record',
+                text: 'Are You Sure ?',
+                confirmButtonColor: 'rgb(225, 0, 127)',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#delete_user').val(id)
+                    $('#delete_form').submit()
+                }
+            })
+        })
+    })
+</script>
+{% endblock script %} 
+

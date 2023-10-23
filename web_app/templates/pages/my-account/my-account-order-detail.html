@@ -1,0 +1,252 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}My Account - Order Detail{% endblock title %}
+{% block content %}
+<div class="wraper-inner">
+   <section class="page-head-sec">
+      <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+      <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+      <div class="container">
+         <div class="page-head-content">
+            <h4>Order Details</h4>
+         </div>
+      </div>
+   </section>
+   <section class="shops-list-sec pt-5">
+      <div class="container">
+         <div class="breadcrumb-blk">
+            <nav aria-label="breadcrumb">
+               <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                  <li class="breadcrumb-item"><a href="{% url 'my_account_order' %}">My Orders</a></li>
+                  <li class="breadcrumb-item"><a href="javascript:void(0);">Order Details</a></li>
+               </ol>
+            </nav>
+         </div>
+         <div class="myaccount-order-details-new">
+            <div class="myaccount-order-details-content">
+               <div class="row">
+                  <div class="col-md-8">
+                     <div class="box-shadow-box p-4">
+                        <h5 style="color: #FA53A0;" >Product Details</h5>
+                        <br />
+                        {% for product in product_order_data %}
+                           <div class="product-detail-boxnw">
+                             {% if product_in_order_count > 1 %}
+                              <h6>Product ({{ forloop.counter }})</h6>
+                              <br />
+                              {% endif %}
+                              <div class="myaccount-order-details-R">
+                                 {% for image in product_image %}
+                                    {% if product.shop_product_id == image.shop_product.id %}
+                                       <figure>
+                                          <img src="{{ image.primary_img.url }}">
+                                       </figure>
+                                    {% endif %}
+                                 {% endfor %}
+                                 <div class="order-summary">
+                                    <ul>
+                                       <li><span>Name</span><b>{{ product.shop_product.name}}</b></li>
+                                       <li><span>Collection</span><b>{{ product.shop_product.product_collection.name}}</b></li>
+                                       <li><span>Category</span><b>{{ product.shop_product.subcategory.name}}</b></li>
+                                       <li><span>Quantity</span><b>{{ product.quantity }}</b></li>
+                                       {% if product.shop_product.offer_price > 0  %}
+                                          {% comment %} <li><span>Product Price</span><b>${{ product.shop_product.original_price|floatformat:2 }}</b></li> {% endcomment %}
+                                          <li>
+                                             <span>Price</span>
+                                             <strong>${{ product.shop_product.offer_price|floatformat:2 }}</strong>
+                                          </li>
+                                       {% else %}
+                                          <li>
+                                             <span>Price</span>
+                                             <strong>${{ product.shop_product.original_price|floatformat:2 }}</strong>
+                                          </li>
+                                       {% endif %}
+                                    </ul>
+                                 </div>
+                              </div>
+                           </div>
+                        {% endfor %}
+                     </div>
+                  </div>
+                  <div class="col-md-4">
+                     <div class="myaccount-order-details-R mb-4">
+                        <div class="order-summary">
+                           <h3 style="color: #FA53A0;" >Payment Details</h3>
+                           <ul>
+                              <li>
+                                 <span>Total Products Quantity</span>
+                                 <strong>{{total_quantity}}</strong>
+                              </li>
+                              {% if product_offer_price > 0 %}
+                                 {% comment %} <li>
+                                    <span>Product Price</span>
+                                    <strong>${{ product_original_price|floatformat:2  }}</strong>
+                                 </li> {% endcomment %}
+                                 <li>
+                                    <span>Price</span>
+                                    <strong>${{ product_offer_price|floatformat:2  }}</strong>
+                                 </li>
+                              {% else %}
+                                 <li>
+                                    <span>Price</span>
+                                    <strong>${{ product_original_price|floatformat:2  }}</strong>
+                                 </li>
+                              {% endif %}
+                              {% if offer_data %}
+                                 <li>
+                                    <span>Offer Applied</span>
+                                    <strong>{{ offer_data.name}} </strong>
+                                 </li>
+                                 <li>
+                                    <span>Offer Discount</span>
+                                    <strong>{{ offer_data.percentage|floatformat:2 }} %</strong>
+                                 </li>
+                                 <li>
+                                    <span>Price After Offer</span>
+                                    <strong>$ {{ price_after_offer|floatformat:2 }} </strong>
+                                 </li>
+                              {% endif %}
+                              <li>
+                                 <span>Savings</span>
+                                 <strong>${{ total_savings }}</strong>
+                              </li>
+                              <li>
+                                 <span>Tax</span>
+                                 <strong>${{ product_order.tax }}</strong>
+                              </li>
+                              <li>
+                                 <span>Shipping</span>
+                                 <strong>${{ product_order.shipping_charge }}</strong>
+                              </li>
+                              <li>
+                                 <span>Total Amount</span>
+                                 <strong>${{ product_order.total_amount|floatformat:2 }}</strong>
+                              </li>
+                              <li class="last-total">
+                                 <span>Amount Paid</span>
+                                 <strong>${{ product_order.total_amount|floatformat:2 }}</strong>
+                              </li>                
+                              {% if product_order.paid_by_stripe > 0 and product_order.paid_by_wallet > 0 %}
+                                 <li class="last-total">
+                                    <span>By Wallet</span>
+                                    <strong>${{ product_order.paid_by_wallet|floatformat:2 }}</strong>
+                                 </li>
+                                 <li class="last-total">
+                                    <span>By {{ product_order.card_brand }}</span>
+                                    <strong>${{ product_order.paid_by_stripe|floatformat:2 }}</strong>
+                                 </li>
+                                 <li class="last-total">
+                                    <span>Payment Method</span>
+                                    <strong>{{ product_order.card_brand }} & Wallet</strong>
+                                 </li>
+                              {% else %}
+                                 {% if product_order.paid_by_wallet > 0 %}
+                                    <li class="last-total">
+                                       <span>Payment Method</span>
+                                       <strong>Wallet</strong>
+                                    </li>
+                                 {% elif product_order.paid_by_stripe > 0 %}
+                                    <li class="last-total">
+                                       <span>Payment Method</span>
+                                       <strong>{{ product_order.card_brand }}</strong>
+                                    </li>
+                                 {% endif %}
+                              {% endif %}                       
+                           </ul>
+                        </div>
+                     </div>
+                     {% if product_order.is_refunded %}
+                     <div class="myaccount-order-details-R mb-4">
+                        <div class="order-summary">
+                           <h3 style="color: #FA53A0;" >Refund Details</h3>
+                           <ul>
+                             <li class="last-total">
+                                <span>Refund issued on</span>
+                                <strong>{{ product_order.canceled_at}}</strong>
+                             </li>
+                             {% if product_order.paid_by_wallet > 0 %}
+                                    <li class="last-total">
+                                       <span>To Wallet</span>
+                                       <strong>$ {{ product_order.paid_by_wallet|floatformat:2 }}</strong>
+                                    </li>
+                                 {% elif product_order.paid_by_stripe > 0 %}
+                                    <li class="last-total">
+                                       <span>To Bank ({{ product_order.card_brand }})</span>
+                                       <strong>$ {{ product_order.paid_by_stripe|floatformat:2 }}</strong>
+                                    </li>
+                                 {% endif %}
+                              <li class="last-total">
+                                 <span >Total Amount</span>
+                                 <strong>${{ product_order.total_amount|floatformat:2 }}</strong>
+                              </li>
+                           </ul>
+                        </div>
+                     </div>
+                     {% endif %}
+                     <div class="myaccount-order-details-R">
+                        <div class="order-summary">
+                           <h3 style="color: #FA53A0;" >Address Details</h3>
+                           <div>
+                              <div class="mb-4">
+                                 <p class="mb-1">Shipping Address</p>
+                                 <strong>
+                                    {% comment %} {{ product_order.shipping_address.house_num }} {% endcomment %}
+                                    {{ product_order.shipping_address.area_name }}, 
+                                    {{ product_order.shipping_address.web_city }}, 
+                                    {{ product_order.shipping_address.web_state.name }},
+                                    {{ product_order.shipping_address.zip_code }}
+                                    {% if product_order.shipping_address.web_country.short_name != 'US' %}
+                                       ,{{ product_order.shipping_address.web_country.name }}
+                                    {% endif %}
+                                 </strong>
+                              </div>
+                              <hr>
+                              <div class="mb-4">
+                                 <p class="mb-1">Billing Address</p>
+                                 <strong>
+                                    {% comment %} {{ product_order.billing_address.house_num }} {% endcomment %}
+                                    {{ product_order.billing_address.area_name }}, 
+                                    {{ product_order.billing_address.web_city }}, 
+                                    {{ product_order.billing_address.web_state.name }},
+                                    {{ product_order.billing_address.zip_code }}
+                                    {% if product_order.billing_address.web_country.short_name != 'US' %}
+                                       ,{{ product_order.billing_address.web_country.name }}
+                                    {% endif %}
+                                 </strong>
+                              </div>                    
+                           </div>
+                           {% comment %} <ul>
+                              <li>
+                                 <p>Shipping Address</p>
+                                 <strong>
+                                    {{ product_order.shipping_address.house_num }}
+                                    {{ product_order.shipping_address.area_name }}, 
+                                    {{ product_order.shipping_address.zip_code }}, 
+                                    {{ product_order.shipping_address.web_city }}, 
+                                    {{ product_order.shipping_address.web_state.name }}, 
+                                    {{ product_order.shipping_address.web_country.name }} 
+                                 </strong>
+                              </li>
+                              <li>
+                                 <span>Billing Address</span>
+                                 <strong>
+                                    {{ product_order.billing_address.house_num }}
+                                    {{ product_order.billing_address.area_name }}, 
+                                    {{ product_order.billing_address.zip_code }}, 
+                                    {{ product_order.billing_address.web_city }}, 
+                                    {{ product_order.billing_address.web_state.name }}, 
+                                    {{ product_order.billing_address.web_country.name }} 
+                                 </strong>
+                              </li>                    
+                           </ul> {% endcomment %}
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+</div>
+{% endblock content %}

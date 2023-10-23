@@ -1,0 +1,138 @@
+<!-- head -->
+<!DOCTYPE html>
+<html>
+    {% load static %}
+<head>
+<meta charset="utf-8">
+<title>
+    Megadolls | {% block title %}{% endblock title %}
+</title>
+<!--responsive-meta-here-->
+<meta name="viewport" content="minimum-scale=1.0, maximum-scale=1.0,width=device-width, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!--responsive-meta-end-->
+
+{% block meta %}{% endblock meta %}
+
+<link rel="icon" href="{% static  'web_app/images/favicon.png' %}" type="image/x-icon">
+<script>
+    {% url 'web_login' as web_login %}
+    {% if request.user.is_authenticated %}
+    const previous_path = window.localStorage.getItem('after_login_redirect_path');
+    if (previous_path && (document.referrer.includes("{{ web_login }}") || document.referrer == '')){
+        localStorage.removeItem('after_login_redirect_path')
+        window.location.href = previous_path; 
+    }
+    {% else %}
+    const path = `{{ request.path }}`
+    if (path == `/` || path == `/web_login` || path == `/web_sign_up/`){
+    }
+    else {
+        window.localStorage.setItem('after_login_redirect_path', path);
+    }
+    {% endif %}
+</script>
+<link rel="stylesheet" href="{% static  'web_app/css/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="{% static  'web_app/css/owl.carousel.min.css' %}" />
+<link rel="stylesheet" href="{% static  'web_app/css/fontawesome-all.css' %}" />
+<link rel="stylesheet" href="{% static  'web_app/css/fontawesome.css' %}" />
+<link rel="stylesheet" href="{% static  'web_app/fonts/remixicon.css' %}" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css">
+<link rel="stylesheet" href="{% static  'web_app/css/style.css' %}" />
+<link rel="stylesheet" href="{% static  'web_app/css/responsive.css' %}" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+<link rel="stylesheet" href="{% static  'web_app/toastify/toastify.css' %}">
+<script src="{% static  'web_app/toastify/toastify.js' %}"></script>
+<script src="{% static  'common/common-function.js' %}"></script>
+</head>
+<body>
+    {% for message in messages %}
+    <script>
+        hideMyToast()
+        Toastify({
+            text: "{{ message }}",
+            duration: 3000,
+            backgroundColor: "{{ message.tags }}",
+            position: "center",
+            offset: {x: 0, y: 450},
+            className: "border-radius-5px",
+            close: true,
+        }).showToast();
+    </script> 
+    {% endfor %}
+<!-- end head -->
+
+<!-- Header -->
+{% include 'includes/header.html' %}
+<!-- end Header -->
+
+<!-- content -->
+{% block content %}
+{% endblock content %}
+<!-- end content -->
+
+<!-- footer -->
+{% include 'includes/footer.html' %}
+<!-- end footer -->
+
+<!-- javascript -->
+{% include 'includes/js.html' %}
+<!-- end javascript -->
+{% block script %}{% endblock script %}
+
+{% if request.user.is_authenticated and not request.user.is_verified %}
+<script>
+    $.ajax({
+        url: "{% url 'make_social_user_verified' %}"
+    })
+</script>
+{% endif %}
+
+
+<script>
+    getCartCount()
+</script>
+
+<script>
+    $.ajax({
+      url: '{% url "social_media_icons" %}',
+      success: res => {
+            if(res.links[3] && res.links[3].link) {
+                $('#facebook a').attr('href', res.links[3].link)
+            } else {
+
+                $('#facebook').hide()
+            }
+            if(res.links[1] && res.links[1].link) {
+                $('#youtube a').attr('href', res.links[1].link)
+            } else {
+
+                $('#youtube').hide()
+            }
+            if(res.links[0] && res.links[0].link) {
+                $('#twitter a').attr('href', res.links[0].link)
+            } else {
+
+                $('#twitter').hide()
+            }
+            if(res.links[2] && res.links[2].link) {
+                $('#instagram a').attr('href', res.links[2].link)
+            } else {
+
+                $('#instagram').hide()
+            }
+            if(res.links[4] && res.links[4].link) {
+                $('#linkedin a').attr('href', res.links[4].link)
+            } else {
+
+                $('#linkedin').hide()
+            }
+        }
+    });
+</script>
+
+
+

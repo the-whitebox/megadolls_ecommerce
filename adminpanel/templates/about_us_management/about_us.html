@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'adminpanel/datetime-picker/jquery.datetimepicker.min.css' %}" />
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+{% endblock css %}
+
+{% block content%}
+{% include "includes/section.html" with page_title="Edit About Us"  %}
+
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <form method="POST" class="card-body" id="myForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <h4>Section 1</h4>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Heading</label>
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Enter Heading for About Us" name="heading_1" value="{{ about_us_data.heading_1 }}" required>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Image</label>
+                                <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg" name="image_1">
+                            </div>
+                            {% if about_us_data.image %}
+                            <img src="{{ about_us_data.image_1.url }}" alt="" srcset="" width="10%">
+                            {% endif %}
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Content</label>
+                                <textarea value="" name="editor_1" required>{{about_us_data.content_1|safe}}</textarea>
+                            </div>
+                        </div>
+
+                       
+                    </div>
+
+
+
+                    <div class="row">
+                        <h4>Section 2</h4>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Heading</label>
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Enter Heading for About Us" name="heading_2" value="{{ about_us_data.heading_2 }}" required>
+                                </div>
+                            </div>
+                        </div>
+                       
+
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Image</label>
+                                <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg" name="image_2">
+                            </div>
+                            {% if about_us_data.image %}
+                            <img src="{{ about_us_data.image_2.url }}" alt="" srcset="" width="10%">
+                            {% endif %}
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Content</label>
+                                <textarea value="" name="editor_2" required>{{about_us_data.content_2|safe}}</textarea>
+                            </div>
+                        </div>
+
+                       
+                    </div>
+
+
+
+
+                    <div class="row">
+                        <h4>Section 3</h4>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Heading</label>
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Enter Heading for About Us" name="heading_3" value="{{ about_us_data.heading_3 }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                       
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Content</label>
+                                <textarea value="" name="editor_3" required>{{about_us_data.content_3|safe}}</textarea>
+                            </div>
+                        </div>
+
+                       
+                    </div>
+
+
+
+                    <div class="row">
+                        <h4>Section 4</h4>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Heading</label>
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Enter Heading for About Us" name="heading_4" value="{{ about_us_data.heading_4 }}" required>
+                                </div>
+                            </div>
+                        </div>
+                       
+
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Image</label>
+                                <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg" name="image_4">
+                            </div>
+                            {% if about_us_data.image %}
+                            <img src="{{ about_us_data.image_4.url }}" alt="" srcset="" width="10%">
+                            {% endif %}
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Content</label>
+                                <textarea value="" name="editor_4" required>{{about_us_data.content_4|safe}}</textarea>
+                            </div>
+                        </div>
+
+
+
+                        <div class="row">
+                            <h4>Section 5</h4>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Heading</label>
+                                    <div class="position-relative">
+                                        <input type="text" class="form-control" placeholder="Enter Heading for About Us" name="heading_5" value="{{ about_us_data.heading_5 }}" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Content</label>
+                                    <textarea value="" name="editor_5" required>{{about_us_data.content_5|safe}}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex justify-content-end mt-3">
+                            <button type="submit" class="btn btn-primary me-1 mb-1" id="formSubmit">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content%}
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.19.1/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('editor_1');
+    CKEDITOR.replace('editor_2');
+    CKEDITOR.replace('editor_3');
+    CKEDITOR.replace('editor_4');
+    CKEDITOR.replace('editor_5');
+</script>
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/vendors/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+<script>
+    $('#formSubmit').on('click', function (e) {
+        e.preventDefault()
+        let id = $(this).data('id')
+        Swal.fire({
+            title: 'Update About Us',
+            text: 'Are You Sure ?',
+            confirmButtonColor: 'rgb(225, 0, 127)',
+            showCancelButton: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $("#myForm").submit();
+            }
+        })
+    })
+
+    $.validator.addMethod("extension",function(a,b,c){
+        return c="string"==typeof c?c.replace(/,/g,"|"):"png|jpe?g",this.optional(b)||a.match(new RegExp("\\.("+c+")$","i"))},
+        $.validator.format("Only Accept image type png, jpg, jpeg"))
+
+    $("#myForm").validate({
+        focusInvalid: false,
+        invalidHandler: function(form, validator) {
+            if (!validator.numberOfInvalids())
+                return;
+            $('html, body').animate({
+                scrollTop: $(validator.errorList[0].element).offset().top
+            }, 500);
+        },
+        rules: {
+            heading: {
+                required: true,
+                maxlength: 55
+            },
+            editor: {
+                required: true,
+            },
+            posted_by: {
+                required: true,
+                maxlength: 55
+            },
+            category: {
+                required: true,
+            },
+            subcategory: {
+                required: true,
+            },
+            image_1: {
+                extension: true
+            },
+            image_2: {
+                extension: true
+            },
+            image_4: {
+                extension: true
+            }
+        }
+    });
+</script>
+{% endblock script %}

@@ -1,0 +1,187 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}Error 500{% endblock title %}
+{% block content %}
+{% comment %} <style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+    #parent {
+        background-color: #ffdaee;
+        opacity: 0.8;
+        height: 100%;
+    }
+    #content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: #ea047f;
+        width: 100%;
+        height: 100vh;
+        letter-spacing: 4px;
+        line-height: 2;
+    }
+    #content h1 {
+        font-size: 56px;
+    }
+    #content h2 {
+        font-size: 34px;
+    }
+    #content p {
+        font-size: 22px;
+        color: #ea047f;
+    }
+    #mega {
+        position: absolute;
+        left: 25%;
+        top: 10%;
+    }
+    #mega h1 {
+        color: #ea047f;
+        font-size: 8em;
+        opacity: 0.5;
+        letter-spacing: 15px;
+    }
+</style> {% endcomment %}
+<style>
+    #parent {
+        background-color: #ffdaee;
+        opacity: 0.8;
+        padding-top: 1%;
+    }
+    #content {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        color: #ea047f;
+        width: 100%;
+        height: 50vh;
+        letter-spacing: 4px;
+        line-height: 4;
+        margin-top: 40px;
+        font-family: inter, 'sans-serif'
+    }
+    #content h1 {
+        font-size: 56px;
+    }
+    #content h2 {
+        font-size: 34px;
+    }
+    #content p{
+        font-size: 18px;
+        color: #ea047f;
+    }
+    #mega {
+        text-align:center;
+        margin-top: 18%;
+    }
+    #mega h1 {
+        color: #ea047f;
+        font-size: 8em;
+        opacity: 0.5;
+        letter-spacing: 15px;
+    }
+
+    @media (max-width: 1400px){
+        #mega h1 {
+            font-size: 6em;
+        }
+        #content h1 {
+            font-size: 52px;
+        }
+        #content h2 {
+            font-size: 30px;
+        }
+        #content p, a {
+            font-size: 18px;
+        }
+    }
+
+    @media (min-width: 992px){
+        #mega h1 {
+            font-size: 6em;
+        }
+        #content p{
+            font-size: 22px;
+        }
+    }
+
+    @media (max-width: 1199px){
+        #mega h1 {
+            font-size: 4.5em;
+        }
+        #content p, a {
+            font-size: 22px;
+        }
+    }
+    @media (max-width: 575px){
+        #mega h1 {
+            font-size: 3em;
+        }
+        #content h1 {
+            font-size: 40px;
+        }
+        #content h2 {
+            font-size: 20px;
+        }
+        #content p, a {
+            font-size: 18px;
+        }
+    }
+
+    @media (max-width: 479px){
+        #mega h1 {
+            font-size: 2em;
+        }
+        #content h1 {
+            font-size: 32px;
+        }
+        #content h2 {
+            font-size: 16px;
+        }
+        #content p, a {
+            font-size: 16px;
+        }
+        #content p {
+            width: 60%;
+        }
+        #parent {
+            padding-top: 20%;
+        }
+        #content {
+            height: 40vh;
+            line-height: 4;
+            text-align: center;
+        }
+    }
+
+    @media (max-width: 379px){
+        #mega h1 {
+            font-size: 1.8em;
+        }
+        #content h1 {
+            font-size: 30px;
+        }
+        #content h2 {
+            font-size: 14px;
+        }
+        #content p, a {
+            font-size: 14px;
+        }
+    }
+</style>
+<div id="parent">
+    <div id="mega">
+       {% comment %} <h1>MEGADOLLS</h1>{% endcomment %}
+    </div>
+    <div id="content">
+        <h1>500 ERROR</h1>
+        <br>
+        
+        <h2>We're sorry, an error occurred while processing your request.</h2>
+        <h2>Please try again later.</h2>
+    </div>
+</div>
+{% endblock content %}

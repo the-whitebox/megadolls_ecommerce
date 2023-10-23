@@ -1,0 +1,229 @@
+{% load static %}
+{% load socialaccount %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>
+    Megadolls | Login
+</title>
+<!--responsive-meta-here-->
+<meta name="viewport" content="minimum-scale=1.0, maximum-scale=1.0,width=device-width, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!--responsive-meta-end-->
+<link rel="icon" href="{% static  'web_app/images/favicon.png' %}" type="image/x-icon">
+<link rel="stylesheet" href="{% static  'web_app/css/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="{% static  'web_app/css/owl.carousel.min.css' %}" />
+<link rel="stylesheet" href="{% static  'web_app/css/fontawesome-all.css' %}" />
+<link rel="stylesheet" href="{% static  'web_app/css/fontawesome.css' %}" />
+<link rel="stylesheet" href="{% static  'web_app/fonts/remixicon.css' %}" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css">
+<link rel="stylesheet" href="{% static  'web_app/css/style.css' %}" />
+<link rel="stylesheet" href="{% static  'web_app/css/responsive.css' %}" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+<link rel="stylesheet" href="{% static  'web_app/toastify/toastify.css' %}">
+<script src="{% static  'web_app/toastify/toastify.js' %}"></script>
+</head>
+<body>
+<div class="login-wraper">
+    <img src="{% static  'web_app/images/bg-pattern-2.png' %}">
+    <div class="container">
+        <div class="login-wraper-content">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-content-blk">
+                        <div class="form-content">
+                            <div class="form-content-head">
+                                <h4>Welcome Back</h4>                              
+                                <p>Sign In with your Email Address</p>
+                            </div>
+                            <form method="POST" class="form-content-inputs" id="myForm">
+                                {% csrf_token %} 
+                                <div class="form-floating">
+                                    <input type="email" name="email" class="form-control" id="floatingInput45" placeholder="name@example.com">
+                                    <label for="floatingInput45">Email</label>
+                                </div>
+                                <div class="form-floating">
+                                    <i class="fa fa-eye-slash toggle-password"></i>
+                                    <input type="password" class="form-control" name="password" id="floatingInput46" placeholder="Enter Password">
+                                    <label for="floatingInput46">Password</label>
+                                </div>
+                                <div class="action-link-blk">
+                                    <input type="checkbox" name="remember_me" id="remember_me">&nbsp<label class="action-links" for="remember_me">Remember me</label>
+                                    <a href="{% url 'web_forgot_password' %}" class="action-links float-end">Forgot Password ?</a>
+                                </div>
+                                <div class="form-action-btns">
+                                    <button type="submit" class="btn btn-primary">Sign In</button>
+                                </div>
+                            </form>
+                            <div class="login-divider">
+                                <span>Or</span>
+                            </div>
+                            <div class="login-accounts">
+                                <a href="{% provider_login_url 'google' %}" class="login-accounts-item mb-4"><img src="{% static  'web_app/images/google-icon.svg' %}"> Sign in with Google</a>
+                                <a href="{% provider_login_url 'facebook' method='oauth2' %}" class="login-accounts-item"><img src="{% static  'web_app/images/facebook-icon.svg' %}"> Sign in with Facebook</a>
+                            </div>
+                            <div class="login-form-links">Don't have account? <a href="{% url 'web_sign_up'  %}">Sign up here</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 offset-md-1">
+                    <div class="form-info-content">
+                        <a href="{% url 'home' %}">
+                            <img src="{% static  'web_app/images/logo.png' %}">
+                        </a>
+                        <p>Welcome to the World of Paper dolls. Megadolls are created to empower boys and girls from all walks of life.
+                            We strive to create beautiful pieces that inspire everyone, encourage kindness, experience creativity, and
+                            promote meaningful play with awareness and compassion for others.</p>
+                        <ul class="footer-social">
+                            <li id="facebook" >
+                                <a href="javascript:void(0);" target="_blank" ><i class="ri-facebook-fill"></i></a>
+                            </li>
+                            <li id="youtube" >
+                                <a href="javascript:void(0);" target="_blank" ><i class="ri-youtube-fill"></i></a>
+                            </li>
+                            <li id="twitter" >
+                                <a href="javascript:void(0);" target="_blank" ><i class="ri-twitter-fill"></i></a>
+                            </li>
+                            <li id="instagram" >
+                                <a href="javascript:void(0);" target="_blank" ><i class="ri-instagram-fill"></i></a>
+                            </li>
+                            <li id="linkedin" >
+                                <a href="javascript:void(0);" target="_blank" ><i class="ri-linkedin-fill"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'includes/js.html' %}
+{% for message in messages %}
+<script>
+    myToast("{{ message }}", "{{ message.tags }}")
+</script> 
+{% endfor %}
+    <script>
+        (function() {
+            $.validator.addMethod('emailRegex', function(value, element) {
+                let emailExp = new RegExp(/^\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i);
+                return emailExp.test(value);
+            }, 'Email format is not valid');
+        
+            $("#myForm").validate({
+                rules: {
+                    email: {
+                        required: true,
+                        emailRegex: true
+                    },
+                    password: {
+                        required: true,
+                    },
+                },
+                submitHandler: function (form) {
+                    if($('#remember_me').is(':checked')) {
+                        let email = $('input[name=email]').val()
+                        let password = $('input[name=password]').val()
+                        localStorage.setItem('megadollsRemember', JSON.stringify({'rememberMe': true, 'email': email, 'password': password}))
+                    } else {
+                        localStorage.setItem('megadollsRemember', JSON.stringify({'rememberMe': false}))
+                    }
+                    form.submit()
+                }
+            });
+        })()
+    </script>
+<script>
+    megadollsRemember = JSON.parse(localStorage.getItem('megadollsRemember'))
+    if(megadollsRemember && megadollsRemember.rememberMe) {
+        $('input[name=email]').val(megadollsRemember.email)
+        $('input[name=password]').val(megadollsRemember.password)
+        $('#remember_me').prop('checked', true)
+    }
+</script>
+<script>
+    function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+    });
+    }
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '733521891165595',
+        cookie     : true,
+        xfbml      : true,
+        version    : 'v14.0'
+      });
+      FB.AppEvents.logPageView();   
+    };
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "https://connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+  </script>
+  <script>
+    $('.toggle-password').on('click', function() {
+        if($(this).hasClass('fa-eye')) {
+            $(this).addClass('fa-eye-slash')
+            $(this).removeClass('fa-eye')
+            $('input[name=password]').attr('type', 'password')
+        } else {
+            $(this).removeClass('fa-eye-slash')
+            $(this).addClass('fa-eye')
+            $('input[name=password]').attr('type', 'text')
+        }
+    })
+</script>
+
+<script>
+    $.ajax({
+      url: '{% url "social_media_icons" %}',
+      success: res => {
+            
+            if(res.links[3] && res.links[3].link) {
+                $('#facebook a').attr('href', res.links[3].link)
+            } else {
+
+                $('#facebook').hide()
+            }
+            if(res.links[1] && res.links[1].link) {
+                $('#youtube a').attr('href', res.links[1].link)
+            } else {
+
+                $('#youtube').hide()
+            }
+            if(res.links[0] && res.links[0].link) {
+                $('#twitter a').attr('href', res.links[0].link)
+            } else {
+
+                $('#twitter').hide()
+            }
+            if(res.links[2] && res.links[2].link) {
+                $('#instagram a').attr('href', res.links[2].link)
+            } else {
+
+                $('#instagram').hide()
+            }
+            if(res.links[4] && res.links[4].link) {
+                $('#linkedin a').attr('href', res.links[4].link)
+            } else {
+
+                $('#linkedin').hide()
+            }
+            
+
+        }
+     
+    });
+</script>
+
+
+

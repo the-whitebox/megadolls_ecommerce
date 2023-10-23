@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content%}
+{% url 'contact_us_inquiry' as user_inquiry %}
+{% include "includes/section.html" with page_title="User's Inquiry" btn_url=user_inquiry btn_text="Back" %}
+<main class="main content-wrapper container">
+    <section class="section profile">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body pt-3">
+                        <ul class="nav nav-tabs nav-tabs-bordered text-center">
+                            <li class="nav-item">
+                                <h6>Inquiry</h6>
+                            </li>
+                        </ul>
+                        <div class="tab-content pt-4">
+                            <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label "><strong>Name :</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ inquiry.name }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label "><strong>Email :</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ inquiry.email}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label "><strong>Subject :</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ inquiry.subject}}</div>
+                                </div> 
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label "><strong>Date and Time :</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ inquiry.created_at}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label "><strong>Inquiry :</strong></div>
+                                    <div class="col-lg-9 col-md-8"> {{ inquiry.inquiry|safe}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body pt-3">
+                        <h6>Reply</h6> 
+                        <form action="{% url 'reply_user_inquiry' %}" method="POST" id="reply">
+                            {% csrf_token %}
+                            <input type="hidden" name="reply" value="{{ inquiry.id }}">
+                            <textarea class="ck-content" value="" name="editor" required></textarea>
+                            <br />
+                            <button type="submit" class="btn btn-primary me-1 mb-1" id="update-template">Send</button>   
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock content %}
+{% block script %}
+<script>
+    $("#reply").validate({
+        rules: {
+            editor: {
+                required: true,
+            }
+        },
+        submitHandler: function (form) {
+            form.submit()
+        }
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.19.1/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('editor');
+</script>
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+{% endblock script %}

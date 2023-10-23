@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %} | Mega Dolls Admin</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static  'adminpanel/css/bootstrap.css' %}">
+
+    <link rel="stylesheet" href="{% static  'adminpanel/vendors/iconly/bold.css' %}">
+    <link rel="stylesheet" href="{% static  'adminpanel/vendors/fontawesome/all.min.css' %}">
+    <link rel="stylesheet" href="{% static  'adminpanel/vendors/perfect-scrollbar/perfect-scrollbar.css' %}">
+    <link rel="stylesheet" href="{% static  'adminpanel/vendors/bootstrap-icons/bootstrap-icons.css' %}">
+    <link rel="stylesheet" href="{% static  'adminpanel/css/app.css' %}">
+    <link rel="shortcut icon" href="{% static  'adminpanel/images/favicon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static  'adminpanel/vendors/toastify/toastify.css' %}">
+
+    {% block css %}{% endblock css %}
+    <script src="{% static  'adminpanel/vendors/toastify/toastify.js' %}"></script>
+    <script src="{% static  'common/common-function.js' %}"></script>
+</head>
+
+<body>
+    {% for message in messages %}
+    <script>
+        hideMyToast()
+        Toastify({
+            text: "{{ message }}",
+            duration: 3000,
+            backgroundColor: "{{ message.tags }}",
+            position: 'center',
+            close: true,
+        }).showToast();
+    </script>
+    {% endfor %}
+    <div id="loader">
+        <img src="{% static  'adminpanel/vendors/svg-loaders/rings.svg' %}" class="me-4" style="width: 10rem" alt="audio">
+    </div>
+    <div id="app">
+        <!-- sidebar -->
+        {% include 'includes/sidebar.html' %}
+        <!-- end sidebar -->
+
+        <!-- class="layout-horizontal" -->
+        <div id="main">
+            <div class="header-top-right">
+                <!-- ---Notification sec---- -->
+                <div class="dropdown float-end mb-3 notification_bell_sec">
+                    <a href="#" class="user-dropdown d-flex dropend justify-content-end notification_bell" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-bell"></i>
+                        <div class="number">{{ total_notification }}</div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-lg float-end" aria-labelledby="dropdownMenuButton1" id="dropdown">
+                        <li><a class="dropdown-item" href="{% url 'referral_notification' %}">Referral <span id="referral" class="number_bells">{{ referral_notification_count }}</span> </a></li>
+                        <li><a class="dropdown-item" href="{% url 'inquiry_notification' %}">Inquiry <span id="inquiry" class="number_bells">{{ inquiry_notification_count }}</span> </a></li>
+                    </ul>
+                </div>
+                <!-- ---Notification sec---- -->
+                
+                <div class="dropdown float-end mb-3">
+                    <a href="#" class="user-dropdown d-flex dropend justify-content-end" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="avatar avatar-md2">
+                            
+                            {% if request.user.profile_img %}
+                            <figure><img src="{{ request.user.profile_img.url }}" alt="Avatar"></figure>
+                            {% else %}
+                            <figure><img src="{% static  'adminpanel/images/faces/1.jpg' %}" alt="Avatar"></figure>
+                            {% endif %}
+                        </div>
+                        <div class="text">
+                            <h6 class="user-dropdown-name">{{ request.user }}</h6>
+                            <p class="user-dropdown-status text-sm text-muted">
+                                <span class="text-pink">{{ request.user.name }} - </span>
+                                {% if request.user.user_type == "SUPERADMIN" %}
+                                Super Admin
+                                {% elif request.user.user_type == "SUBADMIN" %}
+                                Sub Admin
+                                {% else %}
+                                User
+                                {% endif %}
+                            </p>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-lg float-end" aria-labelledby="dropdownMenuButton1" id="dropdown">
+                        <li><a class="dropdown-item" href="{% url 'profile' %}">My Profile</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                    </ul>
+                </div>
+        
+                <!-- Burger button responsive -->
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </div>
+
+            <div class="page-heading">
+                {% block content %}{% endblock content %}
+            </div>
+
+        </div>
+    </div>
+    <script src="{% static  'adminpanel/vendors/perfect-scrollbar/perfect-scrollbar.min.js' %}"></script>
+    <script src="{% static  'adminpanel/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static  'adminpanel/vendors/fontawesome/all.min.js' %}"></script>
+    {% block script %}{% endblock script %}
+    <script src="{% static  'adminpanel/js/mazer.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            // ------ Data table code -----
+            if($('#myTable').length) {
+                const table = $('#myTable').DataTable({
+                    "pagingType": "full_numbers",
+                    "search": {
+                        "caseInsensitive": true
+                    },
+                    "deferRender": true,
+                    "stateSave": true,
+                    "columnDefs": [
+                        { orderable: false, className: 'stopSorting'},
+                    ]
+                });
+            
+                $('#myTable thead tr')
+                    .clone(true)
+                    .addClass('filters')
+                    .appendTo('#myTable thead')
+            
+                $('.filters th:last-child').hide()
+                th = $("#myTable thead .filters th")
+                th.addClass('stopSorting')
+                th.each(function (i, j) {
+                    let select = $('<select><option value="">Select</option></select>')
+                        .appendTo($(this).empty())
+                        .on('change', function () {
+                            let val = $(this).val();
+                            table.column(i)
+                            .search(val ? '^' + $(this).val() + '$' : val, true, false)
+                            .draw();
+                        });
+            
+                    table.column(i).data().unique().sort().each(function (d, j) {
+                        if (isHTML(d)) {
+                            html = $.parseHTML(d)
+                            text = html[0].innerText
+                            select.append('<option value="' + text + '">' + text + '</option>')
+                        } else {
+                            select.append('<option value="' + d + '">' + d + '</option>')
+                        }
+                    });
+            
+                });
+                $('.stopSorting').off('click')
+                $('.stopSorting').removeClass('sorting sorting_asc')
+                function isHTML(str) {
+                    var a = document.createElement('div');
+                    a.innerHTML = str;
+            
+                    for (var c = a.childNodes, i = c.length; i--;) {
+                        if (c[i].nodeType == 1) return true;
+                    }
+            
+                    return false;
+                }
+            }
+            // ------ Data table code -----
+        })
+    </script>
+<script>
+    $.ajax({
+      url: '{% url "notification" %}',
+      success: res => {
+          $('.number').text(res.total_notification)
+          $('#inquiry').text(res.total_inquiry_notification)
+          $('#referral').text(res.total_referral_notification)
+        }
+    });
+
+</script>
+
+</body>
+
+</html>

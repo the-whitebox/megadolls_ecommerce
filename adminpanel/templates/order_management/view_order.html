@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css%}
+<link rel="stylesheet" href="{% static 'adminpanel/data-table/dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+{% endblock css %}
+{% block content%}
+{% url 'order_management' as order %}
+{% include "includes/section.html" with page_title="Order Details" btn_url=order btn_text="Back" %}
+<main class="main content-wrapper container">
+    <section class="section profile">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body pt-3">
+                        <ul class="nav nav-tabs nav-tabs-bordered text-center">                           
+                        </ul>
+                        <div class="tab-content">  
+                            <style>
+                                #profile-overview .row:nth-child(odd){
+                                    background-color: rgba(201, 197, 197, 0.371);                       
+                                }
+                                .row-padding .row {padding: 4px 0px;}
+                            </style>        
+                           <div class="tab-pane fade show active profile-overview row-padding admin-order-detail-block" id="profile-overview">
+
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        {% for product in product_data %}
+                                            <div class="admin-order-detail-item">
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 "><strong>Product ({{ forloop.counter }})</strong></div>
+                                            
+                                                </div>
+                                                <h4>{{ product.shop_product.name}}</h4>
+                                                <div class="row"  >
+                                                    {% for image in product_image %}
+                                                    {% if product.shop_product_id == image.shop_product.id %}
+                                                    <figure>
+                                                        <img id="order_product_image" src="{{ image.primary_img.url }}">
+                                                    </figure>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 "><strong>Collection:</strong></div>
+                                                    <div class="col-lg-9 col-md-8"> {{ product.shop_product.product_collection.name}}</div>
+                                                </div>
+                                                
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 "><strong>Category :</strong></div>
+                                                    <div class="col-lg-9 col-md-8"> {{ product.shop_product.subcategory.category.name}}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 "><strong>Sub Category :</strong></div>
+                                                    <div class="col-lg-9 col-md-8"> {{ product.shop_product.subcategory.name}}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 "><strong>Product Original Price :</strong></div>
+                                                    <div class="col-lg-9 col-md-8">$ {{ product.shop_product.original_price }}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 "><strong>Product Offer Price :</strong></div>
+                                                    <div class="col-lg-9 col-md-8">$ {{ product.per_unit_price }}</div>
+                                                </div>
+                                                <!-- <div class="row">
+                                                    <div class="col-lg-3 col-md-4 "><strong>Discount :</strong></div>
+                                                    <div class="col-lg-9 col-md-8">{{ product.shop_product.original_price }} - {{ product.per_unit_price }}</div>
+                                                </div> -->
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 "><strong>Product Quantity :</strong></div>
+                                                    <div class="col-lg-9 col-md-8"> {{ product.quantity}}</div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <h6>Customer Details</h6>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5"><strong>Customer Name :</strong></div>
+                                            <div class="col-lg-8 col-md-7"> {{ orders.user.name}}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5"><strong>Customer Email :</strong></div>
+                                            <div class="col-lg-8 col-md-7"> {{ orders.user.email}}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5"><strong>Customer Mobile :</strong></div>
+                                            <div class="col-lg-8 col-md-7"> {{ orders.user.mobile}}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5 "><strong>Shipping Address :</strong></div>
+                                            <div class="col-lg-8 col-md-7">{{ orders.shipping_address.name }}, {{ orders.shipping_address.area_name }}, {{ orders.shipping_address.zip_code }}, {{ orders.shipping_address.web_city }}, {{ orders.shipping_address.web_state.name }}, {{ orders.shipping_address.web_country.name }}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5 "><strong>Billing Address :</strong></div>
+                                            <div class="col-lg-8 col-md-7">{{ orders.shipping_address.name }}, {{ orders.billing_address.area_name }}, {{ orders.billing_address.zip_code }}, {{ orders.billing_address.web_city }}, {{ orders.billing_address.web_state.name }}, {{ orders.billing_address.web_country.name }}</div>
+                                        </div>  
+                                        <br />
+                                        <h6>Order Details</h6>                        
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5 "><strong>Order Id :</strong></div>
+                                            <div class="col-lg-8 col-md-7"> {{ orders.order_id}}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5 "><strong>Order Placed :</strong></div>
+                                            <div class="col-lg-8 col-md-7"> {{ orders.order_at}}</div>
+                                        </div>
+                                        {% if orders.delivered_at %}
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5 "><strong>Order Delivered :</strong></div>
+                                            <div class="col-lg-8 col-md-7"> {{ orders.delivered_at}}</div>
+                                        </div>
+                                        {% endif %}
+                                        {% if orders.canceled_at %}
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5 "><strong>Order Canceled :</strong></div>
+                                            <div class="col-lg-8 col-md-7"> {{ orders.canceled_at}}</div>
+                                        </div>
+                                        {% endif %}
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5 "><strong>Total Quantity :</strong></div>
+                                            <div class="col-lg-8 col-md-7"> {{ total_quantity}}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5 "><strong>Order Value :</strong></div>
+                                            <div class="col-lg-8 col-md-7">$ {{ orders.total_amount}}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5 "><strong>Carrier :</strong></div>
+                                            <div class="col-lg-8 col-md-7"> {{ orders.carrier_code }}</div>
+                                        </div>
+                                        <br />
+                                        <h6>Payment Details</h6>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5 "><strong>Original Price :</strong></div>
+                                            <div class="col-lg-8 col-md-7">$ {{ product_original_price}}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5 "><strong>Offer Price :</strong></div>
+                                            <div class="col-lg-8 col-md-7">$ {{ product_offer_price}}</div>
+                                        </div>
+                                        {% if offer_data %}
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5 "><strong>Offer Applied :</strong></div>
+                                            <div class="col-lg-8 col-md-7">{{ offer_data.name}}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5 "><strong>Offer Discount :</strong></div>
+                                            <div class="col-lg-8 col-md-7">- %{{ offer_data.percentage}}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5 "><strong>Price After Offer :</strong></div>
+                                            <div class="col-lg-8 col-md-7">$ {{ price_after_offer}}</div>
+                                        </div>
+                                        {% endif %}
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5 "><strong>Total Savings :</strong></div>
+                                            <div class="col-lg-8 col-md-7">$ {{ total_savings}}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5 "><strong>Tax:</strong></div>
+                                            <div class="col-lg-8 col-md-7">$ {{ orders.tax}}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5 "><strong>Shipping :</strong></div>
+                                            <div class="col-lg-8 col-md-7">$ {{ orders.shipping_charge }}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5 "><strong>Total Price :</strong></div>
+                                            <div class="col-lg-8 col-md-7">$ {{ orders.total_amount}}</div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-5 "><strong><h6 style="color: #25c0c0;" >Amount Paid :</h6></strong></div>
+                                            <div class="col-lg-8 col-md-7"><strong><h6 style="color: #25c0c0;" >$ {{ orders.total_amount}}</h6></strong></div>
+                                            {% if orders.paid_by_stripe > 0 and orders.paid_by_wallet > 0 %}
+                                            <div class="col-lg-4 col-md-5 "><strong><h6 style="color: #25c0c0;" >By Wallet :</h6></strong></div>
+                                            <div class="col-lg-8 col-md-7"><strong><h6 style="color: #25c0c0;" >$ {{ orders.paid_by_wallet|floatformat:2 }}</h6></strong></div>
+                                            <div class="col-lg-4 col-md-5 "><strong><h6 style="color: #25c0c0;" >By Stripe :</h6></strong></div>
+                                            <div class="col-lg-8 col-md-7"><strong><h6 style="color: #25c0c0;" >$ {{ orders.paid_by_stripe|floatformat:2 }}</h6></strong></div>
+                                            <div class="col-lg-4 col-md-5 "><strong><h6 style="color: #25c0c0;" >Payment Method :</h6></strong></div>
+                                            <div class="col-lg-8 col-md-7"><strong><h6 style="color: #25c0c0;" >Stripe & Wallet</h6></strong></div>
+                                            {% else %}
+                                                {% if orders.paid_by_wallet > 0 %}
+                                                <div class="col-lg-4 col-md-5 "><strong><h6 style="color: #25c0c0;" >Payment Method :</h6></strong></div>
+                                            <div class="col-lg-8 col-md-7"><strong><h6 style="color: #25c0c0;" >Wallet</h6></strong></div>
+                                                {% elif orders.paid_by_stripe > 0 %}
+                                                <div class="col-lg-4 col-md-5 "><strong><h6 style="color: #25c0c0;" >Payment Method :</h6></strong></div>
+                                                <div class="col-lg-8 col-md-7"><strong><h6 style="color: #25c0c0;" >Stripe</h6></strong></div>                                               
+                                               {% endif %}
+                                            {% endif %}
+                                        </div>                                     
+                                    </div>
+                                </div>                              
+                               {% if not orders.order_status == "Canceled" %}
+                                <div class="mt-4 text-end">
+                                    <a  href="#" data-id="{{orders.id}}" class="mx-1 btn-delete btn btn-primary outline">Cancel Order</a>
+                                </div>
+                                {% else %}
+                                <div class="mt-4 text-end">
+                                    <h6 style="color: crimson;" >{{ orders.canceled_by }} canceled this order</h6>
+                                </div>
+                                {% endif %}
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form method="POST" action="{% url 'cancel_order' %}" class="mx-1"  id="delete_form">
+            {% csrf_token %}
+            <input type="hidden" name="order_id" value="" id="delete_shero">
+        </form>
+    </section>
+</main>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/data-table/dataTables.min.js' %}"></script>
+
+<script>
+    let form = '';
+    $(document).ready(function () {
+        $('.btn-delete').on('click', function (e) {
+            e.preventDefault()
+            let id = $(this).data('id')
+            Swal.fire({
+                title: 'Cancel Order',
+                text: 'Are You Sure ?',
+                confirmButtonColor: 'rgb(225, 0, 127)',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#delete_shero').val(id)
+                    $('#delete_form').submit()
+                }
+            })
+        })
+    })
+</script>
+{% endblock script %} 
+

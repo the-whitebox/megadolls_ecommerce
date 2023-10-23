@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css%}
+{% endblock css %}
+
+
+{% block content %}
+
+{% url 'add_contact_us_details' as add_new %}
+{% include "includes/section.html" with page_title="Contact Us Details" btn_url=add_new btn_text="Add New" %}
+
+<section class="section">
+    <div class="row w-100" id="table-striped">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content">
+                    <!-- table contextual / colored -->
+                    <div class="table-responsive p-2">
+                        {% if contact_us_details %}
+                            <table class="table table table-striped text-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Sr no.</th>
+                                        <th>Email</th>
+                                        <th>Mobile</th>
+                                        <th>Address</th>
+                                        <th></th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for contact in contact_us_details %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ contact.email }}</td>
+                                        <td>{{ contact.mobile }}</td>
+                                        <td>{{ contact.address }}</td>
+                                        <td>{% if contact_us_details_count > 1 %}
+                                            {% if contact.default_address == False %}
+                                            <a href="{% url 'default_contact_us_details' contact.id %}"><h6 style="text-decoration: none;">Make Default</h6></a>
+                                            {% endif %}
+                                            {% endif %}
+                                        </td>
+                                        {% if request.user.user_type == "SUPERADMIN" %}
+                                        <td>
+                                            <a href="{% url 'edit_contact_us_details' contact.id %}" class="mx-1">
+                                                <span class="fa-fw select-all fas"></span>
+                                            </a>
+                                            <a href="#" class="mx-1 btn-delete" data-id="{{ contact.id }}">
+                                                <span class="fa-fw select-all fas"></span>
+                                            </a>
+                                        </td>
+                                        {% endif %}
+
+                                        {% if request.user.user_type == "SUBADMIN" %}
+                                            <td>
+                                                {% for i in m_check %}
+                                                    {% if i.edit == True %}
+                                                        <a href="{% url 'edit_contact_us_details' contact.id %}" class="mx-1">
+                                                            <span class="fa-fw select-all fas"></span>
+                                                        </a>
+                                                    {% endif %}
+                                                    {% if i.delete == True %}
+                                                        <a href="#" class="mx-1 btn-delete" data-id="{{ contact.id }}">
+                                                            <span class="fa-fw select-all fas"></span>
+                                                        </a>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <div class="text-center">
+                                <strong style="font-size: 1.5em;">No Records</strong>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form method="POST" action="{% url 'delete_contact_us_details' %}" class="mx-1" style="display: inline;" id="delete_form">
+        {% csrf_token %}
+        <input type="hidden" name="contact_details" value="" id="user_inquiry">
+    </form>
+</section>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/data-table/dataTables.min.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.btn-delete').on('click', function (e) {
+            e.preventDefault()
+            let id = $(this).data('id')
+            Swal.fire({
+                title: 'Delete Details',
+                text: 'Are You Sure ?',
+                confirmButtonColor: 'rgb(225, 0, 127)',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#user_inquiry').val(id)
+                    $('#delete_form').submit()
+                }
+            })
+        })
+    })
+</script>
+{% endblock script %} 

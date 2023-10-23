@@ -1,0 +1,301 @@
+{% extends 'web_app_base.html' %}
+{% include 'includes/head.html' %}
+{% load static %}
+{% block title %}My Account - Address{% endblock title %}
+{% block content %}
+{% include 'includes/ring-loader.html' %}
+
+<div class="wraper-inner">
+   <section class="page-head-sec">
+      <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+      <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+      <div class="container">
+         <div class="page-head-content">
+            <h4>My Account</h4>
+         </div>
+      </div>
+   </section>
+   <section class="shops-list-sec pt-5">
+      <div class="container">
+         <div class="my-account account-subscription">
+            
+            {% include 'includes/my-account/left-sidebar.html' %}
+            
+            <div class="my-account-R">
+               {% if user_address_data %}
+               {% for data in user_address_data %}
+               <div class="address-list-box">
+                  <div class="address-list-box-L">
+                     {% if data.default_address %}
+                     <h4>Default Address</h4>
+                     {% else %}
+                     <h4>Address {{ forloop.counter|add:"-1" }}</h4>
+                     {% endif %}
+                     <div class="address-box">
+                        <p>
+                           {{ data.name }}, 
+                           {% comment %} {{ data.house_num }},  {% endcomment %}
+                           {{ data.area_name }},
+                        </p>
+                        <p>
+                           {{ data.web_city }}, 
+                           {{ data.web_state.name }} 
+                           {% if data.web_country.short_name != 'US' %}
+                              , {{ data.web_country.name }}
+                           {% endif %}
+                           , {{ data.zip_code }}
+                        </p>
+                        
+                     </div>
+                  </div>
+                  <div class="address-list-box-R action-info-btn">
+                     {% if data.default_address == False %}
+                     <a href="{% url 'change_active_address' data.id %}" class="set-default-link">Set as Default</a>
+                     {% endif %}
+                     <a data-bs-toggle="modal" data-bs-target="#edit-address" class="js-edit-address" data-address-id="{{ data.id }}"><i class="ri-pencil-fill"></i></a>
+                   
+                     <a data-bs-toggle="modal" data-address-id="{{ data.id }}" class="delete_address" data-bs-target="#delete-address"><i class="ri-delete-bin-5-fill"></i></a>
+                  </div>
+               </div>
+               <hr class="grey-line">
+               {% endfor %}
+               {% else %}
+               <h4>No address yet, Please add your address.</h4>
+               {% endif %}
+               <div class="d-flex mt-5">
+                  <!-- <a class="btn btn-primary">Save</a> -->
+                  <a class="btn btn-primary outline ms-4" data-bs-toggle="modal" data-bs-target="#add-new-address">Add new Address</a>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+</div>
+<!----add-new-address--->
+<div class="modal-status download-inst-md modal fade" id="add-new-address" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-md modal-dialog-centered">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><img src="{% static 'web_app/images/modal-close-icon.svg' %}"></button>
+         </div>
+         <div class="modal-body">
+            <div class="download-instructions-block">
+               <img class="logo-icon" src="{% static 'web_app/images/logo.png' %}">
+               <h4>Add Address</h4>
+               <form action="{% url 'user_address' %}" method="POST" id="add_address_form">
+                  {% csrf_token %}
+                  <input type="hidden" name="user" value="{{ request.user.id }}">
+                  <div class="mb-3">
+                     <input type="text" name="name" placeholder="Enter name associate with address" class="form-control" required>
+                  </div>
+                  {% comment %} <div class="mb-3">
+                     <input type="text" name="house_number" placeholder="House/ Apartment/ Flat Number" class="form-control" required>
+                  </div> {% endcomment %}
+                  <div class="mb-3">
+                     <input type="text" name="area_name" placeholder="Area/ Road Name" class="form-control" required>
+                  </div>
+                  <div class="mb-3">
+                     <select class="form-control" name="country" required >
+                        <option disabled selected>Country Name</option>
+                        {% for country in countries %}
+                        <option value="{{ country.id }}">{{ country.name }}</option>
+                        {% endfor %}
+                     </select>
+                     
+                  </div>
+                  <div class="mb-3">
+                     <select class="form-control" name="state" required> 
+                        <option disabled selected>State Name</option>
+                     </select>
+                  </div>
+                  <div class="mb-3">
+                     <input type="text" name="city" placeholder="City / Town" class="form-control" required>
+                  </div>
+                  <div class="mb-3">
+                     <input type="text" name="zipcode" minlength="4" maxlength="12" placeholder="Zipcode Number" class="form-control" required>
+                  </div>
+                  <div class="mt-4 pt-3 btn-box">
+                     <button type="submit" class="btn btn-primary"  id="add_address_btn">Add</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>   
+   </div>
+</div>
+<!----edit-address--->
+<div class="modal-status download-inst-md modal fade" id="edit-address" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-md modal-dialog-centered">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><img src="{% static 'web_app/images/modal-close-icon.svg' %}"></button>
+         </div>
+         <div class="modal-body">
+            <div class="download-instructions-block">
+               <img class="logo-icon" src="{% static 'web_app/images/logo.png' %}">
+               <h4>Edit Address</h4>
+               <form id="edit_form" method="POST" action="{% url 'edit_address_data' %}">
+                  {% csrf_token %}
+                  <!-- <input type="hidden" name="user" value="{{ request.user.id }}"> -->
+                  
+                  <input type="hidden" name="address" value="">
+                  <div class="mb-3">
+                     <input type="text" name="name" placeholder="Enter name associate with address" class="form-control" >
+                  </div>
+                  {% comment %} <div class="mb-3">
+                     <input type="text" name="house_num" placeholder="House/ Apartment/ Flat Number" class="form-control">
+                  </div> {% endcomment %}
+                  <div class="mb-3">
+                     <input type="text" name="area_name" placeholder="Area/ Road Name" class="form-control">
+                  </div>
+                  <div class="mb-3">
+                     <select class="form-control" name="country" >
+                        
+                        <option disabled>Country Name</option>
+                        {% for country in countries %}
+                        <option value="{{ country.id }}">{{ country.name }}</option>
+                        {% endfor %}
+                     </select>
+                  </div>
+                  <div class="mb-3">
+                     <select class="form-control" name="state" >
+                        <option>Select Country First</option>
+                     </select>
+                  </div>
+                  <div class="mb-3">
+                     <input type="text" name="city" placeholder="City / Town" class="form-control" required>
+                  </div>
+                  <div class="mb-3">
+                     <input type="text" name="zipcode" placeholder="Zipcode" class="form-control">
+                  </div>
+                  <div class="mt-4 pt-3 btn-box">
+                     <button type="submit" class="btn btn-primary" id="edit_address_btn">Save</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!----end-edit-address--->
+<div class="modal-status download-inst-md modal fade" id="delete-address" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-md modal-dialog-centered">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><img src="{% static 'web_app/images/modal-close-icon.svg' %}"></button>
+         </div>
+         <div class="modal-body">
+            <div class="download-instructions-block">
+               <img class="logo-icon" src="{% static 'web_app/images/logo.png' %}">
+               <h4>Delete Address</h4>
+               <div class="delete-address-content">
+               <p>Are you sure you want to <br />
+                  delete the address
+               </p>
+               <div class="d-flex justify-content-center mt-4 pt-1 pb-3">
+                  <a class="btn btn-primary " id="delete_address_confirmation">Yes</a>
+                  <a class="btn btn-primary outline ms-3" data-bs-dismiss="modal" aria-label="Close">No</a>
+               </div>
+              </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<form action="{% url 'delete_address' %}" method="POST" id="delete-user-address">
+   {% csrf_token %}
+   <input type="hidden" name="address_id">
+</form>
+<script>
+   const element = document.querySelectorAll('.delete_address')
+
+   element.forEach(ele => {
+      ele.addEventListener("click", () => {
+         let addressId = ele.getAttribute('data-address-id')
+         document.querySelector('#delete-user-address input[name="address_id"]').setAttribute('value', addressId)
+      })
+   });
+
+   document.getElementById('delete_address_confirmation').addEventListener('click', () => {
+      document.getElementById('delete-user-address').submit()
+   })
+</script>
+{% endblock content %}
+<!-- validation -->
+{% block script %}
+<script>
+   $('#loader').hide()
+   $.validator.addMethod("noSpace", function(value, element) { 
+      return !value.startsWith(" ") && value != ""; 
+  }, "No space please and don't leave it empty")
+
+    $("#add_address_form").validate({
+        rules: {
+           name: {
+              required: true,
+              noSpace: true
+           },
+            house_number: {
+               required: true,
+               noSpace: true,
+            },
+            area_name: {
+               required: true,
+               noSpace: true,
+            },
+            country: {
+               required: true,
+            },
+            state: {
+               required: true,
+            },
+            city: {
+               required: true,
+               noSpace: true
+            },
+            zipcode: {
+               required: true,
+               digits: true,
+            },
+        },
+        submitHandler: function (form) {
+            form.submit()
+            $('#loader').show()
+
+        }
+    });
+    $("#edit_form").validate({
+        rules: {
+           name: {
+              required: true,
+              noSpace: true
+           },
+            house_num: {
+               required: true,
+               noSpace: true,
+            },
+            area_name: {
+               required: true,
+               noSpace: true,
+            },
+            country: {
+               required: true,
+            },
+            state: {
+               required: true,
+            },
+            city: {
+               required: true,
+               noSpace: true
+            },
+            zipcode: {
+               required: true,
+               digits: true,
+            },
+        },
+        submitHandler: function (form) {
+            form.submit()
+        }
+    });
+</script>
+{% endblock script %}

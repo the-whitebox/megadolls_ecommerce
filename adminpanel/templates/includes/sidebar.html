@@ -1,0 +1,78 @@
+{% load static %}
+<style>
+    .sidebar-wrapper .menu .sidebar-item.has-sub .sidebar-link::after {
+        right: 8px;
+        top: 14px;
+    }
+</style>
+<div id="sidebar" class="active">
+    <div class="sidebar-wrapper active">
+        <div class="sidebar-header">
+            <div class="d-flex justify-content-between">
+                <div class="logo">
+                    <a href="{% url 'dashboard' %}">
+                        <img src="{% static 'adminpanel/images/logo/logo.svg' %}" alt="Logo" srcset="">
+                    </a>
+                </div>
+                <div class="toggler">
+                    <a href="#" class="sidebar-hide d-xl-none d-block">
+                        <i class="bi bi-x bi-middle"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar-menu">
+            <ul class="menu">                        
+                {% for i in module_list %}
+                    {% if request.user.user_type == "SUBADMIN"%}
+                        {% if i.parent.id in m %}
+                            <li class="sidebar-item {% if i.url == None %} has-sub {% endif %}">    
+                                <a href="{{i.url}}" onclick="parent_id_function({{i.parent.id}})" class='sidebar-link'>
+                                    <i class="{{i.parent.icon}}"></i>
+                                    <span>{{i.parent.name}}</span>                     
+                                </a>  
+                                <ul class="submenu">
+                                    {% for j in i.child %} 
+                                        {% if j.id in m %}  
+                                            <li class="submenu-item">
+                                                <a href="{{j.child_url}}" onclick="parent_id_function({{j.id}})">{{j}}</a>        
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}  
+                                </ul>                       
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <li class="sidebar-item {% if i.url == None %} has-sub {% endif %}">      
+                            <a href="{{i.url}}" class='sidebar-link'>
+                                <i class="{{i.parent.icon}}"></i>
+                                <span>{{i.parent.name}}</span>                     
+                            </a>  
+                            <ul class="submenu">
+                                {% for j in i.child%} 
+                                    <li class="submenu-item">
+                                        <a href="{{j.child_url}}">{{j}}</a>   
+                                    </li>
+                                {% endfor %}  
+                            </ul>                       
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+    </div>
+</div>
+{% block script %}
+<script src="{% static 'adminpanel/vendors/jquery/jquery.min.js' %}"></script>
+<script>
+    function parent_id_function(parent){
+        localStorage.setItem("Parent_id" , parent);
+    }
+    let currentLink = $('.submenu-item a').filter(function() {
+        return "{{ request.path }}" === $(this).attr('href')
+    })
+    currentLink.parent().addClass('active')
+    currentLink.parents().parent('li').addClass('active')
+</script>
+{% endblock script %}

@@ -1,0 +1,73 @@
+{% url 'web_profile' as profile %}
+{% url 'my_account_order' as order %}
+{% url 'view_favorites' as favorites %}
+{% url 'view_wishlist' as wishlist %}
+{% url 'my_account_subscription' as subscription %}
+{% url 'redeem_my_gift_card' as my_gift_card %}
+{% url 'my_account_address' as address %}
+{% url 'view_my_folders' as my_folders %}
+{% url 'view_trash' as trash %}
+{% url 'my_account_wallet' as wallet %}
+{% url 'my_account_referrals' as referrals %}
+{% url 'hospital_patients' as patients %}
+{% url 'my_sloper_subscription' as my_sloper %}
+
+
+<div class="my-account-L">
+    <ul class="myaccount-sidebar-list">
+        <li {% if request.path == profile %} class="active" {% endif %}>
+            <a href="{{ profile }}"><i class="ri-user-fill"></i>My Profile</a>
+        </li>
+        <li {% if request.path == order %} class="active" {% endif %}>
+            <a href="{{ order }}"><i class="ri-shopping-cart-2-fill"></i> My Orders</a>
+        </li>
+        <li {% if request.path == favorites %} class="active" {% endif %}>
+            <a href="{{ favorites }}"><i class="ri-star-fill"></i>Imagine{% comment %}Favorites{% endcomment %}</a>
+        </li>
+        <li {% if request.path == wishlist %} class="active" {% endif %}>
+            <a href="{{ wishlist }}"><i class="ri-heart-fill"></i>{% comment %}Shop{% endcomment %}Wishlist</a>
+        </li>
+        <li class="dropdown">
+            <a class="dropdown-toggle {% if request.path == subscription %}show{% endif %}" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="{% if request.path == subscription %}true{% else %}false{% endif %}">
+            <i class="ri-exchange-dollar-line"></i>Subscription</a>
+            <ul class="dropdown-menu {% if request.path == subscription %}show{% endif %}">
+               <li>
+                   <a class="dropdown-item {% if request.path == subscription %}active{% endif %}" href="{{ subscription }}">Shero</a>
+                </li>
+               <li><a class="dropdown-item" href="{{ my_sloper }}">Sloper</a></li> 
+            </ul>
+        </li>
+        <li {% if request.path == my_gift_card %} class="active" {% endif %}>
+            <a href="{{ my_gift_card }}"><i class="ri-gift-fill"></i></i>Gift Card</a>
+        </li>
+        <li {% if request.path == address %} class="active" {% endif %}>
+            <a href="{{ address }}"><i class="ri-map-pin-2-fill"></i>Addresses</a>
+        </li>
+        <li {% if request.path == referrals %} class="active" {% endif %}>
+            <a href="{{ referrals }}"><i class="ri-links-fill"></i>Referrals</a>
+        </li>
+        <li {% if request.path == wallet %} class="active" {% endif %}>
+            <a href="{{ wallet }}"><i class="ri-wallet-fill"></i>Wallet</a>
+        </li>
+        
+        <li class="dropdown">
+            <a class="dropdown-toggle {% if request.path == my_folders or request.path == trash or request.path == patients %}show{% endif %}" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="{% if request.path == my_folders or request.path == trash or request.path == patients %}true{% else %}false{% endif %}">
+            <i class="ri-hospital-fill"></i>My Hospital</a>
+            <ul class="dropdown-menu {% if request.path == my_folders or request.path == trash or request.path == patients %}show{% endif %}">
+               <li><a class="dropdown-item {% if request.path == patients %}active{% endif %}" href="{{ patients }}">Patients</a></li>
+               <li><a class="dropdown-item {% if request.path == my_folders %}active{% endif %}" href="{{ my_folders }}">My Folder</a></li>
+               <li><a class="dropdown-item {% if request.path == trash %}active{% endif %}" href="{{ trash }}">Trash</a></li>
+            </ul>
+        </li> 
+    
+        {% comment %} <li>
+            <a><i class="ri-folder-3-fill"></i>The Runway</a>
+         </li> {% endcomment %}
+         {% comment %} <li>
+            <a><i class="ri-notification-fill"></i>Email Notifications</a>
+         </li> {% endcomment %}
+        <li>
+            <a href="{% url 'web_logout' %}"><i class="ri-logout-box-fill"></i>Logout</a>
+        </li>
+    </ul>
+</div>

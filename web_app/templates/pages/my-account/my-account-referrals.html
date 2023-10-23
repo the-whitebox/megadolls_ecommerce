@@ -1,0 +1,132 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}My Account - Referrals{% endblock title %}
+{% block content %}
+<div class="wraper-inner">
+    <section class="page-head-sec">
+        <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+        <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+        <div class="container">
+            <div class="page-head-content">
+                <h4>My Account</h4>
+            </div>
+        </div>
+    </section>
+    <section class="shops-list-sec pt-5">
+        <div class="container">
+            <div class="my-account account-subscription">
+                {% include 'includes/my-account/left-sidebar.html' %}
+                <div class="my-account-R">
+                    <div class="wallets-tabs">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="profile" aria-selected="true">Referral Programme</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="contact" aria-selected="false">Rewards</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="balance-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab" aria-controls="balance" aria-selected="false">Invited</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="tab1" role="tabpanel"
+                                aria-labelledby="profile-tab">
+                                <div class="Referral-tabs text-center pt-5">
+                                    {% if referral_content_data.image %}
+                                    <figure><img src="{{ referral_content_data.image.url }}"></figure>
+                                    {% else %}
+                                    <figure><img src="{% static 'web_app/images/share-link-img.png' %}"></figure>
+                                    {% endif %}
+                                    <h6>{{ referral_content_data.content|safe }}</h6>
+                                    {% comment %}<div class="mb-3 Referral-input-box">
+                                        <label class="form-label">Referral Code</label>
+                                        <div class="icon-input">
+                                            <i class="ri-file-copy-line" style="cursor: pointer;"></i>
+                                            <input type="text" value="{{ referral_code }}"
+                                                class="form-control js-referral-inp" data-referral="Code"
+                                                placeholder="Referral Code" disabled>
+                                        </div>
+                                    </div>{% endcomment %}
+                                    <div class="mb-3 Referral-input-box">
+                                        <label class="form-label">Referral Link</label>
+                                        <div class="icon-input">
+                                            <i class="ri-file-copy-line" style="cursor: pointer;"></i>
+                                            <input type="text" value="{{ link|truncatechars:60 }}"
+                                            class="form-control js-referral-inp" data-referral="Link"
+                                            placeholder="Referral Link" disabled>
+                                        </div>
+                                        <br />
+                                        <p>( On 3 users order completion you get 1 doll )</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade show " id="tab2" role="tabpanel"
+                                aria-labelledby="profile-tab">
+                                <div class="Referral-tabs text-center pt-0z">
+                                    {% if referrals %}
+                                    <h6>Total Dolls: {{total_points}} </h6>
+                                    <h6>Total Dolls To Receive: {{dolls_to_recieve}} </h6>
+                                    <h6>Total Dolls Received: {{received_dolls}} </h6>
+                                    {% else %}
+                                    <div class="Referral-tabs text-center pt-5">
+                                        <h4>No Records</h4>
+                                    </div>
+                                    {% endif %}
+                                </div>  
+                            </div>
+                            <div class="tab-pane fade show " id="tab3" role="tabpanel"
+                                aria-labelledby="profile-tab">
+                                <div class="Referral-tabs text-center pt-0">
+                                    {% if referrals %} 
+                                    <div class="table-responsive p-2">
+                                        <table class="table table-striped text-center mb-0" id="myTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sr. No.</th>
+                                                    <th>Invited</th>
+                                                    <th>Order Status</th>
+                                                </tr>
+                                            </thead>
+                                            {% for referral in referrals %}
+                                            <tbody>
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ referral.user_to.name }}</td>
+                                                    <td class="is-active">
+                                                        {% if referral.order_status %}
+                                                        <span class="badge bg-success">Completed</span>
+                                                        {%else%}
+                                                        <span class="badge bg-danger">Pending</span>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            {% endfor %}
+                                        </table>
+                                    </div>
+                                    {% else %}
+                                    <div class="Referral-tabs text-center pt-5">
+                                        <h4>No Records</h4>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock content %}
+{% block script %}
+<script>
+    $('.ri-file-copy-line').on('click', function () {
+        let referralInp = $(this).siblings(".js-referral-inp")
+        let referralValue = referralInp.val()
+        navigator.clipboard.writeText(referralValue);
+        myToast(`Referral ${referralInp.data('referral')} Copied to Clipboard`, SUCCESS_BG)
+    })
+</script>
+{% endblock script %}

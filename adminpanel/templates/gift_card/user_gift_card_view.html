@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css%}
+<link rel="stylesheet" href="{% static 'adminpanel/data-table/dataTables.min.css' %}">
+{% endblock css %}
+
+{% block content %}
+
+{% comment %} {% url 'offer_add' as offer_add %} {% endcomment %}
+{% include "includes/section.html" with page_title="User Gift Card Management"  %}
+
+<section class="section">
+    <div class="row w-100" id="table-striped">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="table-responsive p-2">
+                        {% if data %}
+                        <div class="row my-2">
+                            <div class="col-6">
+                            <h4><input type="checkbox" id="selectall" class="mx-2">Select All</h4>
+                            </div>
+                            <div class="col-6">
+                            <button type="button" class="btn btn-outline-primary w-30 float-end" id="delete-slected-all" disabled>Delete Selected</button>
+                            </div>
+                        </div>
+                            <table class="table table table-striped text-center mb-0" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th>Select</th>
+                                        <th>Sr no.</th>
+                                        <th>Gift Price</th>
+                                        <th>Title</th>
+                                        <th>Message</th>
+                                        <th>Sender's Email</th>
+                                        <th>Receiver's Email</th>
+                                        <th>Created Date</th>
+                                        <th>Expiry Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data in data %}
+                                    <tr>
+                                        <td> <input type="checkbox" class="checkbox" name="check" value="{{ data.id }}"/></td>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ data.amount}}</td>
+                                        <td>{{ data.giftcard_image.giftcard_type.giftcard_type }}</td>
+                                        <td>{{ data.user_message|truncatechars:40}}</td>
+                                        <td>{{ data.sender_email }}</td>
+                                        <td>{{ data.receiver_email}}</td>
+                                        <td>{{ data.created_at |date:'Y-m-d'}}</td>
+                                        <td>{{ data.expire_at |date:'Y-m-d'}}</td>
+                                        <td class="is-used">
+                                            {% if data.is_used %}
+                                            <span class="badge bg-success">Used</span>
+                                            {%else%}
+                                            <span class="badge bg-danger">Unused</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <input type="hidden" name="" id="all_id_list">
+                            <input type="hidden" name="" id="model_name" value="UserGiftCard">
+                            </table>
+                        {% else %}
+                            <div class="text-center">
+                                <strong style="font-size: 1.5em;">No Records</strong>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form action="">
+            {% csrf_token %}
+        </form>
+</section>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/data-table/dataTables.min.js' %}"></script>
+<script>
+    csrf_tocken = document.querySelector('[name=csrfmiddlewaretoken]').value
+</script>
+{% include 'select-all-delete.html' %}
+{% endblock script %}
+   

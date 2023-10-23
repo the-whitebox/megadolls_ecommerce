@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <title>
+        Megadolls | OTP
+    </title>
+    <!--responsive-meta-here-->
+    <meta name="viewport" content="minimum-scale=1.0, maximum-scale=1.0,width=device-width, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--responsive-meta-end-->
+    <link rel="icon" href="{% static  'web_app/images/favicon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static  'web_app/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static  'web_app/css/owl.carousel.min.css' %}" />
+    <link rel="stylesheet" href="{% static  'web_app/css/fontawesome-all.css' %}" />
+    <link rel="stylesheet" href="{% static  'web_app/css/fontawesome.css' %}" />
+    <link rel="stylesheet" href="{% static  'web_app/fonts/remixicon.css' %}" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css">
+    <link rel="stylesheet" href="{% static  'web_app/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static  'web_app/css/responsive.css' %}" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static  'web_app/toastify/toastify.css' %}">
+    <script src="{% static  'web_app/toastify/toastify.js' %}"></script>
+</head>
+<body>
+<style>
+    #GFG {
+        text-decoration: none;
+        text-align:center;
+        color: #E75480;   
+    }
+</style>
+
+<div class="login-wraper">
+    <img src="{% static 'web_app/images/bg-pattern.svg' %}">
+    <div class="container">
+        <div class="login-wraper-content">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-content-blk">
+                        <div class="form-content">
+                            <div class="form-content-head">
+                              
+                                <p>Enter OTP to reset password</p>
+                                
+                            </div>
+                            <form class="form-content-inputs" role="form" method="POST" id="myForm">
+                                {% csrf_token %}
+                                <div class="form-floating">
+                                    <input type="text" name="otp" id="floatingInput52" placeholder="eg: 00000" class="form-control" required>
+                                    <label id="floatingInput52">OTP</label>
+                                </div>
+                                <div class="form-action-btns">
+                                    <button type="submit" class="btn btn-primary">Reset Password</button>
+                                </div>
+                                    <a id = "GFG" href="{% url 'resend_otp' jwt_token %}"><p>Resend OTP</p></a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 offset-md-1">
+                    <div class="form-info-content">
+                        <a href="{% url 'home' %}"><img src="{% static 'web_app/images/logo.png' %}"></a>
+                        <p>Welcome to the World of Paper dolls Let’s encourage kindness, experience
+                            creativity, promote meaningful play and explore other cultures with our paper dolls from around the
+                            world.</p>
+                            <ul class="footer-social">
+                                <li id="facebook" >
+                                    <a href="javascript:void(0);"><i class="ri-facebook-fill"></i></a>
+                                </li>
+                                <li id="youtube" >
+                                    <a href="javascript:void(0);"><i class="ri-youtube-fill"></i></a>
+                                </li>
+                                <li id="twitter" >
+                                    <a href="javascript:void(0);"><i class="ri-twitter-fill"></i></a>
+                                </li>
+                                <li id="instagram" >
+                                    <a href="javascript:void(0);"><i class="ri-instagram-fill"></i></a>
+                                </li>
+                                <li id="linkedin" >
+                                    <a href="javascript:void(0);"><i class="ri-linkedin-fill"></i></a>
+                                </li>
+                            </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'includes/js.html' %}
+{% for message in messages %}
+<script>
+    myToast("{{ message }}", "{{ message.tags }}")
+</script> 
+{% endfor %}
+<script>
+    (function() {
+        $("#myForm").validate({
+            rules: {
+                otp: {
+                    required: true,
+                    digits: true
+                },
+            },
+            submitHandler: function (form) {
+                form.submit()
+            }
+        });
+    })()
+</script>
+
+<script>
+    $.ajax({
+      url: '{% url "social_media_icons" %}',
+      success: res => {
+            
+            if(res.links[3] && res.links[3].link) {
+                $('#facebook a').attr('href', res.links[3].link)
+            } else {
+
+                $('#facebook').hide()
+            }
+            if(res.links[1] && res.links[1].link) {
+                $('#youtube a').attr('href', res.links[1].link)
+            } else {
+
+                $('#youtube').hide()
+            }
+            if(res.links[0] && res.links[0].link) {
+                $('#twitter a').attr('href', res.links[0].link)
+            } else {
+
+                $('#twitter').hide()
+            }
+            if(res.links[2] && res.links[2].link) {
+                $('#instagram a').attr('href', res.links[2].link)
+            } else {
+
+                $('#instagram').hide()
+            }
+            if(res.links[4] && res.links[4].link) {
+                $('#linkedin a').attr('href', res.links[4].link)
+            } else {
+
+                $('#linkedin').hide()
+            }
+            
+
+        }
+     
+    });
+</script>

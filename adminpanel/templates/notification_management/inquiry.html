@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css%}
+<link rel="stylesheet" href="{% static 'adminpanel/data-table/dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+{% endblock css %}
+
+{% block content %}
+{% url 'delete_all_inquiry_notification' as delete_all_inquiry %}
+{% include "includes/section.html" with page_title="Inquiry Notifications" btn_url=delete_all_inquiry btn_text="Delete All"%}
+
+<section class="section">
+    <div class="row w-100" id="table-striped">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="table-responsive p-2">
+                        {% if notifications %}
+                            <table class="table table table-striped text-center mb-0" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th>Sr. No.</th>
+                                        <th>Notification</th>
+                                        <th>Actions</th>
+                            
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for notification in notifications %}
+                                
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td class="text-bold-500">{{ notification.message|truncatechars:80 }}</td>
+                                        {% if request.user.user_type == "SUPERADMIN" %}
+                                            <td>
+                                               
+                                                <a href="{% url 'view_inquiry_notification' notification.id %}" class="mx-1">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                        
+                                                <a href="{% url 'delete_inquiry_notification' notification.id  %}" class="mx-1 btn-delete">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                            </td>
+                                        {% endif %}
+
+                                        {% if request.user.user_type == "SUBADMIN" %}
+                                            <td>
+                                                {% for i in m_check %}
+                                                    {% if i.view == True %}
+                                                        <a href="{% url 'view_inquiry_notification' notification.id %}" class="mx-1">
+                                                            <span class="fa-fw select-all fas"></span>
+                                                        </a>
+                                                    {% endif %}
+                                                    {% if i.delete == True %}
+                                                    <a href="{% url 'delete_inquiry_notification' notification.id  %}" class="mx-1 btn-delete">
+                                                        <span class="fa-fw select-all fas"></span>
+                                                    </a>
+                                                      
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                        {% endif %}
+                                    
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <div class="text-center">
+                                <strong style="font-size: 1.5em;">No Notifications</strong>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+{% block script %}
+<script src="{% static 'adminpanel/data-table/dataTables.min.js' %}"></script>
+{% endblock script %}

@@ -1,0 +1,249 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'adminpanel/datetime-picker/jquery.datetimepicker.min.css' %}" />
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+{% endblock css %}
+
+{% block content%}
+
+{% url 'view_blogs' as view_blogs %}
+{% include "includes/section.html" with page_title="Edit Blog" btn_url=view_blogs btn_text="Back" %}
+
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <form method="POST" class="card-body" id="myForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Heading</label>
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Enter Heading for Blog" name="heading" value="{{ blog.heading }}" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Image</label>
+                                <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg" name="image">
+                            </div>
+                            <label>{{ blog.image }}</label>
+                            {% if blog.image %}
+                            <img src="{{ blog.image.url }}" alt="" srcset="" width="10%">
+                            {% endif %}
+                        </div>
+
+                        <!-- <div class="col-6">
+                            <div class="form-group">
+                                <label>Posted By</label>
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Blog Posted By" value="{{ blog.posted_by }}" name="posted_by" required>
+                                </div>
+                            </div>
+                        </div> -->
+
+                        <div class="col-6 pb-2">
+                            <div class="form-group">
+                                <label>Video</label>
+                                <input type="file" class="form-control" accept="video/mp4, video/3gpp, video/mpeg, video/webm" name="video">
+                            </div>
+                            {% if blog.video %}
+                            <div class="text-center"><a href="{{ blog.video.url }}" download class="btn btn-info"> download video</a></div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Other Important Info</label>
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Other Info Related to Blog" value="{{ blog.other_important_info }}"
+                                    name="other_important_info">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6 form-group">
+                            <label for="basicInput">Categories</label>
+                            <fieldset class="form-group">
+                                <select class="form-select" id="basicSelect" name="category" required>
+                                    <option value="">Select Category</option>
+                                    {% for category in categories %}
+                                    <option value="{{ category.id }}" {% if category.id == blog.blog_category.id %} selected {% endif %}>{{ category.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </fieldset>
+                        </div>
+                        <div class="col-6 form-group">
+                            <label for="basicInput">Sub Categories</label>
+                            <select class="form-select" id="subcategory" name="sub_category">
+                                {% for subcategory in subcategories %}
+                                <option {% if subcategory.id == blog.sub_category_id  %} selected  {% endif %} value="{{ subcategory.id }}"> {{ subcategory.name }} </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-6 form-group">
+                            <label>Comments</label>
+                            <fieldset class="form-group">
+                                <select class="form-select" name="comment">
+                                    <option value="True" {% if blog.is_comment %} selected {% endif %}>On</option>
+                                    <option value="False" {% if not blog.is_comment %} selected {% endif %}>Off</option>
+                                </select>
+                            </fieldset>
+                        </div>
+
+                        <div class="col-6 form-group">
+                            <label>Publish</label>
+                            <select class="form-select" name="publish" id="js-publish">
+                                <option value="True" {% if blog.is_publish %} selected {% endif %}>Yes</option>
+                                <option value="False" {% if blog.is_publish == False %} selected {% endif %}>No</option>
+                            </select>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="checkbox" name="is_blog_schedule" {% if blog.is_blog_schedule %} value="True" checked {% endif %}/>
+                                <label>Schedule Blog</label>
+                            </div>
+                        </div>
+
+                        <div class="col-6" id="js-schedule-time">
+                            <div class="form-group">
+                                <label>Schedule Time</label>
+                                <div class="position-relative">
+                                    <i class="bi bi-calendar-fill" style="position: absolute; top: 10px; left: 10px;"></i>
+                                    <input id="datetimepicker" type="text" class="form-control" name="schedule_time" style="padding-left: 35px;"
+                                        placeholder="YYYY-MM-DD hh:mm"
+                                        value="{{ blog.publish_at|date:'Y-m-d' }} {{ blog.publish_at|time:'H:i' }}" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Content</label>
+                                <textarea value="" name="editor" required>{{blog.content|safe}}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-12 d-flex justify-content-end mt-3">
+                            <button type="submit" class="btn btn-primary me-1 mb-1" id="formSubmit">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content%}
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.19.1/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('editor');
+</script>
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/vendors/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'adminpanel/datetime-picker/jquery.datetimepicker.full.min.js' %}"></script>
+<script>
+    {% if not blog.is_blog_schedule %}
+        $('#js-schedule-time').hide()
+    {% endif %}
+
+    $(function () {
+        $('#datetimepicker').datetimepicker({
+            format: "Y-m-d H:i",
+            step: 5,
+            minDate:new Date()
+        });
+
+        $('[name=is_blog_schedule]').on('change', function() {
+            let checked = $(this).is(':checked')
+            if(checked){
+                $(this).val("True")
+                $('#js-schedule-time').show()
+            } else {
+                $(this).val('False')
+                $('#js-schedule-time').hide()
+            }
+        })
+    });
+</script>
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+<script>
+    let category_id = $('#basicSelect').val()
+    $('#basicSelect').on('change', function () {
+        if(category_id != '') {
+            $.ajax({
+                url: "{% url 'get_sub_categories' %}",
+                method: "POST",
+                data: {
+                    category_id: $(this).val()
+                },
+                success: function (response) {
+                    $('#sub-category').html(response)
+                }
+            })
+        }
+        
+    })
+
+    $('#formSubmit').on('click', function (e) {
+            e.preventDefault()
+            let id = $(this).data('id')
+            Swal.fire({
+                title: 'Update Blog',
+                text: 'Are You Sure ?',
+                confirmButtonColor: 'rgb(225, 0, 127)',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $("#myForm").submit();
+                }
+            })
+        })
+
+    $("#myForm").validate({
+        rules: {
+            heading: {
+                required: true,
+                maxlength: 55
+            },
+            editor: {
+                required: true,
+            },
+            posted_by: {
+                required: true,
+                maxlength: 55
+            },
+            category: {
+                required: true,
+            },
+            subcategory: {
+                required: true,
+            }
+        }
+    });
+    $('#basicSelect').on('change', function() {
+        $.ajax({
+            url: "{% url 'subcategory_data' %}",
+            method: "POST",
+            data: {
+                category_id: $(this).val()
+            },
+            success: function(response) {
+                let options = ''
+                response.forEach(element => {
+                    options += `<option value="${element.id}">${element.name}</option>`
+                });
+                $('#subcategory').html(options)
+            }
+        })
+    })
+</script>
+{% endblock script %}

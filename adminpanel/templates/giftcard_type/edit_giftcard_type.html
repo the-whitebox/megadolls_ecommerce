@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content%}
+
+{% url 'giftcard_type' as view_collections %}
+{% include "includes/section.html" with page_title="Edit Gift Card Type" btn_url=view_collections btn_text="Back" %}
+
+<section id="basic-vertical-layouts">
+    <div class="row match-height m-auto">
+        <div class="col-md-12 col-12 p-0">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <form class="form form-vertical" method="POST" id="myForm">
+                            {% csrf_token %}
+                            <div class="form-body">
+                                <div class="row">                       
+                                  <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Gift Card Type</label>
+                                            <input type="text" class="form-control" value="{{ giftcard_type.giftcard_type }}" placeholder="Gift Card Type" name="giftcard_type" id="original_price" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 form-group">
+                                        <label>Status</label>
+                                        <select class="form-select" name="is_active" required>
+                            
+                                            <option value="True" {% if giftcard_type.is_active %} selected {% endif %} >Active</option>
+                                            <option value="False" {% if not giftcard_type.is_active %} selected {% endif %} >Deactive</option>
+                                        </select>
+                                    </div>   
+                                  <div class="col-12 d-flex justify-content-end">
+                                        <button type="submit"
+                                            class="btn btn-primary me-1 mx -3 mb-1 show-loader">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content%}
+
+{% block script %}
+<script src="{% static 'adminpanel/vendors/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#myForm").validate({
+            rules: {
+                name: {
+                    required: true,
+                    maxlength: 55
+                },
+                priority: {
+                    required: true,
+                    digits: true
+                },
+                subscription_benefit_title: {
+                    required: true,
+                    maxlength: 50
+                },
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    })
+</script>
+{% endblock script %}

@@ -1,0 +1,234 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}{{ blog.heading }}{% endblock title %}
+
+{% block meta %}
+<meta property="og:title" content="{{ blog.heading }}" />
+{% if blog.image %}
+<meta property="og:image" content="{{ blog.image.url }}" />
+{% endif %}
+<meta property="og:description" content="{{ blog.content|striptags|slice:110 }}">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ blog.heading }}">
+<meta name="twitter:description" content="{{ blog.content|striptags|slice:110 }}">
+{% endblock meta %}
+{% block content %}
+
+<style>
+    #GFG {
+        text-decoration: none;
+        text-align:center;
+        color: #E75480;   
+    }
+</style>
+<div class="wraper-inner">
+    <section class="blog-detail-inner">
+        <div class="blog-detail-banner">
+            {% if blog.image %}
+            <img src="{{ blog.image.url }}"> 
+            {% endif %}
+            <div class="container">
+                <div class="blog-detail-banner-content">
+                    <h4>{{ blog.heading }}</h4>
+                    <ul>
+                        <li><span>Category:</span> {{ blog.blog_category.name }}</li>
+                        <li><span>Sub Category:</span> {{ blog.sub_category.name }}</li>
+                        <li><span>Published Date:</span> {{ blog.created_at }}</li>
+                    </ul>
+                </div>
+            </div>
+            
+            
+        </div>
+        <div class="container">
+            <div class="breadcrumb-blk mb-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'blog' %}">A Meaningful Play</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{blog.heading }}</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="container">
+            <div class="blog-detail-content">
+                <div style="word-wrap: break-word;">
+                    {{ blog.content|safe }}
+                </div>
+                {% if blog.video %}
+                <div class="blog-video-box mt-4 mb-4">
+                    <video controls="" width="100%" height="100%">
+                        <source src="{{ blog.video.url }}">
+                    </video>
+                    <!-- <a href="{{ blog.video.url }}" class="video-play-btn"  data-bs-toggle="modal" data-bs-target="#video"><i class="ri-play-circle-fill"></i></a> -->
+                </div>
+                {% endif %}
+            </div>
+            <div class="blog-share-block mt-5">
+                <div class="blog-share-box">
+                    <h4>Share Our Blog</h4>
+                    <ul class="footer-social">
+                        <li>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ site_url }}meaningful-play-detail/{{ blog.slug }}/" target="_blank"><i class="ri-facebook-fill"></i></a>
+                        </li>
+                        <li>
+                            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ site_url }}meaningful-play-detail/{{ blog.slug }}/" target="_blank"><i class="ri-linkedin-line"></i></a>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/intent/tweet?url={{ site_url }}meaningful-play-detail/{{ blog.slug }}/" target="_blank"><i class="ri-twitter-fill"></i></a>
+                        </li>
+                        <!-- <li>
+                            <a href="https://www.instagram.com/share?url=http://megadolls.devtechnosys.tech:17280/blog_detail/{{ blog.id }}"><i class="ri-instagram-line"></i></a>
+                        </li> -->
+                    </ul>
+                </div>
+                
+                {% if blog.is_comment %}
+            
+                {% if user_data.can_comment or request.user.is_anonymous %}
+                <div class="blog-form">
+                    <h4>Leave A Comment</h4>
+                    <form method="POST" class="row" id="myForm">
+                        {% csrf_token %}
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <textarea class="form-control" placeholder="Comment" id="text-area" {% if request.user.is_anonymous %} onclick="logintoComment()" {% endif %} name="comment" required>{{ comment }}</textarea>
+                            </div>
+                        </div>
+                        {% if request.user.is_authenticated %}
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                        {% endif %}
+                    </form>
+                </div>
+                {% endif %}
+                <div class="blog-comments-block mt-4">
+                    {% if total_comments > 0 %}
+                    <div class="blog-comments-head mb-4">
+                        <h4>Comments</h4>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="blog-comments-total mb-4"><p style="text-align: center;" >Total Comments: {{ total_comments }}</div>
+                            <div class="blog-comments-list-blk mb-4">
+                                {% if login_user_comments %}
+                                {% for comment in login_user_comments %}
+                                <div class="blog-comments-item">
+                                    <div class="blog-comments-item-info showCommentData" id="commmentEdity{{ comment.comment.id}}_1">
+                                        <h3>{% if user_data.name %} You {% else %} {{ comment.comment.user.name }} {% endif %}<span> {{ comment.comment.created_at}}</span></h4>
+                                        <p>{{ comment.comment.comment }}</p>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><i class="ri-more-2-fill"></i></button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                <li><a class="dropdown-item" href="javascript:void(0);" onclick='editComment("commmentEdity{{ comment.comment.id}}")'>Edit</a></li>
+                                                <li><a class="dropdown-item btn-delete" href="javascript:void(0);" data-id="{{ comment.comment.id }}">Delete</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="blog-comments-item-edit editComment" id="commmentEdity{{ comment.comment.id}}" style="display:none">
+                                        <form action="{% url 'edit_blog_comment' comment.comment.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden"  name="id" id="" >
+                                            <textarea name="comment" class="form-control" value="{{ new_comment }}">{{ comment.comment.comment }}</textarea>
+                                            <div class="blog-comments-edit-action">
+                                                <button type="button" class="btn btn-secondary" onclick='cancelEditComment("commmentEdity{{ comment.comment.id}}")'>Cancel</button>
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+                                {% if comments %}
+                                {% for comment in comments %}
+                                <div class="blog-comments-item">
+                                    <div class="blog-comments-item-info">
+                                        <h3>{{ comment.comment.user.name }} <span>{{ comment.comment.created_at}}</span></h4>
+                                        <p>{{ comment.comment.comment }}</p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <form method="POST" action="{% url 'delete_blog_comment'  %}" class="mx-1" style="display: inline;" id="delete_form">
+            {% csrf_token %}
+            <input type="hidden" name="blog_comment" value="" id="blog_comment">
+        </form>
+    </section>
+</div>
+<div class="modal-status download-inst-md modal fade" id="video" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><img src="{% static 'web_app/images/modal-close-icon.svg' %}"></button>
+            </div>
+            <div class="modal-body">
+                <iframe width="100%" height="320px" src="{% static 'web_app/https://www.youtube.com/embed/PowZZXMG9E8?start=3' %}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block script %}
+<script>
+    function logintoComment() {
+        myToast("Please Login First", ERROR_BG)
+        $('#text-area').attr('readonly', true)
+    }
+</script>
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $('.btn-delete').on('click', function (e) {
+            e.preventDefault()
+            let id = $(this).data('id')
+            Swal.fire({
+                title: 'Delete Comment',
+                text: 'Are You Sure ?',
+                confirmButtonColor: 'rgb(225, 0, 127)',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#blog_comment').val(id)
+                    $('#delete_form').submit()
+                }
+            })
+        })
+    })
+</script>
+<script>
+    $("#myForm").validate({
+        rules: {
+            comment: {
+                required: true,
+                maxlength: 1000
+            },
+        },
+        submitHandler: function (form) {
+            form.submit();
+        }
+    });
+</script>
+<script>
+    function editComment(id){
+        document.getElementById(id).style.display='block';
+        document.getElementById(id+'_1').style.display='none';
+    }
+
+    function cancelEditComment(id){
+        document.getElementById(id).style.display='none';
+        document.getElementById(id+'_1').style.display='block';
+    }
+</script>
+
+{% endblock script %}

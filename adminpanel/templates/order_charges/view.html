@@ -1,0 +1,77 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block css %}
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/fontawesome/all.min.css' %}">
+<style>
+    .fontawesome-icons {
+        text-align: center;
+    }
+
+    article dl {
+        background-color: rgba(0, 0, 0, .02);
+        padding: 20px;
+    }
+
+    .fontawesome-icons .the-icon svg {
+        font-size: 24px;
+    }
+</style> 
+{% endblock css %} 
+{% block content %}
+{% include "includes/section.html" with page_title="Product Charges" %}
+<section class="section">
+    <div class="row w-100" id="table-striped">
+        <div class="col-12">
+            <div class="card py-2 px-2">
+                <div class="card-content">
+                    <div class="table-responsive">
+                        <table class="table table table-striped text-center" id="myTable"> 
+                            {% if order_charges %}         
+                            <thead>
+                                <tr>
+                                    <th>Sr no.</th>
+                                    <th>Name</th>
+                                    <th>Percentage</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody> 
+                                {% for charge in order_charges %} 
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ charge.name }}</td>
+                                    <td>{{ charge.percentage }}</td>
+                                    {% if request.user.user_type == "SUPERADMIN" %}
+                                    <td>
+                                        <a href="{% url 'edit_order_charge' charge.id %}" class="mx-1">
+                                            <span class="fa-fw select-all fas"></span>
+                                        </a> 
+                                    </td>
+                                     {% endif %}
+                                    <td>
+                                        {% for i in m_check %}
+                                        {% if i.edit == True and request.user.user_type == "SUBADMIN" %}
+                                        <a href="{% url 'edit_order_charge' charge.id %}" class="mx-1">
+                                            <span class="fa-fw select-all fas"></span>
+                                        </a>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                </tr> 
+                                {% endfor %} 
+                            </tbody> 
+                            {% else %} 
+                            <tr>
+                                <td colspan="4" class="text-center">
+                                    <strong style="font-size: 1.5em;">No Records</strong>
+                                </td>
+                            </tr> 
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> 
+{% endblock content %}

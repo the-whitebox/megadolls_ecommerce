@@ -1,0 +1,232 @@
+
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock title %}
+{% load static %}
+
+{% block css %}
+<style>
+    .error {
+        color: red
+    }
+</style>
+<link rel="stylesheet" href="{% static 'adminpanel/intl-tel-input-master/build/css/intlTelInput.css' %}">
+{% endblock css %}
+
+{% block content %}
+
+    {% include "includes/section.html" with page_title="My Profile"%}
+    <main class="main content-wrapper">
+        <section class="section profile">
+            <div class="row w-100">
+                <div class="col-xl-8">
+                    <div class="card">
+                        <div class="card-body pt-3">
+                            <ul class="nav nav-tabs nav-tabs-bordered">
+
+                                <li class="nav-item">
+                                    <button class="nav-link active" data-bs-toggle="tab"
+                                        data-bs-target="#profile-overview">Overview</button>
+                                </li>
+
+                                <li class="nav-item">
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">
+                                        Edit Profile
+                                    </button>
+                                </li>
+
+                                <li class="nav-item">
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">
+                                        Change Password
+                                    </button>
+                                </li>
+
+                            </ul>
+                            <div class="tab-content pt-4">
+
+                                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                                        <div class="col-lg-9 col-md-8">{{ user.name }}</div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label">User Type</div>
+                                        <div class="col-lg-9 col-md-8">{{ user.user_type }}</div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label">Mobile</div>
+                                        <div class="col-lg-9 col-md-8">{{ user.mobile }}</div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label">Email</div>
+                                        <div class="col-lg-9 col-md-8">{{ user.email }}</div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                                    <!-- Profile Edit Form -->
+                                    <form method="POST" action="{% url 'update_user_profile' %}" id="detail-form" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="row mb-3">
+                                            <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile
+                                                Image</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <div class="form-group">
+                                                    <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg" name="profile_img">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full
+                                                Name</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input type="text" class="form-control" id="fullName" value="{{ user.name }}" name="name" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Mobile</label>
+                                            <div class="position-relative col-md-8 col-lg-9">
+                                                <input type="hidden" name="country_code" id="country-code" readonly>
+                                                <input type="text" class="form-control" id="mob-code" value="{{ user.mobile }}" name="mobile" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input type="email" class="form-control" id="Email" value="{{ user.email }}" name="email" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                        </div>
+                                    </form><!-- End Profile Edit Form -->
+
+                                </div>
+                                
+                                <div class="tab-pane fade pt-3" id="profile-change-password">
+                                    <!-- Change Password Form -->
+                                    <form method="POST" action="{% url 'change_password' %}" id="change-password-form">
+                                        {% csrf_token %}
+                                        <div class="row mb-3">
+                                            <label for="currentPassword"
+                                                class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input name="password" type="password" class="form-control" id="currentPassword" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New
+                                                Password</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input name="new_password" type="password" class="form-control" id="newPassword" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter
+                                                New Password</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input type="password" class="form-control" id="renewPassword" name="renew_password" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-primary">Change Password</button>
+                                        </div>
+                                    </form><!-- End Change Password Form -->
+
+                                </div>
+
+                            </div><!-- End Bordered Tabs -->
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-xl-4">
+                    <div class="card">
+                        <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                            <figure>
+                            <img src="{% if user.profile_img %} {{ user.profile_img.url }} {% else %} {% static 'adminpanel/images/profile-pic.png' %} {% endif %}"
+                                alt="Profile" class="rounded-circle mb-2">
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'adminpanel/vendors/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+<script src="{% static 'adminpanel/intl-tel-input-master/build/js/intlTelInput.min.js' %}"></script>
+<script>
+    const input = document.querySelector("#mob-code");
+    const inst = window.intlTelInput(input, ({}));
+    function addCountryCodeToFrom() {
+        let information = inst.getSelectedCountryData()['dialCode'];
+        $('#country-code').val(information);
+        
+    }
+</script>
+
+<script>
+    //$(document).ready(function () {
+    $("#change-password-form").validate({
+        rules: {
+            password: {
+                required: true,
+            },
+            new_password: {
+                required: true,
+            },
+            renew_password: {
+                required: true,
+                equalTo: "#newPassword"
+            }
+        },
+        submitHandler: function (form) {
+            form.submit()
+        }
+    });
+
+    $.validator.addMethod("extension",function(a,b,c){
+        return c="string"==typeof c?c.replace(/,/g,"|"):"png|jpe?g",this.optional(b)||a.match(new RegExp("\\.("+c+")$","i"))},
+        $.validator.format("Only Accept image type png, jpg, jpeg"))
+
+    $("#detail-form").validate({
+        rules: {
+            name: {
+                required: true,
+            },
+            mobile: {
+                required: true,
+                digits: true
+            },
+            email: {
+                required: true,
+                email: true
+            },
+            profile_img: {
+                extension: true
+            }
+        },
+        submitHandler: function (form) {
+            addCountryCodeToFrom();
+            form.submit();
+        }
+    });
+    //})
+</script>
+{% endblock script %}

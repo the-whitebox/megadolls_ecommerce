@@ -1,0 +1,364 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+
+{% block title %}Billing{% endblock title %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'adminpanel/intl-tel-input-master/build/css/intlTelInput.css' %}">
+{% include 'includes/ring-loader.html' %}
+<div class="wraper-inner">
+    <section class="page-head-sec">
+        <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+        <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+        <div class="container">
+            <div class="page-head-content">
+                <h4>Shipping & Billing Info</h4>
+            </div>
+        </div>
+    </section>
+    <section class="cart-inner-block">
+        <div class="container">
+            <div class="shipping-banner mb-4">
+                <img src="{% static 'web_app/images/shipping-bn.png' %}">
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="cart-detail-blk">
+                        <h4 class="heading-title">Shipping Address</h4>
+                        <h5 class="heading-sub-title">Select from {% if addresses %} Saved {% endif %} Address</h5>
+                        <div class="saved-address-blk mb-4">
+                            {% for address in addresses %}
+                            <div class="form-check custom-radio">
+                                <input class="form-check-input" type="radio" name="saved-address" id="saved-address{{ forloop.counter }}" value="{{ address.id }}" {% if address.default_address == True %} checked {% endif %}>
+                                <label class="form-check-label" for="saved-address{{ forloop.counter }}">
+                                    <h4>{{address.name}}, {{ address.area_name }}</h4>
+                                    <p>{% comment %}{{ address.house_num }} {{ address.area_name }}{% endcomment %} {{ address.web_city }}, {{ address.web_state.name }}, {{ address.web_country.name }}, {{ address.zip_code }}</p>
+                                </label>
+                            </div>
+                            {% endfor %}
+                            <button type="button" class="btn btn-primary outline add-ship-address show-new-address-btn">Add New Address</button>
+                            <div class="address-add-blk ship-address mt-4">
+                                <div class="address-add-head">
+                                    <h4>Add New Address</h4>
+                                    <button type="button" class="add-btn-close close-ship"><i class="ri-close-circle-line"></i></button>
+                                </div>
+                                <form class="row add_address" method="POST" action="{% url 'add_address' %}" id="saved">
+                                    {% csrf_token %}
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="Enter name associate with address" name="name" required>
+                                        </div>
+                                    </div>
+                                    {% comment %} <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input class="form-control house-name" placeholder="House/ Apartment/ Flat Number" name="house_number">
+                                        </div>
+                                    </div> {% endcomment %}
+                                    <div class="col-m
+                                    d-12">
+                                        <div class="form-group">
+                                            <input class="form-control area-name" placeholder=" Area/ Road Name" name="area_name">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <select class="form-control country" name="country">
+                                                <option value="" disabled selected>Select Country</option>
+                                                {% for country in countries %}
+                                                <option value="{{ country.id }}">{{ country.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <select class="form-control state" name="state">
+                                                <option value="" disabled selected>Select State</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="City / Town" name="city" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input class="form-control number-only" placeholder="Enter Zipcode" name="zipcode" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="hidden" name="country_code" id="country-code" readonly>
+                                            <input class="form-control number-only" id="mob-code" placeholder="Phone Number" name="phone" required >
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Add New Address</button>
+                                </form>
+                            </div>
+                        </div>
+                        <h4 class="heading-title">Billing Address</h4>
+                        <h5 class="heading-sub-title">Select from {% if addresses %} Saved {% endif %} Address</h5>
+                        <div class="saved-address-blk mb-4" id="billing-address-section">
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="flexCheckIndeterminate" name="billing-address" >
+                                <label class="form-check-label" for="flexCheckIndeterminate">Same as Shipping Address</label>
+                            </div>
+                            {% for address in addresses %}
+                            <div class="form-check custom-radio">
+                                <input class="form-check-input" type="radio" name="billing-address" id="billing-address{{ forloop.counter }}" value="{{ address.id }}" {% if address.default_address %} checked {% endif %}>
+                                <label class="form-check-label" for="billing-address{{ forloop.counter }}">
+                                    <h4>{{address.name}}, {{ address.area_name }}</h4>
+                                    <p>{% comment %}{{ address.house_num }}{{ address.area_name }}{% endcomment %}  {{ address.web_city }}, {{ address.web_state.name }}, {{ address.web_country.name }}, {{ address.zip_code }}</p>
+                                </label>
+                            </div>
+                            {% endfor %}
+                            <button type="button" class="btn btn-primary outline add-bill-address show-new-address-btn">Add New Address</button>
+                            <div class="address-add-blk bill-address mt-4">
+                                <div class="address-add-head">
+                                    <h4>Add New Address</h4>
+                                    <button type="button" class="add-btn-close close-bill"><i class="ri-close-circle-line"></i></button>
+                                </div>
+                                <form class="row add_address" method="POST" action="{% url 'add_address' %}" id="billing">
+                                    {% csrf_token %}
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input class="form-control house-name" placeholder="Enter name associate with address" name="name" required>
+                                        </div>
+                                    </div>  
+                                    {% comment %} <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input class="form-control house-name" placeholder="House/ Apartment/ Flat Number" name="house_number">
+                                        </div>
+                                    </div> {% endcomment %}
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input class="form-control area-name" placeholder=" Area/ Road Name" name="area_name">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <select class="form-control country" name="country">
+                                                <option value="" disabled selected>Select Country</option>
+                                                {% for country in countries %}
+                                                <option value="{{ country.id }}">{{ country.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <select class="form-control state" name="state">
+                                                <option value="" disabled selected>Select State</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="City / Town" name="city">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input class="form-control number-only" placeholder="Enter Zipcode" name="zipcode">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="hidden" name="country_code" id="country-code" readonly>
+                                            <input class="form-control number-only" id="mob-code" placeholder="Phone Number" name="phone" required>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Add New Address</button>
+                                </form>
+                            </div>
+                        </div>
+                        {% comment %} <div class="row"> {% endcomment %}
+                            {% comment %} 
+                            <div class="col-6 form-group">
+                                <label for="carrier_code">Carrier</label>
+                                <select name="carrier_code" class="form-control" id="carrier_code">
+                                    <option value="" disabled selected>Please select carrier</option>
+                                    {% for carrier in carriers %}
+                                    <option value="{{ carrier.code }}">{{ carrier.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                             {% endcomment %}
+                            {% include 'includes/checkout/billing/shipping-price-range.html' %}
+                        {% comment %} </div> {% endcomment %}
+                    </div>
+                </div>
+                {% include 'includes/checkout/billing/order-summary.html' %}
+                {% comment %} <div class="col-md-4">
+                    <!-- style="display: none;" -->
+                    <div class="cart-summary-blk">
+                        <h4>Order Summary</h4>
+                        <ul class="cart-billing-details">
+                            <li>Subtotal <span id="sub_total">$ {{ sub_total }}</span></li>
+                            {% for charge_name, amount in order_charges.items %}
+                            <li>
+                                {{ charge_name }}
+                                <span>${{ amount|floatformat:2 }}</span>
+                            </li>
+                            {% endfor %}
+                            <li>
+                                Shipping charges 
+                                <span class="shipping_charges">
+                                    {% if shipping_price_range.shipping_cost > 0 %}
+                                        $ {{ shipping_price_range.shipping_cost }}
+                                    {% else %}
+                                        FREE
+                                    {% endif %}
+                                </span>
+                            </li>
+                            <div class="divider"></div>
+                            <li class="total">Grand Total <span id="cart_total">$ {{ grand_total }}</span></li>
+                        </ul>
+                        <button type="button" class='btn btn-primary' id='payment-btn' >Continue to Payment</button>
+                    </div>
+                </div> {% endcomment %}
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock content %}
+{% block script %}
+<script src="{% static 'adminpanel/intl-tel-input-master/build/js/intlTelInput.min.js' %}"></script>
+<script>
+    const input = document.querySelector("#mob-code");
+    const inst = window.intlTelInput(input, ({}));
+    function addCountryCodeToFrom() {
+        let information = inst.getSelectedCountryData()['dialCode'];
+        $('#country-code').val(information);
+    }
+</script>
+
+<script>
+    $('.number-only').on('keypress', function() {
+        if ( isNaN( String.fromCharCode(event.keyCode) )) return false;
+    })
+
+    $.validator.addMethod("noSpace", function(value, element) { 
+        return !value.startsWith(" ") && value != ""; 
+    }, "No space please and don't leave it empty")
+
+    $(".add_address").each(function(key, form) {
+        $(this).validate({
+            rules: {
+                name: {
+                    required: true
+                },
+                house_number: {
+                    required: true,
+                    noSpace: true,
+                },
+                area_name: {
+                    required: true,
+                    noSpace: true,
+                },
+                country: {
+                    required: true,
+                },
+                state: {
+                    required: true,
+                },
+                city: {
+                    required: true,
+                },
+                zipcode: {
+                    required: true,
+                    digits: true,
+                    maxlength: 9
+                },
+                phone: {
+                    required: true,
+                    noSpace: true,
+                    digits: true,
+                    maxlength: 15
+                },
+            },
+            submitHandler: function (form) {
+                addCountryCodeToFrom();
+                form.submit()
+            }
+        });
+    })
+
+    $('#loader').hide()
+
+    function userHaveAnyAddress() {
+        let selectedAddress = $('input[name=saved-address]:checked').val()
+        if(!selectedAddress) {
+            myToast('Please Add Address First', ERROR_BG)
+            return false
+        } 
+        return true
+    }
+    
+    {% comment %} $('#carrier_code').on('change', function() {
+        if(!userHaveAnyAddress()){
+            return false
+        }
+        $('#loader').show()
+        let carrierCode = $(this).val()
+        $.ajax({
+            url: "{% url 'shipping_tax' %}",
+            method: 'POST',
+            data: {
+                carrier_code: carrierCode,
+                address_id: $('input[name=saved-address]:checked').val()
+            },
+            success: function(response) {
+                $('#loader').hide()
+                serviceObj = response.carrier_services
+                if(serviceObj.Message || !response.status) {
+                    // for error
+                    let msg = serviceObj.Message ? serviceObj.Message: response.message
+                    myToast(msg, ERROR_BG)
+                    return
+                }
+
+                let option = '<option value="" disabled selected>Please select carrier service</option>'
+                serviceObj.forEach(
+                    function(data, i) {
+                        option +=  `<option value="${i}">${data.serviceName} ($${data.shipmentCost})</option>`
+                    }
+                )
+                $('#carrier_service').html(option)
+            }
+        })
+    }) {% endcomment %}
+    
+
+    $('[type=checkbox][name=billing-address]').on('change', function(){                
+        $('#billing-address-section .custom-radio').toggle();
+        if($(this).prop('checked')){
+            $(this).prop('checked', true)
+        }
+    });
+
+    $(document).on('click', '#payment-btn', function() {
+        if(!userHaveAnyAddress()){
+            return false
+        }
+        $('#loader').show()
+        const shippingAddress = $("[name=saved-address]:checked").val()
+        const billingAddress = ($('[type=checkbox][name=billing-address]').prop('checked') ? shippingAddress : $("input[type=radio][name=billing-address]:checked").val())
+        const carrierCode = $('[name=carrier_code]').val()
+
+        $.ajax({
+            method: "POST",
+            url: '{% url "save_order_data_to_session" %}',
+            data: {
+                'shipping_address': shippingAddress,
+                'billing_address': billingAddress,
+                // 'carrier_code': carrierCode,
+            },
+            success: function(response) {
+                $('#loader').hide()
+                window.location.replace("{% url 'payment' %}"); 
+            }
+        })
+    })
+</script>
+{% endblock script %}

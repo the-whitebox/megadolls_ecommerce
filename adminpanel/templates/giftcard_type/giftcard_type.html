@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css%}
+<link rel="stylesheet" href="{% static 'adminpanel/data-table/dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+{% endblock css %}
+{% block content %}
+{% url 'add_giftcard_type' as add_subscription %}
+{% include "includes/section.html" with page_title="Gift Card Types" btn_url=add_subscription btn_text="Add Gift Card Type" %}
+<section class="section">
+    <div class="row w-100" id="table-striped">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="table-responsive p-2">
+                        {% if giftcard_types %}
+                            <table class="table table-striped text-center mb-0" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th>Sr. No.</th>   
+                                        <th>Gift Type</th>                    
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for giftcard_type in giftcard_types %}                          
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ giftcard_type.giftcard_type }}</td>
+                                        <td class="is-active">
+                                            {% if giftcard_type.is_active %}
+                                            <span class="badge bg-success">Active</span>
+                                            {% else %}
+                                            <span class="badge bg-danger">Deactive</span>
+                                            {% endif %}
+                                        </td>
+                                        {% if request.user.user_type == "SUPERADMIN" %}               
+                                            <td>
+                                                <a href="{% url 'edit_giftcard_type' giftcard_type.id %}" class="mx-1">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                                <a href="#" class="mx-1 btn-delete" data-id="{{ giftcard_type.id }}">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                            </td>
+                                        {% endif %}
+
+                                        {% if request.user.user_type == "SUBADMIN" %}
+                                            <td>
+                                                {% for i in m_check %}
+                                                    {% if i.edit == True %}
+                                                        <a href="{% url 'edit_giftcard_type' giftcard_type.id %}" class="mx-1">
+                                                            <span class="fa-fw select-all fas"></span>
+                                                        </a>
+                                                    {% endif %}
+                                                    {% if i.delete == True %}
+                                                        <a href="#" class="mx-1 btn-delete" data-id="{{ giftcard_type.id }}">
+                                                            <span class="fa-fw select-all fas"></span>
+                                                        </a>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <div class="text-center">
+                                <strong style="font-size: 1.5em;">No Records</strong>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form method="POST" action="{% url 'delete_giftcard_type' %}" class="mx-1" style="display: inline;" id="delete_form">
+        {% csrf_token %}
+        <input type="hidden" name="delete_giftcard_type" value="" id="giftcard_type">
+    </form>
+</section>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/data-table/dataTables.min.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.btn-delete').on('click', function (e) {
+            e.preventDefault()
+            let id = $(this).data('id')
+            Swal.fire({
+                title: 'Delete Gift Type',
+                text: 'Are You Sure ?',
+                confirmButtonColor: 'rgb(225, 0, 127)',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#giftcard_type').val(id)
+                    $('#delete_form').submit()
+                }
+            })
+        })
+    })
+</script>
+{% endblock script %} 
+

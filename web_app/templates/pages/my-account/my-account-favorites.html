@@ -1,0 +1,68 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}My Account - Favorites{% endblock title %}
+{% block content %}
+<div class="wraper-inner">
+   <section class="page-head-sec">
+      <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+      <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+      <div class="container">
+         <div class="page-head-content">
+            <h4>My Account</h4>
+         </div>
+      </div>
+   </section>
+   <section class="shops-list-sec pt-5">
+      <div class="container">
+         <div class="my-account account-subscription">
+
+            {% include 'includes/my-account/left-sidebar.html' %}
+            
+            <div class="my-account-R">
+               <div class="row">
+                  {% for favorite in favorites %}
+                  <div class="col-lg-4 col-md-4 col-sm-6 mb-4">
+                     <div class="product-item">
+                        <div class="product-slider owl-carousel owl-theme">
+                           {% for imagine_product_img in imagine_product_imgs %}
+
+                              {% if favorite.imagine_id == imagine_product_img.imagine_product_id %}
+                                 <div class="item">
+                                    <div class="product-slider-item">
+                                       <img src="{{ imagine_product_img.primary_img.url }}">
+                                    </div>
+                                 </div>
+
+                                 {% comment %} {% for imagine_subtable_img in imagine_subtable_imgs %}
+                                    {% if imagine_subtable_img.imagine_product_image_id == imagine_product_img.id %}
+                                    <div class="item">
+                                       <div class="product-slider-item">
+                                          <img src="{{ imagine_subtable_img.images.url }}">
+                                       </div>
+                                    </div>
+                                    {% endif%}
+                                 {% endfor %} {% endcomment %}
+                              {% endif %}
+                           {% endfor %}
+                        </div>
+                        <div class="product-item-content">
+                           <h5 class="product-name mb-3"><a href="javascript:void(0);">{{ favorite.imagine.name }}</a></h5>
+                           <div class="product-actions prodcut-actions-wrap">
+                              <a href="{% url 'imagine_detail' favorite.imagine.slug %}" class="btn btn-primary">View and Download</a>
+                              <a href="{% url 'delete_favorite' favorite.imagine_id %}" class="btn btn-primary outline mt-2">Remove from Favorite</a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  {% empty %}
+                  <div class="text-center my-5">
+                     <h4>No Favorites</h4>
+                  </div>
+                  {% endfor %}
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+</div>
+{% endblock content %}

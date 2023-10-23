@@ -1,0 +1,200 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+
+{% block title %}Contact Us{% endblock title %}
+{% block content %}
+{% include 'includes/ring-loader.html' %}
+<div class="wraper-inner">
+
+    <section class="cms-page-banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="cms-page-content">
+                        <h2>{{ contact_us_content.heading }}</h2>
+                        <p>{{ contact_us_content.description|safe }}</p>
+                    </div>
+                </div>
+                <div class="col-md-4 offset-md-1">
+                    <div class="cms-page-bn">
+                        <figure>
+                            <img src="{{ contact_us_content.image.url }}">
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="contact-info-sec">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="contact-info-block">
+                        <h3>Send us a message through the form below.</h3>
+                        <br />
+                       <ul>
+                           <li>
+                            <form method="POST" class="card-body" id="contact_us" >
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="text" value="{{ name }}" name="name" class="form-control" placeholder="Name">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="email" value="{{ email }}" name="email" class="form-control" placeholder="Email Address">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <select class="form-control" name="subject" placeholder="Subject" required>
+                                                <option value="" disabled selected>Please select subject</option>
+                                                <option value="General" {% if subject == 'General' %}selected{% endif %}>General</option>
+                                                <option value="Product" {% if subject == 'Product' %}selected{% endif %}>Product</option>
+                                                <option value="subscriptions" {% if subject == 'subscriptions' %}selected{% endif %}>Subscriptions</option>
+                                                <option value="gift cards" {% if subject == 'gift cards' %}selected{% endif %}>Gift Cards</option>
+                                                <option value="Sloper" {% if subject == 'Sloper' %}selected{% endif %}>Sloper</option>
+                                                <option value="corporate" {% if subject == 'corporate' %}selected{% endif %}>Corporate</option>
+                                                <option value="Shero Dolls" {% if subject == 'Shero Dolls' %}selected{% endif %}>Shero Dolls</option>
+                                                <option value="Others" {% if subject == 'Others' %}selected{% endif %}>Others</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <textarea class="form-control" name="description" placeholder="Message"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button type="submit" id="submitButton" class="btn btn-primary">Send</button>
+                                    </div>
+                                </div>
+                            </form>
+                           </li>
+                       </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 offset-md-2">
+                    <div class="contact-info-block">
+                        <h3>We are also available on email at.</h3>
+                        <br />
+                        <ul>
+                            <li>
+                                <figure>
+                                    <img src="{% static 'web_app/images/email-icon.svg' %}">
+                                </figure>
+                                <figcaption>
+                                    <!-- <p>Please email</p> -->
+                                    <h4>{{ contact_us_details.email }}</h4>
+                                </figcaption>
+                            </li>
+                            <!-- <li>
+                                <figure>
+                                    <img src="{% static 'web_app/images/call-icon.svg' %}">
+                                </figure>
+                                <figcaption>
+                                    <p>Please call</p>
+                                    <h4>{{ contact_us_details.mobile }}</h4>
+                                </figcaption>
+                            </li>
+                            <li>
+                                <figure>
+                                    <img src="{% static 'web_app/images/location-icon.svg' %}">
+                                </figure>
+                                <figcaption>
+                                    <p>Address</p>
+                                    <h4>{{ contact_us_details.address }}</h4>
+                                </figcaption>
+                            </li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <style>
+                #map {
+                    height: 444px;
+                    width: 1144px;
+                    background-color: red;
+                    z-index:1000
+                }
+
+            </style>
+
+            <div class="contact-map-info">
+                <!-- <div id="map" ></div> -->
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock content %}
+{% block script %}
+<script>
+    $('#loader').hide()
+    $.validator.addMethod('emailRegex', function(value, element) {
+        let emailExp = new RegExp(/^\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i);
+        return emailExp.test(value);
+    }, 'Email format is not valid');
+    $.validator.addMethod("noSpace", function(value, element) { 
+        return !value.startsWith(" ") && value != ""; 
+    }, "No space please and don't leave it empty")
+
+    $(document).ready(function() {
+        $("#contact_us").validate({
+        rules: {
+            name: {
+                required: true,
+                noSpace: true
+            },
+            subject: {
+                required: true,
+            },
+            email: {
+                required: true,
+                emailRegex: true,
+            },
+            description: {
+                required: true,
+                noSpace: true
+            }
+        },
+        submitHandler: function (form) {
+            $('#loader').show()
+            form.submit()
+        }
+    });
+    })
+    
+</script>
+
+{% comment %}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlljhS4LLf_864PqbvXtDGXver091jLiI&v=weekly" defer></script>
+<script>
+        let map;    
+
+        $(document).ready(function(){
+            $lat = parseFloat("{{contact_us_details.latitude}}");
+            $long = parseFloat("{{contact_us_details.longitude}}");
+            initMap($lat,$long);
+        });
+
+        function initMap(latitude,longitude) {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat:latitude , lng: longitude },
+                zoom: 16,
+            });
+            new google.maps.Marker({
+            position: { lat:latitude , lng: longitude },
+            map,
+            title: "Hello World!",
+            });
+        }
+
+        window.initMap = initMap;    
+</script> 
+{% endcomment %}
+{% endblock script %}

@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% url 'shero_dolls' as view_shop_products %}
+{% include "includes/section.html" with page_title="Add Shero Dolls" btn_url=view_shop_products btn_text="Back" %}
+
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <form method="POST" class="row" id="myForm" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input type="text" class="form-control" placeholder="Name" name="name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="monthSelect">Month</label>
+                                    <select class="form-select" id="monthSelect" name="month" required>
+                                        {% for month in months_list %}
+                                        <option value="{{ month }}">{{ month }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="yearSelect">Year</label>
+                                    <select class="form-select" id="yearSelect" name="year" required>
+                                        {% for year in years_list %}
+                                        <option value="{{ year }}">{{ year }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Claim to Fame</label>
+                                    <input type="text" class="form-control" placeholder="Claim to Fame" name="claim_to_fame" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Original Price</label>
+                                    <input class="form-control" placeholder="Original Price"
+                                        name="original_price" id="original_price" required>
+                                </div>
+                            </div>
+
+                            {% comment %}<div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Offer Price</label>
+                                    <input type="text" class="form-control" placeholder="Offer Price"
+                                        name="offer_price" value="0.00" id="offer_price">
+                                </div>
+                            </div>{% endcomment %}
+
+
+                            <div class="col-md-6 form-group">
+                                <label>Quantity</label>
+                                <input class="form-control" placeholder="Quantity" name="quantity" required>
+                            </div>
+
+                            <div class="col-md-6 form-group">
+                                <label>Country</label>
+                                <select class="form-select" name="country" required>
+                                    <option value="" selected disabled >Select Country</option>
+                                    {% for country in countries %}
+                                    <option value="{{ country.id }}">{{ country.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                                                        
+                            <div class="col-md-6 form-group">
+                                <label>Status</label>
+                                <select class="form-select" name="status" required>
+                                    <option value="True">Active</option>
+                                    <option value="False" >Deactive</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Og Title</label>
+                                    <input type="text" class="form-control" name="og_title" required>
+                                </div>
+                            </div>  
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Og Discription</label>
+                                    <input type="text" class="form-control" name="og_description" required>
+                                </div>
+                            </div>  
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Primary Image</label>
+                                    <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg"
+                                        name="primary_image" required>
+                                </div>
+                            </div>      
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Og Image</label>
+                                    <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg"
+                                        name="og_image" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Images <small>(max: 5)</small></label>
+                                    <input type="file" class="form-control" accept="image/png, image/gif, image/jpeg"
+                                        name="shero_dolls_images" multiple required>
+                                    <span id="max-image-error" style="color: red;"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12" id="notes">
+                                <div class="form-group">
+                                    <label>Features</label>
+                                    <textarea value="" name="features"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" id="notes">
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <textarea value="" name="editor"></textarea>
+                                </div>
+                            </div>                 
+                            <div class="col-sm-12">
+                                <button id="formSubmit" class="btn btn-primary me-1 mb-1 float-end">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.19.1/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('editor');
+    CKEDITOR.replace('features');
+</script>
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+<script>
+    $.validator.addMethod("noSpace", function(value, element) { 
+        return !value.startsWith(" ") && value != ""; 
+    }, "No space please and don't leave it empty")
+
+    $.validator.addMethod("extension",function(a,b,c){
+        return c="string"==typeof c?c.replace(/,/g,"|"):"png|jpe?g",this.optional(b)||a.match(new RegExp("\\.("+c+")$","i"))
+    }, "Only Accept image type png, jpg, jpeg")
+
+    $(document).ready(function () {
+        $("#myForm").validate({
+            rules: {
+                name: {
+                    required: true,
+                    text: true,
+                    maxlength: 55,
+                    noSpace: true
+                },
+                original_price: {
+                    required: true,
+                    noSpace: true
+                },
+                year: {
+                    required: true,
+                    digits: true,
+                    maxlength: 4,
+                    noSpace: true
+                }, 
+                quantity: {
+                    required: true,
+                    digits: true,
+                    noSpace: true,
+                    min: 1,
+                },
+                primary_image: {
+                    extension: true,
+                },
+                shero_dolls_images: {
+                    extension: true,
+                },
+                og_image: {
+                    extension: true,
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    })
+</script>
+{% endblock script %} 

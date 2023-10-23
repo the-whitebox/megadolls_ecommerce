@@ -1,0 +1,396 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+
+{% block title %}Shero Subscription{% endblock title %}
+{% block content %}
+<style>
+   #GFG {
+      text-decoration: none;
+      text-align: center;
+      color: #E75480;
+   }
+</style>
+{% include 'includes/ring-loader.html' %}
+<div class="wraper-inner subscription-index">
+   <div class="bg-pattern">
+      <section class="subscription-sec mt-3">
+         <a href="#learn_more_subscription">
+         <div class="main-banner-slider">
+            <div class="container">
+               <div class="banner-subscription2 owl-carousel owl-theme">
+                  <div class="item banner-slider-item">
+                     <div class="banner-slider-blk">
+                        <img src="{{ subscription_content_data.banner_image.url }}">
+                        <div class="sec-head subscription-sec-head">
+                           <p>{{ subscription_content_data.banner_image_content|safe }}</p>
+                           {% comment %}<a href="#learn_more_subscription" class="btn btn-primary mt-3">Subscribe Now</a> {% endcomment %}
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div></a>
+
+
+
+         {% comment %}<div class="subscription-bg-blk">
+            {% if subscription_content_data.banner_image %}
+            <img src="{{ subscription_content_data.banner_image.url }}" alt="">
+            {% else %}
+            <img src="{% static 'web_app/images/subscription-bg-blur.png' %}">
+            {% endif %}
+         </div>
+         <div class="sec-head subscription-sec-head">
+            {% if subscription_content_data.banner_image_content %}
+            <p>{{ subscription_content_data.banner_image_content|safe }}</p>
+            {% endif %}
+            <a href="#learn_more_subscription" class="btn btn-primary white-btn mt-3">Learn More</a>
+         </div>{% endcomment %}
+      </section>
+      <section class="center-content text-center">
+         <div class="container">
+            <p>{{subscription_content_data.intro_paragraph|safe}}</p>
+         </div>
+      </section>
+      <section class="paying-with-mega-dolls">
+         <div class="container">
+            <div class="sec-head text-center">
+               <h4>{{ subscription_content_data.shero_benefits_title }}</h4>
+            </div>
+            <div class="row paying-with-mega-dolls-row">
+               <div class="col-md-6 mega-dolls-row-box">
+                  {% if subscription_content_data.shero_benefits_image_1 %}
+                  <figure><img src="{{ subscription_content_data.shero_benefits_image_1.url }}"></figure>
+                  {% else %}
+                  <figure><img src="{% static 'web_app/images/paying-with-mega-dolls-1.png' %}"></figure>
+                  {% endif %}
+                  <figcaption>
+                     <h4>{{ subscription_content_data.shero_benefits_content_1|safe }}</h4>
+                  </figcaption>
+               </div>
+               <div class="col-md-6 mega-dolls-row-box">
+                  {% if subscription_content_data.shero_benefits_image_2 %}
+                  <figure><img src="{{ subscription_content_data.shero_benefits_image_2.url }}"></figure>
+                  {% else %}
+                  <figure><img src="{% static 'web_app/images/paying-with-mega-dolls-2.png' %}"></figure>
+                  {% endif %}
+                  <figcaption>
+                     <h4>{{ subscription_content_data.shero_benefits_content_2|safe }}</h4>
+                  </figcaption>
+               </div>
+               <div class="col-md-6 mega-dolls-row-box">
+                  {% if subscription_content_data.shero_benefits_image_3 %}
+                  <figure><img src="{{ subscription_content_data.shero_benefits_image_3.url }}"></figure>
+                  {% else %}
+                  <figure><img src="{% static 'web_app/images/paying-with-mega-dolls-3.png' %}"></figure>
+                  {% endif %}
+                  <figcaption>
+                     <h4>{{ subscription_content_data.shero_benefits_content_3|safe }}</h4>
+                  </figcaption>
+               </div>
+               <div class="col-md-6 mega-dolls-row-box">
+                  {% if subscription_content_data.shero_benefits_image_4 %}
+                  <figure><img src="{{ subscription_content_data.shero_benefits_image_4.url }}"></figure>
+                  {% else %}
+                  <figure><img src="{% static 'web_app/images/paying-with-mega-dolls-4.png' %}"></figure>
+                  {% endif %}
+                  <figcaption>
+                     <h4>{{ subscription_content_data.shero_benefits_content_4|safe }}</h4>
+                  </figcaption>
+               </div>
+               <div class="col-md-6 mega-dolls-row-box">
+                  {% if subscription_content_data.shero_benefits_image_5 %}
+                  <figure><img src="{{ subscription_content_data.shero_benefits_image_5.url }}"></figure>
+                  {% else %}
+                  <figure><img src="{% static 'web_app/images/paying-with-mega-dolls-5.png' %}"></figure>
+                  {% endif %}
+                  <figcaption>
+                     <h4>{{ subscription_content_data.shero_benefits_content_5|safe }}</h4>
+                  </figcaption>
+               </div>
+            </div>
+         </div>
+      </section>
+   </div>
+   <section class="how-its-works bg-primary-light">
+      <div class="container">
+         <div class="sec-head text-center">
+            <h4>{{ subscription_content_data.shero_how_it_works_title }}
+            </h4>
+         </div>
+         <ul class="how-works-row">
+            <li class="odd-collection">
+               <span class="count-number"><i class="ri-arrow-down-s-line"></i></span>
+               <div class="how-works-row-L">
+                  <span class="number-box">01</span>
+                  <h3>{{ subscription_content_data.shero_how_it_works_title_1 }}</h3>
+                  <p>{{ subscription_content_data.shero_how_it_works_content_1|safe }}</p>
+               </div>
+               <div class="how-works-row-R">
+                  {% if subscription_content_data.shero_how_it_works_image_1 %}
+                  <figure><img src="{{ subscription_content_data.shero_how_it_works_image_1.url }}"></figure>
+                  {% else %}
+                  <figure><img src="{% static 'web_app/images/how-works-img-1.png' %}"></figure>
+                  {% endif %}
+               </div>
+            </li>
+            <li>
+               <span class="count-number"><i class="ri-arrow-down-s-line"></i></span>
+               <div class="how-works-row-L">
+                  <span class="number-box">02</span>
+                  <h3>{{ subscription_content_data.shero_how_it_works_title_2 }}</h3>
+                  <p>{{ subscription_content_data.shero_how_it_works_content_2|safe }}</p>
+
+               </div>
+               <div class="how-works-row-R">
+                  {% if subscription_content_data.shero_how_it_works_image_2 %}
+                  <figure><img src="{{ subscription_content_data.shero_how_it_works_image_2.url }}"></figure>
+                  {% else %}
+                  <figure><img src="{% static 'web_app/images/how-works-img-2.png' %}"></figure>
+                  {% endif %}
+               </div>
+            </li>
+            <li class="odd-collection">
+               <span class="count-number"><i class="ri-arrow-down-s-line"></i></span>
+               <div class="how-works-row-L">
+                  <span class="number-box">03</span>
+                  <h3>{{ subscription_content_data.shero_how_it_works_title_3 }}</h3>
+                  <p>{{ subscription_content_data.shero_how_it_works_content_3|safe }}</p>
+               </div>
+               <div class="how-works-row-R">
+                  {% if subscription_content_data.shero_how_it_works_image_3 %}
+                  <figure><img src="{{ subscription_content_data.shero_how_it_works_image_3.url }}"></figure>
+                  {% else %}
+                  <figure><img src="{% static 'web_app/images/how-works-img-3.png' %}"></figure>
+                  {% endif %}
+               </div>
+            </li>
+            <li>
+               <span class="count-number"><i class="ri-arrow-down-s-line"></i></span>
+               <div class="how-works-row-L">
+                  <span class="number-box">04</span>
+                  <h3>{{ subscription_content_data.shero_how_it_works_title_4 }}</h3>
+                  <p>{{ subscription_content_data.shero_how_it_works_content_4|safe }}</p>
+               </div>
+               <div class="how-works-row-R">
+                  {% if subscription_content_data.shero_how_it_works_image_4 %}
+                  <figure><img src="{{ subscription_content_data.shero_how_it_works_image_4.url }}"></figure>
+                  {% else %}
+                  <figure><img src="{% static 'web_app/images/how-works-img-4.png' %}"></figure>
+                  {% endif %}
+               </div>
+            </li>
+         </ul>
+      </div>
+   </section>
+   <section class="choose-plan">
+      <div class="container" id="learn_more_subscription">
+         {% if subscription_plan %}
+         <div class="sec-head text-center">
+            <h4>Choose Your Plan</h4>
+            <p>Subscribe longer, Save more</p>
+            <span class="shield-check-text"><i class="ri-shield-check-fill"></i> Renew Automatically or Cancel
+               Anytime</span>
+         </div>
+         {% endif %}
+         {% if subscription_plan %}
+         <div class="row subscription-plan-all mt-4 pt-3">
+            {% for plan in subscription_plan %}
+            <div class="col-md-3">
+               <div class="subscription-plan-box box-shadow-box">
+                  <div class="subscription-plan-box-head">
+                     <h6>{{plan.plan_type}}</h6>
+                     <div class="product-price">
+                        {% if plan.offer_price > 0 %}
+                        <span class="amount">${{ plan.offer_price }}</span>
+                        <span class="pre-price">${{ plan.original_price }}</span>
+                        {% comment %}<span class="offer">({{ plan.discount_on_plan_percentage|floatformat:2 }}%
+                           OFF)</span>{% endcomment %}
+                        {% else %}
+                        <span class="amount">${{ plan.original_price }}</span>
+                        {% endif %}
+                     </div>
+                  </div>
+                  <div class="subscription-plan-box-body">
+                     <div class="free-shipping-tag-box">
+                        {% if plan.plan_type == "Monthly" %}
+                        <small>Billed every month</small>
+                        {% elif plan.plan_type == "Quarterly" %}
+                        <small>Billed every three month</small>
+                        {% elif plan.plan_type == "Annual" %}
+                        <small>Billed every year</small>
+                        {% elif plan.plan_type == "Bi-Annual" %}
+                        <small>Billed every six month</small>
+                        {% endif %}
+                     </div>
+                     <ul>
+                        {% for benefit in subscription_benefits %}
+                        {% if benefit.plan.id == plan.id %}
+                        <li>{{benefit.benefit.title}}</li>
+                        {% endif %}
+                        {% endfor %}
+                     </ul>
+                     <div class="d-flex justify-content-center">
+                        {% if user_subscription.shero_subscription.slug == plan.slug %}
+                        <span class="active-subscription pink-text">Active</span>
+                        {% else %}
+                        <button class="btn btn-primary subscription-btn" data-slug="{{ plan.slug }}">Buy</button>
+                        {% endif %}
+                     </div>
+                  </div>
+               </div>
+            </div>
+            {% endfor %}
+         </div>
+         {% endif %}
+         <div class="mega-dolls-plan-img mt-5 pt-3">
+            <div class="mega-dolls-plan-img-L">
+               {% if subscription_content_data.create_play_image %}
+               <figure><img src="{{ subscription_content_data.create_play_image.url }}"></figure>
+               {% else %}
+               <figure><img src="{% static 'web_app/images/Shero-doll-1.png' %}"></figure>
+               {% endif %}
+               <span class="triangle_shape"></span>
+               <div class="triangle_card">
+                  <img src="{% static 'web_app/images/free.png' %}">
+                  <h5>Download</h5>
+                  <p>Extra dresses and templates to choose from. Imagination and creativity for hours!</p>
+
+                  <ul>
+                     <li><a href="{% url 'create' %}" class="btn btn-primary">Create</a></li>
+                     <li><a href="{% url 'play' %}" class="btn btn-primary">Play</a></li>
+                  </ul>
+               </div>
+            </div>
+            <div class="mega-dolls-plan-img-R">
+               {% if subscription_content_data.invite_your_friend_image %}
+               <figure><img src="{{ subscription_content_data.invite_your_friend_image.url }}"></figure>
+               {% else %}
+               <figure><img src="{% static 'web_app/images/Shero-doll-2.png' %}"></figure>
+               {% endif %}
+               <div class="invite_fd_card">
+                  <a href="{% url 'my_account_referrals' %}" class="btn btn-primary">Invite Your Friends</a>
+               </div>
+            </div>
+         </div>
+
+         <!-- <div class="mega-dolls-plan-img mt-5 pt-3">
+            <div class="mega-dolls-plan-img-L">
+               <figure><img src="{% static 'web_app/images/Shero-doll-1.png' %}"></figure>
+            </div>
+            <div class="mega-dolls-plan-img-R">
+               <figure><img src="{% static 'web_app/images/Shero-doll-2.png' %}"></figure>
+            </div>
+         </div>
+      </div> -->
+         <div class="d-flex mt-5 justify-content-center">
+            <!-- <a class="btn btn-primary outline " data-bs-toggle="modal" data-bs-target="#add-new-card">Give A Gift</a> -->
+            <!-- <a class="btn btn-primary ms-4">Previous Month Dolls</a> -->
+         </div>
+
+   </section>
+   {% if shero_dolls %}
+   <section class="products-sec bg-primary-light">
+      <div class="container">
+         <div class="sec-head">
+            <h4>Collect Them All</h4>
+         </div>
+         <div class="product-out-slider owl-carousel owl-theme">
+            {% for dolls in shero_dolls %}
+            <div class="items">
+               <div class="product-item">
+                  <div class="share_posi_bx">
+                     <div class="social-share">
+                        <div class="social-share-icon-1 facebook"><a
+                              href="https://www.facebook.com/sharer/sharer.php?u={{ site_url }}buy_shero_dolls/{{ dolls.shero_dolls.slug }}/"
+                              target="_blank"><i class="ri-facebook-fill"></i></a></div>
+                        <div class="social-share-icon-2 twitter"><a
+                              href="https://twitter.com/intent/tweet?url={{ site_url }}buy_shero_dolls/{{ dolls.shero_dolls.slug }}/"
+                              target="_blank"><i class="ri-twitter-fill"></i></a></div>
+                        <div class="social-share-icon-3 linkedin"><a
+                              href="https://www.linkedin.com/sharing/share-offsite/?url={{ site_url }}buy_shero_dolls/{{ dolls.shero_dolls.slug }}/"
+                              target="_blank"><i class="ri-linkedin-fill"></i></a></div>
+                        <!-- <div class="social-share-icon-3 linkedin"><a href=""><i class="ri-instagram-line"></i></a></div> -->
+                        <div class="mask2"></div>
+                     </div>
+                     <a href="javascript:void(0);" class="btn btn-primary-light btn-square product-share-btn"><i
+                           class="ri-share-line"></i></a>
+                  </div>
+                  <div class="product-slider owl-carousel owl-theme">
+                     <div class="item">
+                        <div class="product-slider-item">
+                           {% if dolls.primary_img %}
+                           <img src="{{ dolls.primary_img.url }}">
+                           {% else %}
+                           <p>No Image</p>
+                           {% endif %}
+                        </div>
+                     </div>
+                     {% for image in shero_dolls_image %}
+                     {% if image.shero_dolls_image_id == dolls.id %}
+                     <div class="item">
+                        <div class="product-slider-item">
+                           {% if image.images %}
+                           <img src="{{ image.images.url}}">
+                           {% else %}
+                           <p>No Images</p>
+                           {% endif %}
+                        </div>
+                     </div>
+                     {% endif %}
+                     {% endfor %}
+                  </div>
+                  <div class="product-item-content">
+                     <h5 class="product-name"><a href="javascript:void(0);">{{dolls.shero_dolls.name}}</a></h5>
+                     <h5 class="product-name"><a href="javascript:void(0);">Month - {{dolls.shero_dolls.month}}</a></h5>
+                     <div class="product-actions mt-3">
+                        <a href="{% url 'buy_shero_dolls' dolls.shero_dolls.slug %}" class="btn btn-primary ms-0">View
+                           and Buy</a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            {% endfor %}
+         </div>
+      </div>
+   </section>
+   {% endif %}
+   {% if not shero_dolls %}
+   <section>
+      <div class="choose-plan"></div>
+
+   </section>
+   {% endif %}
+   {% comment %} {% include 'includes/featured_and_download.html' %} {% endcomment %}
+</div>
+{% endblock content %}
+
+{% block script %}
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+   stripePayment()
+</script>
+<script>
+   $(document).ready(function () {
+      var active1 = false;
+      var active2 = false;
+      var active3 = false;
+      var active4 = false;
+      $('.product-share-btn').on('mousedown touchstart', function () {
+         if (!active1) $(this).siblings('.social-share').find('.social-share-icon-1').css({ 'background-color': 'gray', 'transform': 'translate(5px, 73px)' });
+         else $(this).siblings('.social-share').find('.social-share-icon-1').css({ 'background-color': 'dimGray', 'transform': 'none' });
+         if (!active2) $(this).siblings('.social-share').find('.social-share-icon-2').css({ 'background-color': 'gray', 'transform': 'translate(-45px,50px)' });
+         else $(this).siblings('.social-share').find('.social-share-icon-2').css({ 'background-color': 'darkGray', 'transform': 'none' });
+         if (!active3) $(this).siblings('.social-share').find('.social-share-icon-3').css({ 'background-color': 'gray', 'transform': 'translate(-65px,0px)' });
+         else $(this).siblings('.social-share').find('.social-share-icon-3').css({ 'background-color': 'silver', 'transform': 'none' });
+         if (!active4) $(this).siblings('.social-share').find('.social-share-icon-4').css({ 'background-color': 'gray', 'transform': 'translate(-105px,0px)' });
+         else $(this).siblings('.social-share').find('.social-share-icon-4').css({ 'background-color': 'silver', 'transform': 'none' });
+         active1 = !active1;
+         active2 = !active2;
+         active3 = !active3;
+         active4 = !active4;
+      });
+   });
+</script>
+{% endblock script %}

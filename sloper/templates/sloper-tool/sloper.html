@@ -1,0 +1,504 @@
+{% extends 'sloper-tool/sloper-base.html' %}
+{% load static %}
+
+{% block title %}Sloper Design Tool{% endblock title %}
+
+{% block content %}
+    <style>
+        #loader {
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            border-radius: 15px;
+            display: flex;
+            background-color: #25c0c032;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .otp-field {
+            width: 55px;
+            height: 50px;
+        }
+    </style>
+    {% include 'includes/ring-loader.html' %}
+    <div class="tool-inner-wraper">
+    <section class="tool-main-dashboard">
+       <!-- ----dashnav-tool-center---- -->
+       <div class="dashnav-tool-main custom-dashnav">
+              <div class="container row custom-container">
+                <div class="edit-tshirt-box col-md-6">
+                   <div style="position:relative; cursor: pointer;">
+                   <div class="canvasOverBox"  style="width:521px;height:680px; background-size:cover;position:absolute;top:0;left:0;"></div>
+                   <canvas id="megadolls" width="521" height="680"> 
+                    </div>
+                </div>
+                 <div class="edit-tshirt-box col-md-6"><div style="color: #19124f; margin-bottom: 116%;margin-right: -50px;" class="none">Preview</div>
+                   <div style="position:relative; cursor: pointer ;pointer-events: none;;">
+                        <div class="canvasOverBox1"  style="width:521px;height:680px; background-size:cover;position:absolute;top:0;left:0;"></div>
+                        <canvas id="megadolls_preview" width="521" height="680"> 
+                    
+                        <figure class="preview-box-img" style="height: 680px;width: 521px;">
+                            <div style="position:relative; cursor: pointer;">
+                                <div class="image1" id="image1" style="background-size:cover;">
+                                    <img src="" class="image2" id="image2" style="background-repeat: no-repeat;background-size: 98%;object-fit: cover;"> 
+                                </div>
+                            </div>
+                        </figure>
+                    </div>
+                </div>
+                    <!-- <div class="vertical-btn">
+                        <button class="btn" onclick="cloneActiveObj()"><i class="ri-file-copy-2-fill"></i></button>
+                        <button class="btn" onclick="deleteActiveObj()"><i class="ri-delete-bin-fill"></i></button>
+                    </div> -->
+                    <div class="action_btn">
+                        {% if request.user.is_authenticated %}
+                        {% comment %} onclick="saveDesign('{% url "save_design" %}')" {% endcomment %}
+                        <button class="btn" id="saveBtn">Save</button>
+                        {% else %}
+                        <button class="btn" data-bs-toggle="modal" data-bs-target="#login-model">Save</button>
+                        {% endif %}
+                        <button class="btn" onclick="cloneActiveObj()" id="deleteBtn" style="display:none;"><i class="ri-file-copy-2-fill"></i></button>
+                        <button class="btn" onclick="deleteActiveObj()" id="cloneBtn" style="display:none;"><i class="ri-delete-bin-fill"></i></button>
+                        <button class="btn" onclick="undo()"><i class="ri-arrow-go-back-line"></i></button>
+                        <button class="btn" onclick="redo()"><i class="ri-arrow-go-forward-line"></i></button>
+                        <!-- <button class="btn" onclick="setPreview()">Preview</button> -->
+                        <!-- <button class="btn" data-toggle="modal" data-target="#modal-previewx">Preview</button> -->
+                    </div>
+                </div>
+            </div>
+          <!-- ----dashnav-tool-center---- -->
+      </section>
+    </div>
+  </div>
+  <!-- <canvas id="megadolls" width="521" height="680">  -->
+</body>
+
+
+
+<!-- modal-preview -->
+{% comment %} <div class="modal fade" id="modal-preview" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Preview</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="margin: auto;">
+        <figure class="preview-box-img" style="height: 600px; width: 460px;">
+            <div style="position:relative; cursor: pointer;">
+                <div class="image1" id="image1" style="background-size:cover;">
+                    <img src="" class="image2" id="image2" style="background-repeat: no-repeat;background-size: 98%;object-fit: cover;"> 
+                </div>
+            </div>
+        </figure>
+      </div>
+    </div>
+  </div>
+</div> {% endcomment %}
+<!-- modal-preview -->
+{% if request.user.is_authenticated %}
+    <!-- model-design-name -->
+    <div class="modal fade" id="design-name-model" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Give Name to Your Design</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid form-section">
+                        <div class="form-group">
+                            <label for="desing-name">Design Name</label>
+                            <input type="text" name="design_name" id="design-name" class="form-control" placeholder="Enter Design Name">
+                        </div>
+                        {% if request.user.is_authenticated %}
+                        <div class="form-group">
+                            <label for="desing-name">Folder</label>
+                            <select name="folder">
+                                {% for folder in user_folders %}
+                                <option value="{{ folder.slug }}">{{ folder.folder_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% endif %}
+                        <div class="action-link-blk">
+                            <button class="btn btn-primary" id="save-design-name">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- model-design-name-->
+{% else %}
+    <!-- model-login-->
+    <div class="modal fade" id="login-model" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Sign in / Guest</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid form-section">
+                        <div class="d-flex">
+                            <div class="w-50 px-3" style="border-right: 1px solid #ebebeb;">
+                                <div class="text-center mb-4">
+                                    <p>REGISTERED CUSTOMER</p>
+                                </div>
+                                <form action="{% url 'web_login' %}" method="POST" id="sign-in-form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="cart_redirect" value="True"/>
+                                    <div class="form-group">
+                                        <label for="email">Email Address</label>
+                                        <input type="text" name="email" id="email" class="form-control" placeholder="Enter Email Address">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Password</label>
+                                        <input type="password" name="password" id="password" class="form-control">
+                                    </div>
+                                    <div class="action-link-blk d-flex justify-content-between">
+                                        <a href="{% url 'web_forgot_password' %}" class="m-0 action-links">Forgot Password ?</a>
+                                        <button type="submit" class="btn btn-primary">SIGN IN</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="w-50 px-3">
+                                <div class="text-center mb-4">
+                                    <p>GUEST</p>
+                                </div>
+                                <div>
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="guest-email">Email Address</label>
+                                        <input type="text" name="guest_email" id="guest-email" class="form-control" placeholder="Enter Email Address" required/>
+                                    </div>
+                                    <button id="send-otp" class="btn btn-primary float-right">CONTINUE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- model-login-->
+
+    <!-- modal otp -->
+    <div class="modal fade" id="otp-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel1">Verify Otp</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    {% comment %} <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> {% endcomment %}
+                </div>
+                <div class="modal-body">
+                    <div class="w-50 m-auto text-center form-section">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="hidden" id="guest-user-email">
+                            <div class="d-flex justify-content-evenly">
+                                <input type="text" class="form-control otp-field" maxlength="1" required/>
+                                <input type="text" class="form-control otp-field" maxlength="1" required/>
+                                <input type="text" class="form-control otp-field" maxlength="1" required/>
+                                <input type="text" class="form-control otp-field" maxlength="1" required/>
+                            </div>
+                        </div>
+                        <button id="verify-otp" class="btn btn-primary">CONTINUE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal otp -->
+{% endif %}
+
+<script type="text/javascript" src="{% static 'sloper/js/jquery-3.3.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'sloper/js/popper.min.js' %}"></script>
+{% comment %} <script type="text/javascript" src="{% static 'web_app/js/bootstrap.min.js' %}"></script> {% endcomment %}
+<script type="text/javascript" src="{% static 'sloper/js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'sloper/js/mdb.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'sloper/js/owl.carousel.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'sloper/js/tool-js/ninja-slider.js' %}"></script>
+<script type="text/javascript" src="{% static 'sloper/js/tool-js/thumbnail-slider.js' %}"></script>
+<!-- <script type="text/javascript" src="{% static 'sloper/js/demo/fabric.js' %}"></script> -->
+<script type="text/javascript" src="{% static 'sloper/js/demo/eraser_brush.mixin.js' %}"></script>
+<script type="text/javascript" src="{% static 'sloper/js/demo/fabric-file-saver.min.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        $('#loader').hide()
+        $('#save-design-name').click(() => {
+            $('#design-name-model').modal('hide')
+            saveDesign("{% url 'save_design' %}")
+        })
+
+        $('#saveBtn').click(function() {
+            $('#design-name-model').modal('show')
+        })
+
+        $('#send-otp').on('click', function() {
+            const email = $('[name=guest_email]').val()
+            $('#loader').show()
+            $.ajax({
+                url: "{% url 'send_otp' %}",
+                method: "POST",
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    email: email
+                },
+                success: (res) => {
+                    $('#otp-modal').modal('show')
+                    $('#login-model').modal('hide')
+                    $('#loader').hide()
+                },
+                error: (res) => {
+                    console.error(res)
+                    $('#loader').hide()
+                }
+            })
+        })
+
+        $('#verify-otp').on('click', function() {
+            $('#loader').show()
+            const guestUserEmail = $(document).find('#guest-email').val()
+            const otpField = $(document).find('.otp-field')
+            let otp = `${otpField.eq(0).val()}${otpField.eq(1).val()}${otpField.eq(2).val()}${otpField.eq(3).val()}`
+            $(document).find('.otp-field').val('')
+            $.ajax({
+                url: "{% url 'sloper_register_guest_user' %}",
+                method: "POST",
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    email: guestUserEmail,
+                    otp: otp
+                },
+                success: (response) => {
+                    if(response.success) {
+                        $('#otp-modal').modal('show')
+                        saveDesign("{% url 'save_design' %}")
+                    } else {
+                        $('#otp-modal').modal('hide')
+                        myToast(response.message, ERROR_BG)
+                    }
+                    $('#loader').hide()
+                },
+                error: (response) => {
+                    $('#loader').hide()
+                }
+            })
+        })
+
+        $(document).on('input', '.otp-field', function(e) {
+            
+            if($(this).val()) {
+                if (isNaN($(this).val())) {
+                    $(this).val("")
+                    return false;
+                }
+                $(this).next().focus()
+            } else {
+                $(this).prev().focus()
+            }
+        })
+    })
+</script>
+<script>
+    {% comment %} const base_url = window.location.origin;
+    document.getElementById('image2').src=base_url+'/static/sloper/images/demo/product_template.png'; {% endcomment %}
+
+    $(document).ready(function(){
+        $(".tab-close-btn").click(function(){
+            $(".control-tab-closeing").toggleClass("active");
+        });
+    
+        $("#v-pills-tab a").click(function(){
+            $(".control-tab-closeing").addClass("active");
+        });
+    });
+</script>
+
+{% comment %} <script>
+    function showHideDiv(ele) {
+        var srcElement = document.getElementById(ele);
+        if (srcElement != null) {
+            if (srcElement.style.display == "block") {
+                srcElement.style.display = 'none';
+            }
+            else {
+                srcElement.style.display = 'block';
+            }
+            return false;
+        }
+    }
+</script> {% endcomment %}
+<script type="text/javascript">
+    $('.owl-themes').owlCarousel({
+        loop:true,
+        margin:10,
+        nav:true,
+        dot:false,
+        responsive:{
+            0:{
+                items:4
+            },
+            600:{
+                items:5
+            },
+            1000:{
+                items:6
+            }
+        }
+    });
+</script>
+<script type="text/javascript">
+    $('.owl-themes1').owlCarousel({
+        loop:true,
+        margin:10,
+        nav:true,
+        dot:false,
+        responsive:{
+            0:{
+                items:4
+            },
+            600:{
+                items:5
+            },
+            1000:{
+                items:6
+            }
+        }
+    });
+</script>
+<script type="text/javascript">
+    $('.owl-family').owlCarousel({
+        loop:true,
+        margin:10,
+        nav:true,
+        dot:false,
+        responsive:{
+            0:{
+                items:2
+            },
+            600:{
+                items:2
+            },
+            1000:{
+                items:3
+            }
+        }
+    });
+</script>
+<script type="text/javascript">
+    $('.owl-animal').owlCarousel({
+        loop:true,
+        margin:10,
+        nav:true,
+        dot:false,
+        responsive:{
+            0:{
+                items:2
+            },
+            600:{
+                items:3
+            },
+            1000:{
+                items:4
+            }
+        }
+    });
+</script>
+<script type="text/javascript">
+    $('.owl-flower').owlCarousel({
+        loop:true,
+        margin:10,
+        nav:true,
+        dot:false,
+        responsive:{
+            0:{
+                items:2
+            },
+            600:{
+                items:3
+            },
+            1000:{
+                items:4
+            }
+        }
+    });
+</script>
+<script type="text/javascript">
+    $('.owl-food').owlCarousel({
+        loop:true,
+        margin:10,
+        nav:true,
+        dot:false,
+        responsive:{
+            0:{
+                items:2
+            },
+            600:{
+                items:3
+            },
+            1000:{
+                items:4
+            }
+        }
+    });
+</script>
+<script type="text/javascript">
+    $('.owl-shape').owlCarousel({
+        loop:true,
+        margin:10,
+        nav:true,
+        dot:false,
+        responsive:{
+            0:{
+                items:2
+            },
+            600:{
+                items:3
+            },
+            1000:{
+                items:4
+            }
+        }
+    });
+</script>
+<script type="text/javascript">
+    $('.owl-sport').owlCarousel({
+        loop:true,
+        margin:10,
+        nav:true,
+        dot:false,
+        responsive:{
+            0:{
+                items:2
+            },
+            600:{
+                items:2
+            },
+            1000:{
+                items:3
+            }
+        }
+    });
+</script>
+
+<script type="text/javascript" src="{% static 'sloper/js/demo/functions.js' %}"></script>
+
+<script type="text/javascript">
+$(window).scroll(function(){var body=$('body'),scroll=$(window).scrollTop();if(scroll>=5){body.addClass('fixed');}else{body.removeClass('fixed');}});
+</script>
+
+</html>
+{% endblock content %}

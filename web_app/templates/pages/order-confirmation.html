@@ -1,0 +1,121 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}Order Confirmation{% endblock title %}
+{% block content %}
+
+<div class="wraper-inner">
+
+    <section class="page-head-sec">
+        <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+        <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+        <div class="container">
+            <div class="page-head-content">
+                <h4>Order Confirmation</h4>
+            </div>
+        </div>
+    </section>
+
+    <section class="cart-inner-block">
+        <div class="container">
+            
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="cart-detail-blk">
+                        <h4 class="heading-title">Thank you for your Order</h4>
+                        <p>The Megadolls team would like to thank you for shopping with us. Our brand was created to empower boys and girls around the world.</p>
+                        <hr>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="order-detail">
+                                    <h4>Ship To</h4>
+                                    {% comment %} <h5>Walt Nuzum Farm</h5>
+                                    <p>1792 Walt Nuzum Farm Road Rochester, NY 14626</p> {% endcomment %}
+                                    <h5>{{ shipping_address.area_name }}</h5>
+                                    <p>{% comment %}{{ shipping_address.house_num }} {{ shipping_address.area_name }}{% endcomment %} {{ shipping_address.web_city }}, {{ shipping_address.web_state.name }} {{ shipping_address.zip_code }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="order-detail">
+                                    <h4>Bill to</h4>
+                                    <h5>{{ billing_address.area_name }}</h5>
+                                    <p>{% comment %}{{ billing_address.house_num }} {{ billing_address.area_name }}{% endcomment %}{{ billing_address.web_city }}, {{ billing_address.web_state.name }} {{ billing_address.zip_code }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="order-detail">
+                                    <h4>Order number</h4>
+                                    {% comment %} <h5>#657859</h5> {% endcomment %}
+                                    <h5>#{{ order_data.order_id }}</h5>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="order-detail">
+                                    <h4>Order date</h4>
+                                    {% comment %} <h5>10/10/2021</h5> {% endcomment %}
+                                    <h5>{{ order_data.order_at|date:"m/d/Y" }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{% url 'home' %}" class="btn btn-primary">Continue Shopping</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cart-summary-blk">
+                        <h4>Order Summary</h4>
+                        <ul class="cart-billing-details">
+                            {% comment %} {% for product in products %} {% endcomment %}
+                            <li>
+                                <div class="order-summery-item">
+                                    <div class="order-summery-item-info">
+                                        {% comment %} <figure>
+                                            {% for product_img in product_img_data %}
+                                            {% if product.shop_product_id == product_img.shop_product_id and product_img.primary_img %}
+                                            <img src="{{ product_img.primary_img.url }}">
+                                            {% endif %}
+                                            {% endfor %}
+                                        </figure> {% endcomment %}
+                                        <h4>Sub Total</h4>
+                                    </div>
+                                    <p>${{ sub_total }}</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="order-summery-item">
+                                    <div class="order-summery-item-info">
+                                        <h4>Tax Applied</h4>
+                                    </div>
+                                    <p>${{ order_data.tax }}</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="order-summery-item">
+                                    <div class="order-summery-item-info">
+                                        <h4>Shipping Cost</h4>
+                                    </div>
+                                    <p>${{ order_data.shipping_charge }}</p>
+                                </div>
+                            </li>
+                            {% comment %} {% endfor %} {% endcomment %}
+                            {% comment %} <li>
+                                <div class="order-summery-item">
+                                    <div class="order-summery-item-info">
+                                        <figure>
+                                            <img src="{% static 'web_app/images/product-1.png' %}">
+                                        </figure>
+                                        <h4>Dakota Doll - American Indian</h4>
+                                    </div>
+                                    <p>$5.99</p>
+                                </div>
+                            </li> {% endcomment %}
+                            <div class="divider"></div>
+                            <li class="total">Grand Total <span>${{ order_data.total_amount|floatformat:2 }}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+</div>
+
+{% endblock content %}

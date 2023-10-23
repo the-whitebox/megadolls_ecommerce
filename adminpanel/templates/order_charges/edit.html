@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %} 
+{% block content %} 
+{% url 'view_order_charges' as view_order_charges %} 
+{% include "includes/section.html" with page_title="Edit Category" btn_url=view_order_charges btn_text="Back" %}
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <form method="POST" class="row" id="myForm"> 
+                            {% csrf_token %} 
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="basicInput">Name</label>
+                                    <input type="text" class="form-control" id="basicInput" placeholder="Enter Category" name="name" value="{{ charge.name }}" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Percentage</label>
+                                    <input type="text" class="form-control" name="percent" value="{{ charge.percentage }}" required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-primary me-1 mb-1 float-end">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> {% endblock content %} {% block script %}
+<script src="{% static 'adminpanel/vendors/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'adminpanel/jquery_validation/jquery.validate.js' %}"></script>
+<script>
+    $("#myForm").validate({
+        rules: {
+            categoryName: {
+                required: true,
+                maxlength: 55
+            },
+        },
+        submitHandler: function (form) {
+            form.submit();
+        }
+    });
+</script> {% endblock script %}

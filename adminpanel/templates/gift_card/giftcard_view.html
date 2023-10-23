@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css%}
+<link rel="stylesheet" href="{% static 'adminpanel/data-table/dataTables.min.css' %}">
+{% endblock css %}
+
+{% block content %}
+
+{% url 'giftcard_add' as giftcard_add %}
+{% include "includes/section.html" with page_title="Gift Card Management" btn_url=giftcard_add btn_text="Add Gift Card" %}
+
+<section class="section">
+    <div class="row w-100" id="table-striped">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="table-responsive p-2">
+                        {% if giftcard_data  %}
+                        <div class="row my-2">
+                            <div class="col-6">
+                            <h4><input type="checkbox" id="selectall" class="mx-2">Select All</h4>
+                            </div>
+                            <div class="col-6">
+                            <button type="button" class="btn btn-outline-primary w-30 float-end" id="delete-slected-all" disabled>Delete All</button>
+                            </div>
+                        </div>
+                            <table class="table table table-striped text-center mb-0" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th>Sr no.</th>
+                                        <th>Gift_Price</th>
+                                        <th>Days Of Expire</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for card in giftcard_data %}
+                                    <tr>
+                                        <td> <input type="checkbox" class="checkbox" name="check" value="{{ card.id }}"/> {{ forloop.counter }}</td>
+
+                                        <td>{{ card.gift_price }}</td>
+                                        <td>{{ card.days}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                
+                            </table>
+                        {% else %}
+                            <div class="text-center">
+                                <strong style="font-size: 1.5em;">No Records</strong>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+{% block script %}
+{% endblock script %}
+   

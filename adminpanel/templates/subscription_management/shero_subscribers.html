@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css%}
+<link rel="stylesheet" href="{% static 'adminpanel/data-table/dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+{% endblock css %}
+{% block content %}
+
+{% include "includes/section.html" with page_title="Shero Subscribers"%}
+<section class="section">
+    <div class="row w-100" id="table-striped">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="table-responsive p-2">
+                        {% if subscribers %}
+                            <table class="table table-striped text-center mb-0" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th>Sr. No.</th>
+                                        <th>Subscriber</th>
+                                        <th>Plan Type</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for subscriber in subscribers %}                          
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        
+                                        <td>{{ subscriber.user.name }}</td>
+                                        <td>{{ subscriber.plan_type }}</td>
+                                        <td>{{ subscriber.price }}</td>
+                                        {% if subscriber.canceled %}
+                                        <td>
+                                            <span class="badge bg-primary">Canceled on {{ subscriber.canceled_at }}</span>
+                                        </td>
+                                        {% else %}
+                                        <td class="is-active">
+                                            {% if subscriber.status %}
+                                            <span class="badge bg-success">Active</span>
+                                            {% else %}
+                                            <span class="badge bg-danger">Expired</span>
+                                            {% endif %}
+                                        </td> 
+                                        {% endif %}
+                                        {% if request.user.user_type == "SUPERADMIN" %}      
+                                            <td>
+                                                <a href="{% url 'view_subscriber_details' subscriber.user.id  %}" class="mx-1">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                                <a href="#" class="mx-1 btn-delete" data-id="{{ subscriber.id }}">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                            </td>
+                                        {% endif %}
+                                            
+                                        {% if request.user.user_type == "SUBADMIN" %}
+                                            <td>
+                                                {% for i in m_check %}
+                                                    {% if i.view == True %}
+                                                        <a href="{% url 'view_subscriber_details' subscriber.user.id %}" class="mx-1">
+                                                            <span class="fa-fw select-all fas"></span>
+                                                        </a>
+                                                    {% endif %}
+                                                    {% if i.delete == True %}
+                                                        <a href="#" class="mx-1 btn-delete" data-id="{{ subscriber.id }}">
+                                                            <span class="fa-fw select-all fas"></span>
+                                                        </a>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                        {% endif %} 
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <div class="text-center">
+                                <strong style="font-size: 1.5em;">No Records</strong>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form method="POST" action="{% url 'delete_shero_subscribers' %}" class="mx-1" style="display: inline;" id="delete_form">
+        {% csrf_token %}
+        <input type="hidden" name="subscriber" value="" id="delete_subscription">
+    </form>
+</section>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/data-table/dataTables.min.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.btn-delete').on('click', function (e) {
+            e.preventDefault()
+            let id = $(this).data('id')
+            Swal.fire({
+                title: 'Delete Record',
+                text: 'Are You Sure ?',
+                confirmButtonColor: 'rgb(225, 0, 127)',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#delete_subscription').val(id)
+                    $('#delete_form').submit()
+                }
+            })
+        })
+    })
+</script>
+{% endblock script %} 
+

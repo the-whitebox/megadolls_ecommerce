@@ -1,0 +1,143 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+
+
+{% block meta %}
+<meta property="og:title" content="{{ shero_dolls.shero_dolls.og_title }}" />
+{% if shero_dolls.og_img %}
+<meta property="og:image" content="{{ shero_dolls.og_img.url }}" />
+{% endif %}
+<meta property="og:description" content="{{ shero_dolls.shero_dolls.og_description|striptags }}">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ shero_dolls.shero_dolls.og_title }}">
+<meta name="twitter:description" content="{{ shero_dolls.shero_dolls.description|striptags }}">
+{% endblock meta %}
+
+{% block title %}Shero Dolls{% endblock title %}
+{% block content %}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" rel="stylesheet" />
+<div class="wraper-inner">
+    <section class="product-detail-sec">
+        <div class="container">
+            <div class="breadcrumb-blk">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'subscription' %}">Subscription</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ shero_dolls.shero_dolls.name }}</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="product-detail-infos mb-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="product-sliders module-gallery module-12345">
+      						<div class="maxWidth900 padLR15">
+      							<div class="padTB20">
+      								<div class="slider-wrapper">
+                                        <ul class="slider-preview noPad noMar">
+                                            {% if shero_dolls.primary_img %}
+                                            <li class="type-image"><img src="{{ shero_dolls.primary_img.url}}"></li>
+                                            {% else %}
+                                            <p>No Image</p>
+                                            {% endif %}
+                                            {% for image in shero_dolls_image %}
+                                            {% if image.images %}
+                                            <li class="type-image"><img src="{{ image.images.url }}"></li>
+                                            {% else %}
+                                            <p></p>
+                                            {% endif %}
+                                            {% endfor %}                                            
+                                        </ul>
+                                        <ul class="slider-thumb noPad noMar">
+                                            {% if shero_dolls.primary_img %}
+                                            <li class="type-image"><img src="{{ shero_dolls.primary_img.url}}"></li>
+                                            {% else %}
+                                            <p></p>
+                                            {% endif %}
+                                            {% for image in shero_dolls_image %}
+                                            {% if image.images %}
+                                            <li class="type-image"><img src="{{ image.images.url }}"></li>
+                                            {% else %}
+                                            <p></p>
+                                            {% endif %}
+                                            {% endfor %}                                          
+                                        </ul>
+    								</div>
+      							</div>
+      						</div>
+      					</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="product-detail-content">
+                            <div class="product-title">{{shero_dolls.shero_dolls.name}}</div>
+                            <div class="product-price">
+                                <span class="amount">${{shero_dolls.shero_dolls.original_price}}</span>
+                            </div>
+                            <div class="product-detail-actions">
+                                {% if cart_item %}
+                                    <a href="{% url 'view_cart' %}" class="btn btn-primary jsAddToCartBtn">
+                                        <i class="ri-shopping-cart-2-line"></i>
+                                        Go to Cart
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'add_shero_to_cart' shero_dolls.shero_dolls.slug %}" class="btn btn-primary jsAddToCartBtn">
+                                        <i class="ri-shopping-cart-2-line"></i>
+                                        Add to Cart
+                                    </a>
+                                    <a href="{% url 'buy_now_shero_dolls' shero_dolls.shero_dolls.slug %}" class="btn btn-primary outline"><i class="ri-money-dollar-circle-line"></i> Buy Now</a>
+                                {% endif %}
+                            </div>
+                            <div class="product-info-box-2">
+                                <h4>{{ shero_dolls.shero_dolls.claim_to_fame }}</h4>
+                                <ul>
+                                    <li><span>Month Release:</span> {{shero_dolls.shero_dolls.month}} {{shero_dolls.shero_dolls.year}}</li>
+                                    <li><span>Limited Print:</span>{{shero_dolls.shero_dolls.month}} {{limited_print_year}}</li>
+                                    <!-- <li><span>Limited Print:</span> January 2022</li> -->
+                                </ul>
+                            </div>
+                            <div class="product-note"><i class="ri-information-line"></i> Colors You See In The Monitor May Differ Slightly From The Actual Product.</div>
+                            <div class="product-share">
+                                <p>Share</p>
+                                <ul class="social-share" style="position: unset;">
+                                    <li class="facebook">
+                                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ site_url }}buy_shero_dolls/{{ shero_dolls.shero_dolls.slug }}/" target="_blank"><i class="ri-facebook-fill"></i></a>
+                                    </li>
+                                    <!-- <li>
+                                        <a href="javascript:void(0);"><i class="ri-youtube-fill"></i></a>
+                                    </li> -->
+                                    <li class="twitter">
+                                        <a href="https://twitter.com/intent/tweet?url={{ site_url }}buy_shero_dolls/{{ shero_dolls.shero_dolls.slug }}/" target="_blank"><i class="ri-twitter-fill"></i></a>
+                                    </li>
+                                    <li class="linkedin">
+                                        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ site_url }}buy_shero_dolls/{{ shero_dolls.shero_dolls.slug }}/" target="_blank"><i class="ri-linkedin-fill"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="product-detail-description mb-5">
+                {% if shero_dolls.shero_dolls.features %}
+                <h4>Product Features</h4>
+                 <p>{{shero_dolls.shero_dolls.features|safe}}</p>
+                 {% endif %}
+            </div>
+            <div class="product-detail-description">
+                {% if shero_dolls.shero_dolls.description %}
+                <h4>Description</h4>
+                <h4>Meet {{shero_dolls.shero_dolls.name}}</h4>
+                <p>Say Hello to {{shero_dolls.shero_dolls.name}}!</p>
+                <p>{{ shero_dolls.shero_dolls.description|safe }}</p>
+                {% endif %}
+            
+            </div>
+        </div>
+    </section>
+    
+    {% comment %} {% include 'includes/featured_and_download.html' %} {% endcomment %}
+</div>
+{% endblock content %}

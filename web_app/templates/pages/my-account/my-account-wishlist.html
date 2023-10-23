@@ -1,0 +1,108 @@
+{% extends 'web_app_base.html' %}
+{% load static %}
+{% block title %}My Account - Wishlist{% endblock title %}
+{% block content %}
+{% include 'includes/ring-loader.html' %}
+<div class="wraper-inner">
+   <section class="page-head-sec">
+      <img class="page-shape-left" src="{% static 'web_app/images/cms-head-left.svg' %}">
+      <img class="page-shape-right" src="{% static 'web_app/images/cms-head-right.svg' %}">
+      <div class="container">
+         <div class="page-head-content">
+            <h4>My Account</h4>
+         </div>
+      </div>
+   </section>
+   <section class="shops-list-sec pt-5">
+      <div class="container">
+         <div class="my-account account-subscription">
+            {% include 'includes/my-account/left-sidebar.html' %}
+            <div class="my-account-R">
+               <div class="row">
+                  {% for i in wishlist %}
+                     {% if i.shop_id %}
+                     <div class="col-lg-4 col-md-4 col-sm-6 mb-4">
+                        <div class="product-item">
+                           <div class="product-slider owl-carousel owl-theme">
+                              {% for shop_product_img in shop_product_imgs %}
+                                 {% if i.shop_id == shop_product_img.shop_product_id %}
+                                    <div class="item">
+                                       <div class="product-slider-item">
+                                          <img src="{{ shop_product_img.primary_img.url }}">
+                                       </div>
+                                    </div>
+                                    {% for shop_subtable_img in shop_subtable_imgs %}
+                                       {% if shop_subtable_img.shop_product_image_id == shop_product_img.id %}
+                                          <div class="item">
+                                             <div class="product-slider-item">
+                                                <img src="{{ shop_subtable_img.images.url }}">
+                                             </div>
+                                          </div>
+                                       {% endif %}
+                                    {% endfor %}
+                                 {% endif %}
+                              {% endfor %}
+                           </div>
+                           <div class="product-item-content">
+                              <h5 class="product-name"><a href="javascript:void(0);">{{i.shop.name}}</a></h5>
+                              <span class="product-rating">
+                              <i class="ri-star-fill"></i>
+                              <i class="ri-star-fill"></i>
+                              <i class="ri-star-fill"></i>
+                              <i class="ri-star-fill"></i>
+                              <i class="ri-star-line"></i>
+                              </span>
+                              <h4 class="product-price">
+                                 {% if i.shop.offer_price %} 
+                                ${{ i.shop.offer_price }} 
+                                {% else %} 
+                                ${{ i.shop.original_price }} 
+                                {% endif %}
+                              </h4>
+                              <div class="product-actions prodcut-actions-wrap">
+                                 {% if i.shop.quantity > 0 %}
+                                    {% if i.shop_id in cart_product_list %}
+                                       <a href="{% url 'view_cart' %}" class="btn btn-primary jsAddToCartBtn">
+                                          <i class="ri-shopping-cart-2-line"></i>
+                                          Go to Cart
+                                       </a>
+                                    {% else %}
+                                       <a href="{% url 'wishlist_add_to_cart' i.shop.slug %}" class="btn btn-primary jsAddToCartBtn">
+                                          <i class="ri-shopping-cart-2-line"></i>
+                                          Add to Cart
+                                       </a>
+                                    {% endif %}
+                                 {% else %}
+
+                                 <a href="{% url 'shop_doll_detail' i.shop.slug %}" class="btn btn-primary out-stock wishlist-out-stock">Out of Stock</a>
+                                    
+                                {% endif %}
+                                 <a href="javascript:void(0);" class="btn btn-primary outline mt-2 shop_category" data-product-id="{{ i.shop_id }}" data-refresh="true">Remove from Wishlist</a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     {% endif %}
+                  {% empty %}
+                  <div class="text-center my-5">
+                     <h4>No Wishlist</h4>
+                  </div>
+                  {% endfor %}
+               </div>
+               <!-- <div class="d-flex mt-3">
+                  <a class="btn btn-primary">Save</a>
+               </div> -->
+            </div>
+         </div>
+      </div>
+   </section>
+</div>
+{% endblock content %}
+{% block script %}
+<script>
+   $('#loader').hide()
+   $('.jsAddToCartBtn').click(function() {
+      $('#loader').show()
+   })
+</script>
+{% endblock script %}

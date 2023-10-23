@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css%}
+<link rel="stylesheet" href="{% static 'adminpanel/data-table/dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.min.css' %}">
+{% endblock css %}
+{% block content %}
+{% url 'shero_subscribers' as shero_subscribers %}
+{% include "includes/section.html" with page_title="Shero Subscriber History" btn_url=shero_subscribers btn_text="Back"%}
+<section class="section">
+    <div class="row w-100" id="table-striped">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="table-responsive p-2">
+                            <table class="table table-striped text-center mb-0" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th>Sr. No.</th>
+                                        <th>Name</th>
+                                        <th>Plan Type</th>
+                                        <th>Price</th>
+                                        <th>Start Date</th>
+                                        <th>Expiry Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for history in subscribers_history %}                    
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ history.user.name }}</td>
+                                        <td>{{ history.plan_type }}</td>
+                                        <td>{{ history.price }}</td>
+                                        <td>{{ history.start_at }}</td>
+                                        <td>{{ history.expire_at }}</td>
+                                        {% if history.canceled %}
+                                        <td>
+                                            <span class="badge bg-primary">Canceled on {{ history.canceled_at }}</span>
+                                        </td>
+                                        {% else %}
+                                        <td class="is-active">
+                                            {% if history.status %}
+                                            <span class="badge bg-success">Active</span>
+                                            {% else %}
+                                            <span class="badge bg-danger">Expired</span>
+                                            {% endif %}
+                                        </td> 
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

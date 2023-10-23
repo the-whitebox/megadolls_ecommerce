@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'adminpanel/data-table/dataTables.min.css' %}">
+{% endblock css %}
+
+{% block content %}
+
+
+{% include "includes/section.html" with page_title="Social Media Management" btn_url=add_social_media btn_text="Add Social Media" %}
+
+<section class="section">
+    <div class="row w-100" id="table-striped">
+        <div class="col-12">
+            <div class="card py-2 px-2">
+                <div class="card-content">
+                    <div class="table-responsive p-2">
+                        {% if social_media %}
+                            <table class="table table table-striped text-center mb-0 text-center" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th>Sr no.</th>
+                                        <th>Name</th>
+                                        <th>Link</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for social in social_media %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td class="text-bold-500">{{ social.name }}</td>
+                                        <td class="text-bold-500">{{ social.link|safe|truncatechars:20 }}</td>
+                                       
+
+                                        {% if request.user.user_type == "SUPERADMIN" %}
+                                            <td>
+                                                <a href="{% url 'edit_social_media' social.id %}"
+                                                class="mx-1 edit-social-media">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a>
+                                                <form method="POST" action="" class="mx-1" style="display: inline;">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="sm_id" value="{{ social.id }}">
+                                                </form>
+                                                <!-- <a href="#" data-url="{% url 'delete_social_media' %}"
+                                                    class="mx-1 btn-delete-social-media">
+                                                    <span class="fa-fw select-all fas"></span>
+                                                </a> -->
+                                            </td>
+                                        {% endif %}
+                                        
+                                        {% if request.user.user_type == "SUBADMIN" %}
+                                            <td>
+                                                {% for i in m_check %}
+                                                    {% if i.edit == True %}
+                                                        <a href="{% url 'edit_social_media' social.id %}"
+                                                            class="mx-1 edit-social-media">
+                                                            <span class="fa-fw select-all fas"></span>
+                                                        </a>
+                                                    {% endif %}
+                                                    {% if i.delete == True %}
+                                                        <form method="POST" action="" class="mx-1" style="display: inline;">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="sm_id" value="{{ social.id }}">
+                                                        </form>
+                                                        <!-- <a href="#" data-url="{% url 'delete_social_media' %}"
+                                                            class="mx-1 btn-delete-social-media">
+                                                            <span class="fa-fw select-all fas"></span>
+                                                        </a> -->
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <div class="text-center">
+                                <strong style="font-size: 1.5em;">No Records</strong>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'adminpanel/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'adminpanel/data-table/dataTables.min.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        $('.btn-delete-social-media').on('click', function (e) {
+            e.preventDefault()
+            form = $(this).siblings("form")
+            action = $(this).data('url')
+            Swal.fire({
+                title: 'Delete Social Media',
+                text: 'Are You Sure ?',
+                confirmButtonColor: 'rgb(225, 0, 127)',
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.attr('action', action);
+                    form.submit();
+                }
+            })
+        })
+    })
+</script>
+{% endblock script %}
